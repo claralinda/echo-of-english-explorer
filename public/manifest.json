@@ -15,6 +15,18 @@
       "type": "image/x-icon"
     },
     {
+      "src": "/lovable-uploads/4670883d-697d-42ae-86a2-e2f3401a007a.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/4670883d-697d-42ae-86a2-e2f3401a007a.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "/placeholder.svg",
       "type": "image/svg+xml",
       "sizes": "192x192",
