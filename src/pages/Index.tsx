@@ -11,6 +11,8 @@ import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Plus } from "lucide-react";
 import { useUserApiKey } from "@/hooks/useUserApiKey";
 import { Star, Check, ListCheck, LogOut } from "lucide-react";
+import InstallPrompt from "@/components/InstallPrompt";
+
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
@@ -132,6 +134,7 @@ const Index = () => {
   };
 
   return <div className="min-h-screen bg-white flex flex-col relative">
+      <InstallPrompt />
       {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
         <div className="flex-1 min-w-0">
@@ -256,4 +259,5 @@ const Index = () => {
       </footer>
     </div>;
 };
+
 export default Index;
