@@ -40,7 +40,7 @@ const WordList = ({
       {words.map((w, idx) => <li key={w.id} className={`border-b border-[#ededed] last:border-b-0 px-4 ${idx === 0 ? "pt-4" : "pt-2"} pb-2`}>
           <div className="flex items-start justify-between gap-3">
             <button type="button" className="flex flex-col items-start justify-center flex-1 text-left focus:outline-none" onClick={() => setOpenId(openId === w.id ? null : w.id)} aria-expanded={openId === w.id} data-testid="word-collapsible">
-              <span className="font-medium text-[0.85rem] leading-tight text-gray-600 ">
+              <span className="font-medium text-[0.9rem] leading-tight text-gray-600 ">
                 {w.text}
               </span>
               <span className="text-xs mt-0.5 text-gray-400 font-normal leading-snug">
