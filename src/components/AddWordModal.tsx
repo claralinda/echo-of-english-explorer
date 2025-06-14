@@ -59,7 +59,7 @@ const AddWordModal = ({
           text: text.trim()
         });
         if (!_definition) _definition = wordDetails.definition || "";
-        if (_examples.length === 0) _examples = wordDetails.examples || [];
+        if (_examples.length === 0) _examples = (wordDetails.examples || []).map(ex => (typeof ex === "string" ? ex : ex.sentence || ""));
       }
       if (!_definition) {
         toast({
@@ -80,7 +80,8 @@ const AddWordModal = ({
       setExamples("");
       toast({
         title: "Added!",
-        description: `Saved "${text.trim()}" with definition.`
+        description: `Saved "${text.trim()}" with definition.`,
+        duration: 3000 // Popup will close after 3 seconds
       });
       onClose();
     } catch (e: any) {
