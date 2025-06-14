@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -79,7 +78,7 @@ const Index = () => {
           <Tabs value={tab} onValueChange={setTab} className="w-full">
             <TabsList className="mb-3 flex w-full justify-center">
               <TabsTrigger value="to-learn" className="w-40">To Learn</TabsTrigger>
-              <TabsTrigger value="learnt" className="w-40">Learnt</TabsTrigger>
+              <TabsTrigger value="mastered" className="w-40">Mastered</TabsTrigger>
               <TabsTrigger value="starred" className="w-40">⭐ Starred</TabsTrigger>
             </TabsList>
             <TabsContent value="to-learn">
@@ -92,7 +91,7 @@ const Index = () => {
                 learntMode={false}
               />
             </TabsContent>
-            <TabsContent value="learnt">
+            <TabsContent value="mastered">
               <WordTable 
                 words={learntWords}
                 onDelete={removeWord}
@@ -170,4 +169,3 @@ const Index = () => {
 };
 
 export default Index;
-
