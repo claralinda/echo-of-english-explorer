@@ -10,7 +10,7 @@ export function useUserApiKey(userId: string | null) {
   const [apiKey, setApiKey] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch API key if authenticated
+  // Fetch API key when userId changes (on login/logout)
   useEffect(() => {
     if (!userId) {
       setApiKey("");
@@ -32,7 +32,7 @@ export function useUserApiKey(userId: string | null) {
       });
   }, [userId]);
 
-  // Set API key in Supabase (upsert: insert or update)
+  // Set API key in Supabase (upsert: insert or update), then update state
   const saveApiKey = async (key: string) => {
     if (!userId) return;
     setLoading(true);
@@ -45,7 +45,7 @@ export function useUserApiKey(userId: string | null) {
             openai_api_key: key,
           },
         ],
-        { onConflict: "user_id" } // <-- FIX: must be string not array
+        { onConflict: "user_id" }
       );
     setApiKey(key);
     setLoading(false);
