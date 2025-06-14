@@ -293,18 +293,16 @@ const Index = () => {
         <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
       </main>
       {/* Footer with settings link */}
-      <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full">
+      <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">
         Powered by{" "}
-        <button
+        <span
           className="text-blue-600 underline hover:text-blue-800"
           style={{
             cursor: "pointer",
           }}
-          type="button"
-          onClick={() => setApiKeyDialogOpen(true)}
         >
           ChatGPT
-        </button>{" "}
+        </span>{" "}
         | Your words are saved in your browser.
       </footer>
     </div>
