@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Star, Check, Trash } from "lucide-react";
 
@@ -20,7 +19,6 @@ type Props = {
   learntMode?: boolean; // legacy: keep using for backwards compatibility
   starredMode?: boolean;
 };
-
 const WordTable = ({
   words,
   onDelete,
@@ -30,116 +28,57 @@ const WordTable = ({
   onUnstar,
   showStar = false,
   learntMode = false,
-  starredMode = false,
+  starredMode = false
 }: Props) => {
   // Reinterpret "learntMode" as "masteredMode" for display text
   const masteredMode = learntMode;
-  if (words.length === 0)
-    return (
-      <div className="py-12 text-muted-foreground text-lg">
-        {starredMode
-          ? "No starred words yet."
-          : masteredMode
-          ? "No mastered words yet."
-          : "No words or sayings saved yet."}
-      </div>
-    );
-
-  return (
-    <div className="overflow-x-auto rounded-lg border bg-card shadow-sm">
+  if (words.length === 0) return <div className="py-12 text-muted-foreground text-lg">
+        {starredMode ? "No starred words yet." : masteredMode ? "No mastered words yet." : "No words or sayings saved yet."}
+      </div>;
+  return <div className="overflow-x-auto rounded-lg border bg-card shadow-sm">
       <table className="min-w-full text-sm">
         <thead className="bg-muted/50 border-b">
           <tr>
-            <th className="p-4 text-left font-bold lowercase align-top">word/saying</th>
+            <th className="p-4 text-left font-bold lowercase align-top">saying</th>
             <th className="p-4 text-left font-bold lowercase align-top">meaning</th>
             <th className="p-4 text-left font-bold lowercase align-top">examples</th>
-            {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
-              <th className="p-4 align-top"></th>
-            )}
+            {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && <th className="p-4 align-top"></th>}
           </tr>
         </thead>
         <tbody>
-          {words.map((w) => (
-            <tr key={w.id} className="border-b hover:bg-muted/30 duration-100 align-top">
+          {words.map(w => <tr key={w.id} className="border-b hover:bg-muted/30 duration-100 align-top">
               <td className="p-4 font-medium align-top">{w.text}</td>
               <td className="p-4 max-w-xs whitespace-pre-line text-xs text-muted-foreground lowercase align-top">
                 {w.definition}
               </td>
               <td className="p-4 max-w-lg text-xs text-muted-foreground align-top">
                 <div className="space-y-1">
-                  {w.examples.map((ex, idx) => (
-                    <div key={idx} className="">{ex}</div>
-                  ))}
+                  {w.examples.map((ex, idx) => <div key={idx} className="">{ex}</div>)}
                 </div>
               </td>
-              {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
-                <td className="p-4 flex space-x-2 align-top">
+              {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && <td className="p-4 flex space-x-2 align-top">
                   {/* Put star/unstar first */}
-                  {showStar && !starredMode && onStar && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      aria-label="Star"
-                      title="Star"
-                      onClick={() => onStar(w.id)}
-                      className="text-yellow-500"
-                    >
+                  {showStar && !starredMode && onStar && <Button size="sm" variant="ghost" aria-label="Star" title="Star" onClick={() => onStar(w.id)} className="text-yellow-500">
                       <Star />
-                    </Button>
-                  )}
-                  {showStar && starredMode && onUnstar && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      aria-label="Unstar"
-                      title="Unstar"
-                      onClick={() => onUnstar(w.id)}
-                    >
+                    </Button>}
+                  {showStar && starredMode && onUnstar && <Button size="sm" variant="ghost" aria-label="Unstar" title="Unstar" onClick={() => onUnstar(w.id)}>
                       <Star fill="currentColor" className="text-yellow-500" />
-                    </Button>
-                  )}
+                    </Button>}
                   {/* Then Mark as Mastered/Move Back */}
-                  {onMarkAsLearnt && (
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => onMarkAsLearnt(w.id)}
-                      aria-label="Mark as mastered"
-                      title="Mark as mastered"
-                    >
+                  {onMarkAsLearnt && <Button size="sm" variant="secondary" onClick={() => onMarkAsLearnt(w.id)} aria-label="Mark as mastered" title="Mark as mastered">
                       <Check />
-                    </Button>
-                  )}
-                  {onMoveBackToLearn && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onMoveBackToLearn(w.id)}
-                    >
+                    </Button>}
+                  {onMoveBackToLearn && <Button size="sm" variant="outline" onClick={() => onMoveBackToLearn(w.id)}>
                       move back
-                    </Button>
-                  )}
+                    </Button>}
                   {/* Then Delete */}
-                  {onDelete && (
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => onDelete(w.id)}
-                      aria-label="Delete"
-                      title="Delete"
-                    >
+                  {onDelete && <Button size="sm" variant="destructive" onClick={() => onDelete(w.id)} aria-label="Delete" title="Delete">
                       <Trash />
-                    </Button>
-                  )}
-                </td>
-              )}
-            </tr>
-          ))}
+                    </Button>}
+                </td>}
+            </tr>)}
         </tbody>
       </table>
-    </div>
-  );
+    </div>;
 };
-
 export default WordTable;
-
