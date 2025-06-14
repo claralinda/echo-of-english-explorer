@@ -123,9 +123,7 @@ const Index = () => {
       return <span className="block text-[1rem] font-semibold mt-0.5 ml-px text-green-700"> mastered</span>;
     }
     if (tab === "starred") {
-      return <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">
-          Starred
-        </span>;
+      return <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">starred</span>;
     }
     return null;
   };
