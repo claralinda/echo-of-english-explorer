@@ -1,5 +1,5 @@
+
 import { useState } from "react";
-import { Trash2, Check, Star, Undo } from "lucide-react";
 type Word = {
   id: string;
   text: string;
@@ -19,6 +19,7 @@ type Props = {
   starredMode?: boolean;
 };
 const lcFirst = (str: string) => str ? str.charAt(0).toLowerCase() + str.slice(1) : str;
+
 const WordList = ({
   words,
   onDelete,
@@ -31,51 +32,110 @@ const WordList = ({
   starredMode = false
 }: Props) => {
   const [openId, setOpenId] = useState<string | null>(null);
+
   if (words.length === 0) {
-    return <div className="py-12 text-muted-foreground text-lg text-center bg-white">
+    return (
+      <div className="py-12 text-muted-foreground text-lg text-center bg-white">
         No words or sayings saved yet.
-      </div>;
+      </div>
+    );
   }
-  return <ul className="w-full bg-white min-h-screen px-0">
-      {words.map((w, idx) => <li key={w.id} className={`border-b border-[#ededed] last:border-b-0 px-4 ${idx === 0 ? "pt-4" : "pt-2"} pb-2`}>
+
+  return (
+    <ul className="w-full bg-white min-h-screen px-0">
+      {words.map((w, idx) => (
+        <li
+          key={w.id}
+          className={`border-b border-[#ededed] last:border-b-0 px-4 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors`}
+        >
           <div className="flex items-start justify-between gap-3">
-            <button type="button" className="flex flex-col items-start justify-center flex-1 text-left focus:outline-none" onClick={() => setOpenId(openId === w.id ? null : w.id)} aria-expanded={openId === w.id} data-testid="word-collapsible">
-              <span className="font-medium text-[0.9rem] leading-tight text-gray-600 ">
+            <button
+              type="button"
+              className="flex flex-col items-start justify-center flex-1 text-left focus:outline-none"
+              onClick={() => setOpenId(openId === w.id ? null : w.id)}
+              aria-expanded={openId === w.id}
+              data-testid="word-collapsible"
+              tabIndex={0}
+            >
+              <span className="font-medium text-[0.95rem] leading-tight text-gray-600">
                 {w.text}
               </span>
               <span className="text-xs mt-0.5 text-gray-400 font-normal leading-snug py-px">
                 {lcFirst(w.definition)}
               </span>
-              {w.examples.length > 0 && openId === w.id ? <ul className="mt-1 ml-1 pl-2 border-l-2 border-gray-100 text-xs text-gray-400">
-                  {w.examples.map((ex, i) => <li key={i} className="pb-1 last:pb-0">
+              {w.examples.length > 0 && openId === w.id ? (
+                <ul className="mt-1 ml-0 px-0 text-[0.93em] text-gray-400 italic space-y-1">
+                  {w.examples.map((ex, i) => (
+                    <li key={i} className="pb-0 leading-snug">
                       {ex}
-                    </li>)}
-                </ul> : null}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </button>
-            <div className="flex flex-col items-end space-y-2 pt-0.5">
-              {/* Action area */}
-              {/* Mark as learnt */}
-              {!learntMode && !!onMarkAsLearnt && <button onClick={() => onMarkAsLearnt(w.id)} className="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Mark as learnt" aria-label="Mark as learnt" tabIndex={0}>
-                  <Check className="w-5 h-5" />
+            <div className="flex flex-col items-end space-y-1 min-w-[54px]">
+              {/* Minimalist text actions */}
+              {!learntMode && !!onMarkAsLearnt &&
+                <button
+                  onClick={() => onMarkAsLearnt(w.id)}
+                  className="text-xs text-gray-400 hover:text-green-700 px-0 py-0 underline focus:outline-none bg-transparent"
+                  title="Mark as learnt"
+                  aria-label="Mark as learnt"
+                  tabIndex={0}
+                  type="button"
+                >
+                  Learnt
                 </button>}
-              {/* Move back to learn */}
-              {learntMode && !!onMoveBackToLearn && <button onClick={() => onMoveBackToLearn(w.id)} className="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Move back to To Learn" aria-label="Move back to To Learn" tabIndex={0}>
-                  <Undo className="w-5 h-5" />
+              {learntMode && !!onMoveBackToLearn &&
+                <button
+                  onClick={() => onMoveBackToLearn(w.id)}
+                  className="text-xs text-gray-400 hover:text-blue-700 px-0 py-0 underline focus:outline-none bg-transparent"
+                  title="Move back to To Learn"
+                  aria-label="Move back to To Learn"
+                  tabIndex={0}
+                  type="button"
+                >
+                  Back
                 </button>}
-              {/* Star/unstar */}
-              {showStar && !!onStar && !starredMode && <button onClick={() => onStar(w.id)} className="p-1 text-gray-400 hover:text-yellow-400 transition-colors" title="Star" aria-label="Star" tabIndex={0}>
-                  <Star className="w-5 h-5" />
+              {showStar && !!onStar && !starredMode &&
+                <button
+                  onClick={() => onStar(w.id)}
+                  className="text-xs text-gray-400 hover:text-yellow-500 px-0 py-0 underline focus:outline-none bg-transparent"
+                  title="Star"
+                  aria-label="Star"
+                  tabIndex={0}
+                  type="button"
+                >
+                  Star
                 </button>}
-              {showStar && !!onUnstar && starredMode && <button onClick={() => onUnstar(w.id)} className="p-1 text-yellow-500 hover:text-yellow-600 transition-colors" title="Unstar" aria-label="Unstar" tabIndex={0}>
-                  <Star className="w-5 h-5 fill-yellow-400 stroke-yellow-600" />
+              {showStar && !!onUnstar && starredMode &&
+                <button
+                  onClick={() => onUnstar(w.id)}
+                  className="text-xs text-yellow-500 hover:text-yellow-600 px-0 py-0 underline focus:outline-none bg-transparent"
+                  title="Unstar"
+                  aria-label="Unstar"
+                  tabIndex={0}
+                  type="button"
+                >
+                  Unstar
                 </button>}
-              {/* Delete */}
-              {!!onDelete && <button onClick={() => onDelete(w.id)} className="p-1 text-gray-400 hover:text-red-500 transition-colors" title="Delete" aria-label="Delete" tabIndex={0}>
-                  <Trash2 className="w-5 h-5" />
+              {!!onDelete &&
+                <button
+                  onClick={() => onDelete(w.id)}
+                  className="text-xs text-gray-300 hover:text-red-500 px-0 py-0 underline focus:outline-none bg-transparent"
+                  title="Delete"
+                  aria-label="Delete"
+                  tabIndex={0}
+                  type="button"
+                >
+                  Delete
                 </button>}
             </div>
           </div>
-        </li>)}
-    </ul>;
+        </li>
+      ))}
+    </ul>
+  );
 };
+
 export default WordList;
