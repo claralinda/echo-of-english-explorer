@@ -9,7 +9,7 @@ export type SupabaseWordEntry = {
   id: string;
   text: string;
   definition: string;
-  examples: string[];
+  examples: any[]; // Accept array of strings or objects
   list: "to_learn" | "learnt" | "starred";
   createdAt: string;
 };
@@ -20,6 +20,19 @@ export function useSupabaseWords(userIdInput: string | null) {
 
   const [words, setWords] = useState<SupabaseWordEntry[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Helper to normalize examples
+  function parseExamples(examples: any): any[] {
+    if (!examples) return [];
+    if (Array.isArray(examples)) return examples;
+    try {
+      // Sometimes Supabase returns JSON as string, parse it
+      const parsed = typeof examples === "string" ? JSON.parse(examples) : examples;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
 
   // Fetch all words for the user
   useEffect(() => {
@@ -42,7 +55,7 @@ export function useSupabaseWords(userIdInput: string | null) {
               id: w.id,
               text: w.text,
               definition: w.definition,
-              examples: w.examples || [],
+              examples: parseExamples(w.examples),
               list: w.list,
               createdAt: w.created_at,
             }))
@@ -69,7 +82,7 @@ export function useSupabaseWords(userIdInput: string | null) {
           id: w.id,
           text: w.text,
           definition: w.definition,
-          examples: w.examples || [],
+          examples: parseExamples(w.examples),
           list: w.list,
           createdAt: w.created_at,
         }))
@@ -78,7 +91,7 @@ export function useSupabaseWords(userIdInput: string | null) {
   };
 
   // Add a new word to to_learn
-  const addWord = async (entry: { text: string; definition: string; examples: string[] }): Promise<void> => {
+  const addWord = async (entry: { text: string; definition: string; examples: any[] }): Promise<void> => {
     await supabase.from("words").insert([
       {
         text: entry.text,
@@ -124,3 +137,4 @@ export function useSupabaseWords(userIdInput: string | null) {
     allWords: words,
   };
 }
+
