@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Star, X } from "lucide-react";
+import { Star, X, Check } from "lucide-react";
 type Word = {
   id: string;
   text: string;
@@ -76,16 +76,16 @@ const WordList = ({
               {/* Actions as icons, displayed only when expanded */}
               {openId === w.id && (
                 <div className="flex flex-row flex-wrap gap-2 mt-2 items-center">
-                  {/* Learnt/Back actions - still text, as only allowed icons are star & x */}
+                  {/* Learnt/Back actions */}
                   {!learntMode && !!onMarkAsLearnt && (
                     <button
                       onClick={e => { e.stopPropagation(); onMarkAsLearnt(w.id); }}
-                      className="text-xs text-green-700 hover:underline px-1 py-0 rounded bg-transparent focus:outline-none"
-                      title="Mark as learnt"
-                      aria-label="Mark as learnt"
+                      className="p-1 text-green-700 hover:text-green-800 rounded-full bg-transparent focus:outline-none"
+                      title="Mark as mastered"
+                      aria-label="Mark as mastered"
                       type="button"
                     >
-                      Learnt
+                      <Check size={17} strokeWidth={2.2} />
                     </button>
                   )}
                   {learntMode && !!onMoveBackToLearn && (
@@ -146,4 +146,3 @@ const WordList = ({
 };
 
 export default WordList;
-
