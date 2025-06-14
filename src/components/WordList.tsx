@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Star, Trash, Check } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -19,6 +20,9 @@ type Props = {
   onMoveBackToLearn?: (id: string) => void;
   learntMode?: boolean;
 };
+const lcFirst = (str: string) =>
+  str ? str.charAt(0).toLowerCase() + str.slice(1) : str;
+
 const WordList = ({
   words,
   starredMode = false,
@@ -76,7 +80,8 @@ const WordList = ({
                     </Button>}
                 </span>
                 <span className="text-muted-foreground text-sm mt-0.5 font-normal">
-                  {w.definition}
+                  {/* Make the first letter lowercase */}
+                  {lcFirst(w.definition)}
                 </span>
                 {w.examples.length > 0 && <span className="text-xs text-blue-700 mt-1 opacity-70 group-hover:underline">
                     {openId === w.id ? "Hide examples" : "Tap to see examples"}
@@ -84,7 +89,7 @@ const WordList = ({
               </button>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              {w.examples.length > 0 && <ul className="text-sm text-muted-foreground pl-5 pb-3">
+              {w.examples.length > 0 && <ul className="text-xs text-muted-foreground pl-5 pb-3">
                   {w.examples.map((ex, idx) => <li key={idx} className="list-disc mx-[8px]">{ex}</li>)}
                 </ul>}
             </CollapsibleContent>
