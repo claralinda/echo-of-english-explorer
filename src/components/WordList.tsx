@@ -33,7 +33,7 @@ const WordList = ({
   const [openId, setOpenId] = useState<string | null>(null);
   if (words.length === 0) {
     return <div className="py-12 text-muted-foreground text-lg text-center bg-white">
-        No words or sayings saved yet.
+        No sayings or sayings saved yet.
       </div>;
   }
   return <ul className="w-full bg-white min-h-screen px-[10px]">
@@ -43,7 +43,6 @@ const WordList = ({
               <span className="font-medium text-[0.95rem] leading-tight text-gray-600">
                 {w.text}
               </span>
-              {/* Increased font size below from text-xs to text-sm */}
               <span className="text-sm mt-0.5 text-gray-400 font-normal leading-snug py-px">
                 {lcFirst(w.definition)}
               </span>

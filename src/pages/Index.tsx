@@ -61,7 +61,7 @@ const Index = () => {
         <div className="bg-card p-8 rounded-xl w-full max-w-md shadow space-y-4 flex flex-col items-center">
           <h1 className="font-extrabold text-2xl">Everyday Sayings</h1>
           <p className="font-medium text-center">
-            Please <a href="/auth" className="text-blue-600 underline">log in</a> to access your words.
+            Please <a href="/auth" className="text-blue-600 underline">log in</a> to access your sayings.
           </p>
         </div>
       </div>;
@@ -135,7 +135,7 @@ const Index = () => {
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
         {!apiKey ? <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-4 items-center text-center">
-            <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new words:</p>
+            <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new sayings:</p>
             <input className="w-full border rounded-lg px-3 py-2 text-base" type="password" placeholder="sk-..." onChange={e => setApiKeyInput(e.target.value)} value={apiKeyInput} autoFocus />
             <div className="flex gap-2 justify-center mt-2">
               <button className="px-4 py-2 bg-primary text-white rounded shadow" disabled={!apiKeyInput.trim()} onClick={handleMainApiKeySave}>
@@ -172,12 +172,15 @@ const Index = () => {
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-white shadow-inner border-t flex justify-around items-center animate-fade-in">
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
                 <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
+                {/* No label for To Learn */}
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
                 <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
+                <span className="text-[10px] mt-0.5 font-semibold">Mastered</span>
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
                 <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
+                <span className="text-[10px] mt-0.5 font-semibold">Starred</span>
               </button>
             </nav>
           </div>}
@@ -222,7 +225,7 @@ const Index = () => {
       }}>
           ChatGPT
         </span>{" "}
-        | Your words are saved in your browser.
+        | Your sayings are saved in your browser.
       </footer>
     </div>;
 };
