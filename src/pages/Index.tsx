@@ -212,7 +212,7 @@ const Index = () => {
                 onClick={() => setTab("practice")}
                 aria-label="Practice"
               >
-                <span className="w-6 h-6 flex items-center justify-center">
+                <span className="w-6 h-6 flex items-center justify-center text-2xl">
                   ?
                 </span>
               </button>
