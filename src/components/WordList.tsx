@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import { Star, X } from "lucide-react";
 type Word = {
   id: string;
   text: string;
@@ -71,65 +73,71 @@ const WordList = ({
                   ))}
                 </ul>
               ) : null}
+              {/* Actions as icons, displayed only when expanded */}
+              {openId === w.id && (
+                <div className="flex flex-row flex-wrap gap-2 mt-2 items-center">
+                  {/* Learnt/Back actions - still text, as only allowed icons are star & x */}
+                  {!learntMode && !!onMarkAsLearnt && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onMarkAsLearnt(w.id); }}
+                      className="text-xs text-green-700 hover:underline px-1 py-0 rounded bg-transparent focus:outline-none"
+                      title="Mark as learnt"
+                      aria-label="Mark as learnt"
+                      type="button"
+                    >
+                      Learnt
+                    </button>
+                  )}
+                  {learntMode && !!onMoveBackToLearn && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onMoveBackToLearn(w.id); }}
+                      className="text-xs text-blue-700 hover:underline px-1 py-0 rounded bg-transparent focus:outline-none"
+                      title="Move back to To Learn"
+                      aria-label="Move back to To Learn"
+                      type="button"
+                    >
+                      Back
+                    </button>
+                  )}
+                  {/* Star/Unstar as icons */}
+                  {showStar && !!onStar && !starredMode && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onStar(w.id); }}
+                      className="p-1 text-yellow-400 hover:text-yellow-500 rounded-full bg-transparent focus:outline-none"
+                      title="Star"
+                      aria-label="Star"
+                      type="button"
+                    >
+                      <Star size={17} strokeWidth={2.2} />
+                    </button>
+                  )}
+                  {showStar && !!onUnstar && starredMode && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onUnstar(w.id); }}
+                      className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full bg-transparent focus:outline-none"
+                      title="Unstar"
+                      aria-label="Unstar"
+                      type="button"
+                    >
+                      <Star size={17} fill="currentColor" strokeWidth={2.1} />
+                    </button>
+                  )}
+                  {/* Delete as icon */}
+                  {!!onDelete && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onDelete(w.id); }}
+                      className="p-1 text-gray-400 hover:text-red-500 rounded-full bg-transparent focus:outline-none"
+                      title="Delete"
+                      aria-label="Delete"
+                      type="button"
+                    >
+                      <X size={17} strokeWidth={2.2} />
+                    </button>
+                  )}
+                </div>
+              )}
             </button>
-            <div className="flex flex-col items-end space-y-1 min-w-[54px]">
-              {/* Minimalist text actions */}
-              {!learntMode && !!onMarkAsLearnt &&
-                <button
-                  onClick={() => onMarkAsLearnt(w.id)}
-                  className="text-xs text-gray-400 hover:text-green-700 px-0 py-0 underline focus:outline-none bg-transparent"
-                  title="Mark as learnt"
-                  aria-label="Mark as learnt"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Learnt
-                </button>}
-              {learntMode && !!onMoveBackToLearn &&
-                <button
-                  onClick={() => onMoveBackToLearn(w.id)}
-                  className="text-xs text-gray-400 hover:text-blue-700 px-0 py-0 underline focus:outline-none bg-transparent"
-                  title="Move back to To Learn"
-                  aria-label="Move back to To Learn"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Back
-                </button>}
-              {showStar && !!onStar && !starredMode &&
-                <button
-                  onClick={() => onStar(w.id)}
-                  className="text-xs text-gray-400 hover:text-yellow-500 px-0 py-0 underline focus:outline-none bg-transparent"
-                  title="Star"
-                  aria-label="Star"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Star
-                </button>}
-              {showStar && !!onUnstar && starredMode &&
-                <button
-                  onClick={() => onUnstar(w.id)}
-                  className="text-xs text-yellow-500 hover:text-yellow-600 px-0 py-0 underline focus:outline-none bg-transparent"
-                  title="Unstar"
-                  aria-label="Unstar"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Unstar
-                </button>}
-              {!!onDelete &&
-                <button
-                  onClick={() => onDelete(w.id)}
-                  className="text-xs text-gray-300 hover:text-red-500 px-0 py-0 underline focus:outline-none bg-transparent"
-                  title="Delete"
-                  aria-label="Delete"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Delete
-                </button>}
-            </div>
+            {/* Right column (actions) is now empty, so omit */}
           </div>
         </li>
       ))}
@@ -138,3 +146,4 @@ const WordList = ({
 };
 
 export default WordList;
+
