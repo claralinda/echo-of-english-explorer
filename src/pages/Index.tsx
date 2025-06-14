@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -105,6 +106,32 @@ const Index = () => {
       setApiKeyInput("");
     }
   };
+
+  // On AddWordModal "Add", set tab to "to-learn"
+  const handleAddWord = async (entry: { text: string; definition: string; examples: string[] }) => {
+    await addWord(entry);
+    setTab("to-learn");
+  };
+
+  // Helper to render the subtitle
+  const renderListSubtitle = () => {
+    if (tab === "mastered") {
+      return (
+        <span className="block text-[1rem] text-muted-foreground font-semibold mt-0.5 ml-px">
+          Mastered
+        </span>
+      );
+    }
+    if (tab === "starred") {
+      return (
+        <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">
+          Starred
+        </span>
+      );
+    }
+    return null;
+  };
+
   return <div className="min-h-screen bg-white flex flex-col relative">
       {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
@@ -112,11 +139,8 @@ const Index = () => {
           <h1 className="text-2xl font-extrabold truncate mb-0">
             <span>Everyday sayings</span>
           </h1>
-          {(tab === "mastered" || tab === "starred") && (
-            <span className="block text-[1rem] text-muted-foreground font-semibold mt-0.5 ml-px">
-              {tab === "mastered" ? "Mastered" : "Starred"}
-            </span>
-          )}
+          {/* Show subtitle only on mastered or starred */}
+          {renderListSubtitle()}
         </div>
         {user && (
           <button
@@ -147,35 +171,56 @@ const Index = () => {
               </a>
             </div>
           </div> : <div className="block md:hidden w-full bg-white"> 
-            {/* MOBILE: show tabs at the bottom, keep content above */}
+            {/* MOBILE: Only show "To Learn" in the bottom bar, rest via subtitle/header */}
             <div className="pt-2 px-2">
-              <Tabs value={tab} onValueChange={setTab} className="w-full">
-                <TabsContent value="to-learn">
-                  <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
-                </TabsContent>
-                <TabsContent value="mastered">
+              {/* Only one mobile tab, driven via state */}
+              {tab === "to-learn" && (
+                <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
+              )}
+              {tab === "mastered" && (
+                <>
+                  <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
+                    Mastered
+                  </span>
                   <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
-                </TabsContent>
-                <TabsContent value="starred">
+                </>
+              )}
+              {tab === "starred" && (
+                <>
+                  <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
+                    Starred
+                  </span>
                   <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
-                </TabsContent>
-              </Tabs>
+                </>
+              )}
             </div>
             {/* Floating "Add" button */}
-            <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full shadow-xl p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
+            <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
               <Plus className="w-7 h-7" />
             </button>
-            {/* Sticky footer tab bar */}
-            <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] shadow-inner border-t flex justify-around items-center animate-fade-in">
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
+            {/* Flat, no shadow, light gray bottom bar only for switching to 'to-learn', "Mastered" & "Starred" accessible via header/subtitle */}
+            <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{ boxShadow: "none" }}>
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`}
+                onClick={() => setTab("to-learn")}
+                aria-label="To Learn"
+              >
                 <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
                 {/* No label for "To Learn" */}
               </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`}
+                style={{ display: "none" }}
+                aria-label="Mastered"
+              >
                 <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
                 <span className="block text-[0.87rem] font-medium leading-tight mt-1">Mastered</span>
               </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`}
+                style={{ display: "none" }}
+                aria-label="Starred"
+              >
                 <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
                 <span className="block text-[0.87rem] font-medium leading-tight mt-1">Starred</span>
               </button>
@@ -199,9 +244,15 @@ const Index = () => {
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               </TabsContent>
               <TabsContent value="mastered">
+                <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
+                  Mastered
+                </span>
                 <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
               </TabsContent>
               <TabsContent value="starred">
+                <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
+                  Starred
+                </span>
                 <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
               </TabsContent>
             </Tabs>
@@ -212,7 +263,7 @@ const Index = () => {
           </div>}
 
         {/* Add Saying Modal */}
-        <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
+        <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={handleAddWord} apiKey={apiKey} />
       </main>
       {/* Footer with settings link */}
       <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">
@@ -227,3 +278,4 @@ const Index = () => {
     </div>;
 };
 export default Index;
+
