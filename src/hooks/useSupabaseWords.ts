@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Use a fixed demo user id if not provided
+const DEMO_USER_ID = "demo-user-id";
+
 export type SupabaseWordEntry = {
   id: string;
   text: string;
@@ -11,21 +14,21 @@ export type SupabaseWordEntry = {
   createdAt: string;
 };
 
-export function useSupabaseWords(userId: string | null) {
+export function useSupabaseWords(userIdInput: string | null) {
+  // Fallback for demo if no user
+  const userId = userIdInput || DEMO_USER_ID;
+
   const [words, setWords] = useState<SupabaseWordEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch all words for the user
   useEffect(() => {
     let ignore = false;
-    if (!userId) {
-      setWords([]);
-      return;
-    }
     setLoading(true);
     supabase
       .from("words")
       .select("*")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .then(({ error, data }) => {
         setLoading(false);
@@ -53,14 +56,11 @@ export function useSupabaseWords(userId: string | null) {
 
   // Utility: reload words
   const reload = async () => {
-    if (!userId) {
-      setWords([]);
-      return;
-    }
     setLoading(true);
     const { data, error } = await supabase
       .from("words")
       .select("*")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false });
     setLoading(false);
     if (!error && Array.isArray(data)) {
@@ -79,8 +79,7 @@ export function useSupabaseWords(userId: string | null) {
 
   // Add a new word to to_learn
   const addWord = async (entry: { text: string; definition: string; examples: string[] }): Promise<void> => {
-    if (!userId) return;
-    const { error } = await supabase.from("words").insert([
+    await supabase.from("words").insert([
       {
         text: entry.text,
         definition: entry.definition,
@@ -89,19 +88,18 @@ export function useSupabaseWords(userId: string | null) {
         list: "to_learn",
       },
     ]);
-    // No boolean return, just fire and update UI
     await reload();
   };
 
   // Remove a word
   const removeWord = async (id: string) => {
-    await supabase.from("words").delete().eq("id", id);
+    await supabase.from("words").delete().eq("id", id).eq("user_id", userId);
     await reload();
   };
 
   // Change a word's list
   const updateWordList = async (id: string, list: "to_learn" | "learnt" | "starred") => {
-    await supabase.from("words").update({ list }).eq("id", id);
+    await supabase.from("words").update({ list }).eq("id", id).eq("user_id", userId);
     await reload();
   };
 

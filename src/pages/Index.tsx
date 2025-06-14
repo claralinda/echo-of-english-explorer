@@ -18,21 +18,10 @@ function useOpenAIApiKey(): [string, (key: string) => void] {
   return [apiKey, setApiKey];
 }
 
-// Helper for supabase auth: get user id from supabase.auth
+// Change: always use the demo user id for now
 function useSupabaseUserId() {
-  const [userId, setUserId] = useState<string | null>(null);
-  useEffect(() => {
-    const session = supabase.auth.getSession ? supabase.auth.getSession() : null;
-    if (session) {
-      session.then((res: any) => {
-        setUserId(res.data.session?.user.id ?? null);
-      });
-    } else {
-      setUserId(null);
-    }
-    // Optionally, listen for changes.
-  }, []);
-  return userId;
+  // Just hardcode to demo id until you add auth
+  return "demo-user-id";
 }
 
 const Index = () => {
