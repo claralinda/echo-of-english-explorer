@@ -1,10 +1,11 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
 import { useLocalWords } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { useSupabaseWords } from "@/hooks/useSupabaseWords";
 
 const API_KEY_STORAGE = "openai_apikey";
 
@@ -17,11 +18,36 @@ function useOpenAIApiKey(): [string, (key: string) => void] {
   return [apiKey, setApiKey];
 }
 
+// Helper for supabase auth: get user id from supabase.auth
+function useSupabaseUserId() {
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    const session = supabase.auth.getSession ? supabase.auth.getSession() : null;
+    if (session) {
+      session.then((res: any) => {
+        setUserId(res.data.session?.user.id ?? null);
+      });
+    } else {
+      setUserId(null);
+    }
+    // Optionally, listen for changes.
+  }, []);
+  return userId;
+}
+
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { words, learntWords, addWord, removeWord, markAsLearnt, moveBackToLearn } = useLocalWords();
-  const [apiKey, setApiKey] = useOpenAIApiKey();
   const [tab, setTab] = useState<string>("to-learn");
+  const [apiKey, setApiKey] = useOpenAIApiKey();
+
+  // NEW: Get user's Supabase ID and use Supabase for words
+  const userId = useSupabaseUserId();
+  const { words, learntWords, starredWords, addWord, removeWord, markAsLearnt, moveBackToLearn, starWord, unstarWord, loading } = useSupabaseWords(userId);
+
+  const isWordsLoaded = !loading;
+
+  // For demo (no auth), fake a user id for now
+  // const userId = "demo-user-id"; // (REMOVE when auth implemented)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card">
@@ -62,12 +88,15 @@ const Index = () => {
             <TabsList className="mb-3 flex w-full justify-center">
               <TabsTrigger value="to-learn" className="w-40">To Learn</TabsTrigger>
               <TabsTrigger value="learnt" className="w-40">Learnt</TabsTrigger>
+              <TabsTrigger value="starred" className="w-40">⭐ Starred</TabsTrigger>
             </TabsList>
             <TabsContent value="to-learn">
               <WordTable 
                 words={words} 
                 onDelete={removeWord} 
                 onMarkAsLearnt={markAsLearnt}
+                onStar={starWord}
+                showStar={true}
                 learntMode={false}
               />
             </TabsContent>
@@ -76,16 +105,29 @@ const Index = () => {
                 words={learntWords}
                 onDelete={removeWord}
                 onMoveBackToLearn={moveBackToLearn}
+                onStar={starWord}
+                showStar={true}
                 learntMode={true}
+              />
+            </TabsContent>
+            <TabsContent value="starred">
+              <WordTable 
+                words={starredWords}
+                onDelete={removeWord}
+                onMoveBackToLearn={moveBackToLearn}
+                onUnstar={unstarWord}
+                showStar={true}
+                starredMode={true}
               />
             </TabsContent>
           </Tabs>
         )}
 
+        {/* Updated to use Supabase */}
         <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
       </main>
       <footer className="text-xs text-muted-foreground pb-4 pt-6 text-center opacity-80">
-        Powered by ChatGPT | Your words are saved locally.
+        Powered by ChatGPT | Your words are saved in the cloud.
       </footer>
     </div>
   );

@@ -4,13 +4,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fetchWordDetails } from "@/lib/chatgpt";
-import { WordEntry } from "@/hooks/useLocalWords";
 import { useToast } from "@/hooks/use-toast";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onAdd: (entry: Omit<WordEntry, "id" | "createdAt">) => void;
+  onAdd: (entry: { text: string; definition: string; examples: string[] }) => void | Promise<void>;
   apiKey: string;
 };
 
@@ -24,7 +23,7 @@ const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
     setLoading(true);
     try {
       const details = await fetchWordDetails(apiKey, text.trim());
-      onAdd({
+      await onAdd({
         text: text.trim(),
         definition: details.definition,
         examples: details.examples,
@@ -59,8 +58,8 @@ const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
           />
         </div>
         <DialogFooter className="mt-4">
-          <Button variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleAdd} loading={loading}>
+          <Button variant="secondary" onClick={onClose} disabled={loading}>Cancel</Button>
+          <Button onClick={handleAdd} disabled={loading}>
             {loading ? "Fetching…" : "Add"}
           </Button>
         </DialogFooter>
