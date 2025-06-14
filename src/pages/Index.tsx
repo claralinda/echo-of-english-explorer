@@ -12,6 +12,7 @@ import { Plus } from "lucide-react";
 import { useUserApiKey } from "@/hooks/useUserApiKey";
 import { Star, Check, ListCheck, LogOut } from "lucide-react";
 import InstallPrompt from "@/components/InstallPrompt";
+import PracticeSection from "@/components/PracticeSection";
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
