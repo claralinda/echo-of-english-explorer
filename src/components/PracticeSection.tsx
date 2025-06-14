@@ -75,7 +75,7 @@ export default function PracticeSection({
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
         {state === "incorrect" && (
           <div className="flex flex-col items-center w-full">
-            <span className="text-red-600 font-semibold w-full text-center mb-1">Incorrect!</span>
+            <span className="text-red-600 font-semibold w-full text-center">Incorrect!</span>
             <span className="text-red-600 text-center">
               The answer is: <span className="underline">{quiz.answer}</span>
             </span>
