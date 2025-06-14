@@ -125,6 +125,9 @@ const Index = () => {
     if (tab === "starred") {
       return <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">starred</span>;
     }
+    if (tab === "practice") {
+      return <span className="block text-[1rem] text-blue-600 font-semibold mt-0.5 ml-px">practice</span>;
+    }
     return null;
   };
   return <div className="min-h-screen bg-white flex flex-col relative">
@@ -159,12 +162,14 @@ const Index = () => {
                 Get your API key
               </a>
             </div>
-          </div> : <div className="block md:hidden w-full bg-white"> 
+          </div> : 
+          <div className="block md:hidden w-full bg-white"> 
             {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
             <div className="pt-2 px-2">
               {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
               {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />}
               {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />}
+              {tab === "practice" && <PracticeSection words={[...words, ...learntWords, ...starredWords]} />}
             </div>
             {/* Floating "Add" button */}
             <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
@@ -201,6 +206,15 @@ const Index = () => {
                   <Star />
                 </span>
               </button>
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-blue-600 font-bold" : "text-muted-foreground"}`}
+                onClick={() => setTab("practice")}
+                aria-label="Practice"
+              >
+                <span className="w-6 h-6 flex items-center justify-center">
+                  ?
+                </span>
+              </button>
             </nav>
           </div>}
         {/* DESKTOP: mimic classic look, not bottom bar */}
@@ -216,6 +230,9 @@ const Index = () => {
                 <TabsTrigger value="starred" className="w-40">
                   ⭐ Starred
                 </TabsTrigger>
+                <TabsTrigger value="practice" className="w-40">
+                  📝 Practice
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="to-learn">
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
@@ -225,6 +242,9 @@ const Index = () => {
               </TabsContent>
               <TabsContent value="starred">
                 <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
+              </TabsContent>
+              <TabsContent value="practice">
+                <PracticeSection words={[...words, ...learntWords, ...starredWords]} />
               </TabsContent>
             </Tabs>
             {/* Desktop normal FAB */}
