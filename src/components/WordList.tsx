@@ -60,7 +60,8 @@ const WordList = ({
               <span className="font-medium text-[0.95rem] leading-tight text-gray-600">
                 {w.text}
               </span>
-              <span className="text-xs mt-0.5 text-gray-400 font-normal leading-snug py-px">
+              {/* Increased font size below from text-xs to text-sm */}
+              <span className="text-sm mt-0.5 text-gray-400 font-normal leading-snug py-px">
                 {lcFirst(w.definition)}
               </span>
               {w.examples.length > 0 && openId === w.id ? (
