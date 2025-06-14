@@ -76,13 +76,27 @@ export default function PracticeSection({
         {state === "incorrect" && <div className="text-red-600 font-semibold">
             Incorrect! The answer is: <span className="underline">{quiz.answer}</span>
           </div>}
-        <div className="flex gap-3 pt-2">
-          {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm">
+        <div className="flex gap-3 pt-2 w-full">
+          {state === "idle" && (
+            <Button
+              type="submit"
+              disabled={!input.trim()}
+              size="sm"
+              className="w-full"
+            >
               Check answer
-            </Button>}
-          {(state === "correct" || state === "incorrect") && <Button type="button" onClick={handleNext} size="sm" variant="secondary">
+            </Button>
+          )}
+          {(state === "correct" || state === "incorrect") && (
+            <Button
+              type="button"
+              onClick={handleNext}
+              size="sm"
+              variant="secondary"
+            >
               Next
-            </Button>}
+            </Button>
+          )}
         </div>
       </form>
       <div className="mt-4 text-xs text-muted-foreground text-center">
