@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -10,10 +9,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Plus } from "lucide-react";
+import { useUserApiKey } from "@/hooks/useUserApiKey";
 
 // Key storage constant
 const API_KEY_STORAGE = "openai_apikey";
-function useOpenAIApiKey(): [string, (key: string) => void] {
+function useOpenAIApiKeyLocalStorage(): [string, (key: string) => void] {
+  // Kept for demo/local (unauthenticated users)
   const [apiKey, setApiKeyState] = useState(() => localStorage.getItem(API_KEY_STORAGE) || "");
   const setApiKey = (key: string) => {
     setApiKeyState(key);
@@ -27,15 +28,24 @@ const Index = () => {
   const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [tab, setTab] = useState<string>("to-learn");
-  const [apiKey, setApiKey] = useOpenAIApiKey();
   const { user, signOut } = useSupabaseAuth();
 
   // Decide backend: Supabase if logged in, local otherwise
   const supabaseWords = useSupabaseWords(user?.id || null);
   const localWords = useLocalWords();
-
-  // Pick backend
   const wordsBackend = user ? supabaseWords : localWords;
+
+  // OpenAI API key logic
+  const {
+    apiKey: userApiKey,
+    setApiKey: saveUserApiKey,
+    loading: loadingUserApiKey,
+  } = useUserApiKey(user?.id || null);
+  const [localApiKey, setLocalApiKey] = useOpenAIApiKeyLocalStorage();
+
+  // This selects which storage to use (Supabase or local)
+  const apiKey = user ? userApiKey : localApiKey;
+  const setApiKey = user ? saveUserApiKey : setLocalApiKey;
 
   const {
     words,
@@ -306,7 +316,6 @@ const Index = () => {
     </div>
   );
 };
-
 import { Star, Check, ListCheck } from "lucide-react";
 
 export default Index;
