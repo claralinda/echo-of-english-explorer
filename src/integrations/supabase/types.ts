@@ -9,27 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      user_api_keys: {
-        Row: {
-          created_at: string
-          id: string
-          openai_api_key: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          openai_api_key: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          openai_api_key?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       words: {
         Row: {
           created_at: string

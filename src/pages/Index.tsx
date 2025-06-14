@@ -1,42 +1,42 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
+// NEW: Import both hooks
+import { useLocalWords } from "@/hooks/useLocalWords";
 import { useSupabaseWords } from "@/hooks/useSupabaseWords";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Plus } from "lucide-react";
-import { useUserApiKey } from "@/hooks/useUserApiKey";
-import { Star, Check, ListCheck } from "lucide-react";
+
+// Key storage constant
+const API_KEY_STORAGE = "openai_apikey";
+function useOpenAIApiKey(): [string, (key: string) => void] {
+  const [apiKey, setApiKeyState] = useState(() => localStorage.getItem(API_KEY_STORAGE) || "");
+  const setApiKey = (key: string) => {
+    setApiKeyState(key);
+    localStorage.setItem(API_KEY_STORAGE, key);
+  };
+  return [apiKey, setApiKey];
+}
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [tab, setTab] = useState<string>("to-learn");
+  const [apiKey, setApiKey] = useOpenAIApiKey();
   const { user, signOut } = useSupabaseAuth();
 
-  // If user is not logged in, app shouldn't render anything (router will redirect instead)
-  if (!user) {
-    return null;
-  }
+  // Decide backend: Supabase if logged in, local otherwise
+  const supabaseWords = useSupabaseWords(user?.id || null);
+  const localWords = useLocalWords();
 
-  // Backend always: Supabase (no more demo/local option)
-  const wordsBackend = useSupabaseWords(user?.id || null);
+  // Pick backend
+  const wordsBackend = user ? supabaseWords : localWords;
 
-  // OpenAI API key logic: always Supabase
-  const {
-    apiKey: userApiKey,
-    setApiKey: saveUserApiKey,
-    loading: loadingUserApiKey,
-  } = useUserApiKey(user?.id || null);
-
-  // This will be either loaded from Supabase or is blank while waiting/loading
-  const apiKey = userApiKey;
-  const setApiKey = saveUserApiKey;
-
-  // All word list actions
   const {
     words,
     learntWords,
@@ -49,18 +49,12 @@ const Index = () => {
     unstarWord,
   } = wordsBackend;
 
-  // Dialog management for entering API key
-  // - Show dialog on first login and whenever the key is not set.
-  useEffect(() => {
-    if (!loadingUserApiKey && !apiKey) {
-      setApiKeyDialogOpen(true);
-      setApiKeyInput("");
-    } else if (apiKey) {
-      setApiKeyDialogOpen(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiKey, loadingUserApiKey]);
-
+  // Sync input when dialog is opened/closed
+  // Ensures when popup is opened, field shows whatever is already stored
+  const onApiKeyDialogOpenChange = (open: boolean) => {
+    setApiKeyDialogOpen(open);
+    if (open) setApiKeyInput(apiKey);
+  };
   const handleApiKeySave = () => {
     setApiKey(apiKeyInput.trim());
     setApiKeyDialogOpen(false);
@@ -68,11 +62,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card flex flex-col relative">
-      {/* Header */}
+      {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-3 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0">
         <h1 className="text-2xl font-extrabold flex-1 truncate">
           <span>Everyday sayings</span>
         </h1>
+        {/* Log out button only on mobile in header */}
         {user && (
           <Button
             size="icon"
@@ -92,18 +87,19 @@ const Index = () => {
       </header>
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0">
-        {!apiKey || loadingUserApiKey ? (
+        {!apiKey ? (
           <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-4 items-center text-center">
-            {loadingUserApiKey ? (
-              <p className="font-semibold mb-2">Loading...</p>
-            ) : (
-              <>
-                <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new words:</p>
-                <Button onClick={() => setApiKeyDialogOpen(true)}>Enter API Key</Button>
-              </>
-            )}
-            <div className="text-xs text-muted-foreground mt-2">
-              You must enter your API key to get started.
+            <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new words:</p>
+            <input
+              className="w-full border rounded-lg px-3 py-2 text-base"
+              type="password"
+              placeholder="sk-..."
+              onChange={e => setApiKey(e.target.value)}
+              value={apiKey}
+              autoFocus
+            />
+            <div className="text-xs text-muted-foreground">
+              Your API key is stored only in this browser.
               <br />
               <a
                 className="text-blue-600 underline text-xs"
@@ -116,8 +112,8 @@ const Index = () => {
             </div>
           </div>
         ) : (
-          <>
           <div className="block md:hidden w-full"> 
+            {/* MOBILE: show tabs at the bottom, keep content above */}
             <div className="pt-2 px-2">
               <Tabs value={tab} onValueChange={setTab} className="w-full">
                 <TabsContent value="to-learn">
@@ -152,6 +148,7 @@ const Index = () => {
                 </TabsContent>
               </Tabs>
             </div>
+            {/* Floating "Add" button */}
             <button
               type="button"
               onClick={() => setModalOpen(true)}
@@ -160,6 +157,7 @@ const Index = () => {
             >
               <Plus className="w-7 h-7" />
             </button>
+            {/* Sticky footer tab bar */}
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-card shadow-inner border-t flex justify-around items-center animate-fade-in">
               <button
                 className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`}
@@ -187,6 +185,9 @@ const Index = () => {
               </button>
             </nav>
           </div>
+        )}
+        {/* DESKTOP: mimic classic look, not bottom bar */}
+        {apiKey && (
           <div className="hidden md:block">
             <Tabs value={tab} onValueChange={setTab} className="w-full">
               <TabsList className="mb-3 flex w-full justify-center">
@@ -231,6 +232,7 @@ const Index = () => {
                 />
               </TabsContent>
             </Tabs>
+            {/* Desktop normal FAB */}
             <Button
               size="lg"
               onClick={() => setModalOpen(true)}
@@ -239,20 +241,30 @@ const Index = () => {
               + Add saying
             </Button>
           </div>
-          {/* Add Modal */}
-          <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
-          </>
         )}
+
+        {/* Add Saying Modal */}
+        <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
+
         {/* API Key Management Dialog */}
-        <Dialog open={apiKeyDialogOpen} onOpenChange={setApiKeyDialogOpen}>
+        <Dialog open={apiKeyDialogOpen} onOpenChange={onApiKeyDialogOpenChange}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Set your OpenAI API Key</DialogTitle>
+              <DialogTitle>Manage OpenAI API Key</DialogTitle>
               <DialogDescription>
-                Enter your OpenAI API key for ChatGPT features.
+                Enter your OpenAI API key for ChatGPT usage features.
                 <br />
                 <span className="text-xs text-muted-foreground">
-                  Your API key is encrypted and stored in your account.
+                  Your API key stays in your browser.
+                  <br />
+                  <a
+                    className="text-blue-600 underline"
+                    href="https://platform.openai.com/account/api-keys"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Get your API key
+                  </a>
                 </span>
               </DialogDescription>
             </DialogHeader>
@@ -276,7 +288,7 @@ const Index = () => {
           </DialogContent>
         </Dialog>
       </main>
-      {/* Footer */}
+      {/* Footer with settings link */}
       <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full">
         Powered by{" "}
         <button
@@ -289,10 +301,12 @@ const Index = () => {
         >
           ChatGPT
         </button>{" "}
-        | Your words are saved in your account.
+        | Your words are saved in your browser.
       </footer>
     </div>
   );
 };
+
+import { Star, Check, ListCheck } from "lucide-react";
 
 export default Index;
