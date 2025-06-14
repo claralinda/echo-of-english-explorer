@@ -1,3 +1,4 @@
+
 export async function fetchWordDetails({
   apiKey,
   text,
@@ -6,7 +7,7 @@ export async function fetchWordDetails({
   apiKey: string,
   text: string,
   signal?: AbortSignal
-}): Promise<{ definition: string; examples: string[] }> {
+}): Promise<{ definition: string; examples: { answer: string, sentence: string }[] }> {
   // OpenAI Chat API endpoint
   const endpoint = "https://api.openai.com/v1/chat/completions";
   const prompt = `Write a concise English definition for "${text}" in no more than 150 characters, but do NOT start with phrases like "${text} means" or "The word ${text} means". Just provide the direct definition. Then give 2 example sentences using "${text}" in context. Format your reply as:
@@ -65,8 +66,23 @@ Examples:
     const lines = content.split("\n");
     if (lines.length > 1) examples.push(...lines.slice(1).map(l => l.trim()).filter(Boolean));
   }
+  
+  // Transform to required format: { answer, sentence }
+  const structuredExamples = examples.map(sentence => ({
+    sentence,
+    answer: extractExampleAnswer(sentence, text),
+  }));
+
   return {
     definition,
-    examples
+    examples: structuredExamples
   };
+}
+
+// Try to extract the saying/conjugation used in the example.
+// For now, naively find the first substring matching the prompt word (case-insensitive).
+function extractExampleAnswer(sentence: string, word: string): string {
+  const re = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+  const match = sentence.match(re);
+  return match ? match[0] : word;
 }
