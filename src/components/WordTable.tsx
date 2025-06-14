@@ -50,22 +50,22 @@ const WordTable = ({
       <table className="min-w-full text-sm">
         <thead className="bg-muted/50 border-b">
           <tr>
-            <th className="p-4 text-left font-bold lowercase">word/saying</th>
-            <th className="p-4 text-left font-bold lowercase">meaning</th>
-            <th className="p-4 text-left font-bold lowercase">examples</th>
+            <th className="p-4 text-left font-bold lowercase align-top">word/saying</th>
+            <th className="p-4 text-left font-bold lowercase align-top">meaning</th>
+            <th className="p-4 text-left font-bold lowercase align-top">examples</th>
             {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
-              <th className="p-4"></th>
+              <th className="p-4 align-top"></th>
             )}
           </tr>
         </thead>
         <tbody>
           {words.map((w) => (
-            <tr key={w.id} className="border-b hover:bg-muted/30 duration-100">
-              <td className="p-4 font-medium">{w.text}</td>
-              <td className="p-4 max-w-xs whitespace-pre-line text-xs text-muted-foreground lowercase">
+            <tr key={w.id} className="border-b hover:bg-muted/30 duration-100 align-top">
+              <td className="p-4 font-medium align-top">{w.text}</td>
+              <td className="p-4 max-w-xs whitespace-pre-line text-xs text-muted-foreground lowercase align-top">
                 {w.definition}
               </td>
-              <td className="p-4 max-w-lg text-xs text-muted-foreground">
+              <td className="p-4 max-w-lg text-xs text-muted-foreground align-top">
                 <div className="space-y-1">
                   {w.examples.map((ex, idx) => (
                     <div key={idx} className="">{ex}</div>
@@ -73,7 +73,7 @@ const WordTable = ({
                 </div>
               </td>
               {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
-                <td className="p-4 flex space-x-2">
+                <td className="p-4 flex space-x-2 align-top">
                   {/* Put star/unstar first */}
                   {showStar && !starredMode && onStar && (
                     <Button
