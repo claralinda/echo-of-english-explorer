@@ -18,10 +18,10 @@ function useOpenAIApiKey(): [string, (key: string) => void] {
   return [apiKey, setApiKey];
 }
 
-// Change: always use the demo user id for now
+// Always use the valid demo user id
 function useSupabaseUserId() {
-  // Just hardcode to demo id until you add auth
-  return "demo-user-id";
+  // Valid UUID for demo user
+  return "00000000-0000-0000-0000-000000000000";
 }
 
 const Index = () => {

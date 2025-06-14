@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-// Use a fixed demo user id if not provided
-const DEMO_USER_ID = "demo-user-id";
+// Use a valid fixed demo UUID
+const DEMO_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 export type SupabaseWordEntry = {
   id: string;
