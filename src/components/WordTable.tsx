@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
-import { Star, Check, Delete } from "lucide-react";
+import { Star, Check, Trash } from "lucide-react";
 
+// "learntMode" is now called "masteredMode" in props for clarity
 type Props = {
   words: {
     id: string;
@@ -16,7 +17,7 @@ type Props = {
   onStar?: (id: string) => void;
   onUnstar?: (id: string) => void;
   showStar?: boolean;
-  learntMode?: boolean;
+  learntMode?: boolean; // legacy: keep using for backwards compatibility
   starredMode?: boolean;
 };
 
@@ -31,13 +32,15 @@ const WordTable = ({
   learntMode = false,
   starredMode = false,
 }: Props) => {
+  // Reinterpret "learntMode" as "masteredMode" for display text
+  const masteredMode = learntMode;
   if (words.length === 0)
     return (
       <div className="py-12 text-muted-foreground text-lg">
         {starredMode
           ? "No starred words yet."
-          : learntMode
-          ? "No learnt words yet."
+          : masteredMode
+          ? "No mastered words yet."
           : "No words or sayings saved yet."}
       </div>
     );
@@ -47,9 +50,9 @@ const WordTable = ({
       <table className="min-w-full text-sm">
         <thead className="bg-muted/50 border-b">
           <tr>
-            <th className="p-4 text-left font-bold">Word/Saying</th>
-            <th className="p-4 text-left font-bold">Definition</th>
-            <th className="p-4 text-left font-bold">Example(s)</th>
+            <th className="p-4 text-left font-bold lowercase">word/saying</th>
+            <th className="p-4 text-left font-bold lowercase">meaning</th>
+            <th className="p-4 text-left font-bold lowercase">examples</th>
             {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
               <th className="p-4"></th>
             )}
@@ -59,18 +62,19 @@ const WordTable = ({
           {words.map((w) => (
             <tr key={w.id} className="border-b hover:bg-muted/30 duration-100">
               <td className="p-4 font-medium">{w.text}</td>
-              <td className="p-4 max-w-xs whitespace-pre-line">
+              <td className="p-4 max-w-xs whitespace-pre-line text-xs text-muted-foreground lowercase">
                 {w.definition}
               </td>
-              <td className="p-4 max-w-lg">
-                <ul className="list-disc list-inside space-y-1">
+              <td className="p-4 max-w-lg text-xs text-muted-foreground">
+                <div className="space-y-1">
                   {w.examples.map((ex, idx) => (
-                    <li key={idx}>{ex}</li>
+                    <div key={idx} className="">{ex}</div>
                   ))}
-                </ul>
+                </div>
               </td>
               {(onDelete || onMarkAsLearnt || onMoveBackToLearn || showStar) && (
-                <td className="p-4 space-x-2 flex">
+                <td className="p-4 flex space-x-2">
+                  {/* Put star/unstar first */}
                   {showStar && !starredMode && onStar && (
                     <Button
                       size="sm"
@@ -94,24 +98,14 @@ const WordTable = ({
                       <Star fill="currentColor" className="text-yellow-500" />
                     </Button>
                   )}
-                  {onDelete && (
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => onDelete(w.id)}
-                      aria-label="Delete"
-                      title="Delete"
-                    >
-                      <Delete />
-                    </Button>
-                  )}
+                  {/* Then Mark as Mastered/Move Back */}
                   {onMarkAsLearnt && (
                     <Button
                       size="sm"
                       variant="secondary"
                       onClick={() => onMarkAsLearnt(w.id)}
-                      aria-label="Mark as Learnt"
-                      title="Mark as Learnt"
+                      aria-label="Mark as mastered"
+                      title="Mark as mastered"
                     >
                       <Check />
                     </Button>
@@ -122,7 +116,19 @@ const WordTable = ({
                       variant="outline"
                       onClick={() => onMoveBackToLearn(w.id)}
                     >
-                      Move back
+                      move back
+                    </Button>
+                  )}
+                  {/* Then Delete */}
+                  {onDelete && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => onDelete(w.id)}
+                      aria-label="Delete"
+                      title="Delete"
+                    >
+                      <Trash />
                     </Button>
                   )}
                 </td>
@@ -136,3 +142,4 @@ const WordTable = ({
 };
 
 export default WordTable;
+
