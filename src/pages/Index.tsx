@@ -5,7 +5,9 @@ import WordTable from "@/components/WordTable";
 import { useLocalWords } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
+// Key storage constant
 const API_KEY_STORAGE = "openai_apikey";
 
 function useOpenAIApiKey(): [string, (key: string) => void] {
@@ -19,11 +21,25 @@ function useOpenAIApiKey(): [string, (key: string) => void] {
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false); // new state for API key popup
+  const [apiKeyInput, setApiKeyInput] = useState(""); // for dialog input field
   const [tab, setTab] = useState<string>("to-learn");
   const [apiKey, setApiKey] = useOpenAIApiKey();
 
   // Use local words
   const { words, learntWords, starredWords, addWord, removeWord, markAsLearnt, moveBackToLearn, starWord, unstarWord } = useLocalWords();
+
+  // Sync input when dialog is opened/closed
+  // Ensures when popup is opened, field shows whatever is already stored
+  const onApiKeyDialogOpenChange = (open: boolean) => {
+    setApiKeyDialogOpen(open);
+    if (open) setApiKeyInput(apiKey);
+  };
+
+  const handleApiKeySave = () => {
+    setApiKey(apiKeyInput.trim());
+    setApiKeyDialogOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card">
@@ -100,12 +116,58 @@ const Index = () => {
         )}
 
         <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
+
+        {/* API Key Management Dialog */}
+        <Dialog open={apiKeyDialogOpen} onOpenChange={onApiKeyDialogOpenChange}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Manage OpenAI API Key</DialogTitle>
+              <DialogDescription>
+                Enter your OpenAI API key for ChatGPT usage features.<br />
+                <span className="text-xs text-muted-foreground">
+                  Your API key stays in your browser.<br />
+                  <a 
+                    className="text-blue-600 underline"
+                    href="https://platform.openai.com/account/api-keys"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Get your API key
+                  </a>
+                </span>
+              </DialogDescription>
+            </DialogHeader>
+            <input
+              className="w-full border rounded-lg px-3 py-2 text-base"
+              type="password"
+              placeholder="sk-..."
+              value={apiKeyInput}
+              onChange={e => setApiKeyInput(e.target.value)}
+              autoFocus
+              spellCheck={false}
+            />
+            <div className="flex justify-end gap-2 mt-3">
+              <Button variant="secondary" onClick={() => setApiKeyDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleApiKeySave} disabled={!apiKeyInput.trim()}>Save</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
       <footer className="text-xs text-muted-foreground pb-4 pt-6 text-center opacity-80">
-        Powered by ChatGPT | Your words are saved in your browser.
+        Powered by{" "}
+        <button
+          className="text-blue-600 underline hover:text-blue-800"
+          style={{ cursor: "pointer" }}
+          type="button"
+          onClick={() => setApiKeyDialogOpen(true)}
+        >
+          ChatGPT
+        </button>{" "}
+        | Your words are saved in your browser.
       </footer>
     </div>
   );
 };
 
 export default Index;
+
