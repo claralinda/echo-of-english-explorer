@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -88,7 +87,7 @@ const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
         </DialogHeader>
         <div className="mt-4 space-y-3">
           <Input
-            placeholder="Enter word or saying…"
+            placeholder="Enter saying…"
             value={text}
             onChange={(e) => setText(e.target.value)}
             autoFocus
