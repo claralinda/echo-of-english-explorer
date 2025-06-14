@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Star, X, Check } from "lucide-react";
 type Word = {
   id: string;
   text: string;
   definition: string;
-  examples: string[];
+  examples: any[]; // Adjusted to accept either {sentence,answer} or string
   createdAt: string;
 };
 type Props = {
@@ -48,9 +49,17 @@ const WordList = ({
                 {lcFirst(w.definition)}
               </span>
               {w.examples.length > 0 && openId === w.id ? <ul className="mt-1 ml-0 px-0 text-[0.75em] text-gray-400 italic space-y-1">
-                  {w.examples.map((ex, i) => <li key={i} className="pb-0 leading-tight">
+                  {w.examples.map((ex, i) => {
+                    // If it's an object with sentence, show the sentence; else show as string
+                    if (ex && typeof ex === "object" && "sentence" in ex) {
+                      return <li key={i} className="pb-0 leading-tight">
+                        {ex.sentence}
+                      </li>;
+                    }
+                    return <li key={i} className="pb-0 leading-tight">
                       {ex}
-                    </li>)}
+                    </li>;
+                  })}
                 </ul> : null}
               {/* Actions as icons, displayed only when expanded */}
               {openId === w.id && <div className="flex flex-row flex-wrap gap-4 mt-2 items-center">
@@ -95,3 +104,4 @@ const WordList = ({
     </ul>;
 };
 export default WordList;
+
