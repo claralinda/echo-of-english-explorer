@@ -172,15 +172,12 @@ const Index = () => {
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-white shadow-inner border-t flex justify-around items-center animate-fade-in">
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
                 <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
-                <span className="text-xs mt-0.5">To Learn</span>
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
                 <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
-                <span className="text-xs mt-0.5">Mastered</span>
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
                 <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
-                <span className="text-xs mt-0.5">Starred</span>
               </button>
             </nav>
           </div>}
