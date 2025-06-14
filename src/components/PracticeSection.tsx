@@ -2,41 +2,60 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+// Picks a random quiz entry, supporting both legacy string and {sentence, answer} objects
 function pickRandomQuiz(words) {
   if (!words || words.length === 0) return null;
-  // Estrae solo il campo 'sentence' dagli oggetti example
+  // Build a list of quiz entries
   const entries = words.flatMap(w =>
-    (w.examples || []).map(ex => ({
-      word: w.text,
-      ex: typeof ex === "string" ? ex : ex.sentence, // compatibilità retroattiva
-      id: w.id
-    }))
+    (w.examples || []).map(ex => {
+      if (ex && typeof ex === "object" && "sentence" in ex) {
+        // Use answer field if present, fallback to word if missing
+        return {
+          word: w.text,
+          sentence: ex.sentence,
+          answer: ex.answer || w.text,
+          id: w.id,
+        };
+      }
+      // legacy fallback
+      return {
+        word: w.text,
+        sentence: typeof ex === "string" ? ex : String(ex),
+        answer: w.text,
+        id: w.id,
+      };
+    })
   );
   if (entries.length === 0) return null;
   const idx = Math.floor(Math.random() * entries.length);
   return entries[idx];
 }
 
-export default function PracticeSection({
-  words
-}) {
+export default function PracticeSection({ words }) {
   const [quiz, setQuiz] = useState(() => pickRandomQuiz(words));
   const [input, setInput] = useState("");
   const [state, setState] = useState<"idle" | "correct" | "incorrect">("idle");
 
   if (!quiz) {
-    return <div className="py-12 text-muted-foreground text-lg text-center bg-white">
+    return (
+      <div className="py-12 text-muted-foreground text-lg text-center bg-white">
         No examples available for practice yet.<br />Add sayings with examples to unlock practice!
-      </div>;
+      </div>
+    );
   }
   function getQuestionSentence() {
-    // Sostituisce la parola con un underscore nella frase
-    const re = new RegExp(quiz.word, "i");
-    return quiz.ex.replace(re, "_____");
+    // Sostituisce la prima occorrenza della risposta con una linea
+    if (quiz.answer) {
+      const re = new RegExp(quiz.answer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+      return quiz.sentence.replace(re, "_____");
+    }
+    // fallback: blank out the word
+    const re = new RegExp(quiz.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+    return quiz.sentence.replace(re, "_____");
   }
   function handleCheckAnswer(e) {
     e.preventDefault();
-    if (input.trim().toLowerCase() === quiz.word.trim().toLowerCase()) {
+    if (input.trim().toLowerCase() === (quiz.answer || quiz.word).trim().toLowerCase()) {
       setState("correct");
     } else {
       setState("incorrect");
@@ -47,30 +66,56 @@ export default function PracticeSection({
     setInput("");
     setState("idle");
   }
-  return <div className="flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[16px]">
-      <h2 className="font-bold text-lg mb-6 text-center">Fill in the blank</h2>
+  return (
+    <div className="flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[16px]">
+      <h2 className="font-bold text-lg mb-6 text-center">
+        Fill in the blank
+      </h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span className="text-md text-gray-800 mb-2 block text-center" style={{
-        minHeight: 36
-      }}>
+        <span
+          className="text-md text-gray-800 mb-2 block text-center"
+          style={{ minHeight: 36 }}
+        >
           {getQuestionSentence()}
         </span>
-        <input className="w-full border rounded-lg px-3 py-2 text-base focus:outline-primary transition" type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
-        {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
-        {state === "incorrect" && <div className="text-red-600 font-semibold">
-            Incorrect! The answer is: <span className="underline">{quiz.word}</span>
-          </div>}
+        <input
+          className="w-full border rounded-lg px-3 py-2 text-base focus:outline-primary transition"
+          type="text"
+          placeholder="Your answer..."
+          autoFocus
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          disabled={state !== "idle"}
+        />
+        {state === "correct" && (
+          <div className="text-green-700 font-semibold">Correct! 🎉</div>
+        )}
+        {state === "incorrect" && (
+          <div className="text-red-600 font-semibold">
+            Incorrect! The answer is: <span className="underline">{quiz.answer}</span>
+          </div>
+        )}
         <div className="flex gap-3 pt-2">
-          {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm">
+          {state === "idle" && (
+            <Button type="submit" disabled={!input.trim()} size="sm">
               Check answer
-            </Button>}
-          {(state === "correct" || state === "incorrect") && <Button type="button" onClick={handleNext} size="sm" variant="secondary">
+            </Button>
+          )}
+          {(state === "correct" || state === "incorrect") && (
+            <Button
+              type="button"
+              onClick={handleNext}
+              size="sm"
+              variant="secondary"
+            >
               Next
-            </Button>}
+            </Button>
+          )}
         </div>
       </form>
       <div className="mt-4 text-xs text-muted-foreground text-center">
         Practice is based on your saved sayings and their example sentences.
       </div>
-    </div>;
+    </div>
+  );
 }
