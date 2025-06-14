@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+
 const AuthPage = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -18,6 +20,17 @@ const AuthPage = () => {
     toast
   } = useToast();
   const navigate = useNavigate();
+
+  // Get session using our hook -- this lets us detect a logged in session
+  const { session } = useSupabaseAuth();
+
+  // Auto-redirect away from /auth if already signed in
+  useEffect(() => {
+    if (session) {
+      navigate("/", { replace: true });
+    }
+  }, [session, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
