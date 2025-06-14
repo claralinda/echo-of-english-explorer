@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchWordDetails } from "@/lib/chatgpt";
 import { useToast } from "@/hooks/use-toast";
 
 type Props = {
@@ -15,24 +14,33 @@ type Props = {
 
 const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
   const [text, setText] = useState("");
+  const [definition, setDefinition] = useState("");
+  const [examples, setExamples] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleAdd = async () => {
-    if (!text.trim()) return;
+    if (!text.trim() || !definition.trim()) {
+      toast({ title: "Missing info", description: "Please enter a word and definition." });
+      return;
+    }
     setLoading(true);
     try {
-      const details = await fetchWordDetails(apiKey, text.trim());
       await onAdd({
         text: text.trim(),
-        definition: details.definition,
-        examples: details.examples,
+        definition: definition.trim(),
+        examples: examples
+          .split("\n")
+          .map((e) => e.trim())
+          .filter((e) => e),
       });
       setText("");
+      setDefinition("");
+      setExamples("");
       toast({ title: "Added!", description: `Saved "${text.trim()}" with definition.` });
       onClose();
     } catch (e) {
-      toast({ title: "Error", description: "Failed to fetch definition. Check your API key!", variant: "destructive" });
+      toast({ title: "Error", description: "Failed to save word.", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -44,7 +52,7 @@ const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
         <DialogHeader>
           <DialogTitle>Add Word or Saying</DialogTitle>
           <DialogDescription>
-            Type an English word or saying to fetch its definition and examples using ChatGPT.
+            Enter the word/saying, its definition, and examples. No API is used.
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4 space-y-3">
@@ -52,15 +60,28 @@ const AddWordModal = ({ open, onClose, onAdd, apiKey }: Props) => {
             placeholder="Enter word or saying…"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleAdd()}
             autoFocus
+            disabled={loading}
+          />
+          <Input
+            placeholder="Definition…"
+            value={definition}
+            onChange={(e) => setDefinition(e.target.value)}
+            disabled={loading}
+          />
+          <textarea
+            placeholder="Examples (one per line)…"
+            className="w-full border rounded-lg px-3 py-2 text-base"
+            value={examples}
+            rows={3}
+            onChange={(e) => setExamples(e.target.value)}
             disabled={loading}
           />
         </div>
         <DialogFooter className="mt-4">
           <Button variant="secondary" onClick={onClose} disabled={loading}>Cancel</Button>
           <Button onClick={handleAdd} disabled={loading}>
-            {loading ? "Fetching…" : "Add"}
+            {loading ? "Saving…" : "Add"}
           </Button>
         </DialogFooter>
       </DialogContent>

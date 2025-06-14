@@ -14,15 +14,22 @@ const STORAGE_KEY = "words_journal_v2";
 type StoredData = {
   toLearn: WordEntry[];
   learnt: WordEntry[];
+  starred: WordEntry[];
 };
 
 function loadWords(): StoredData {
   try {
     const json = localStorage.getItem(STORAGE_KEY);
-    if (!json) return { toLearn: [], learnt: [] };
-    return JSON.parse(json);
+    if (!json) return { toLearn: [], learnt: [], starred: [] };
+    const data = JSON.parse(json);
+    // Ensuring the shape for older storage versions
+    return {
+      toLearn: data.toLearn || [],
+      learnt: data.learnt || [],
+      starred: data.starred || [],
+    };
   } catch {
-    return { toLearn: [], learnt: [] };
+    return { toLearn: [], learnt: [], starred: [] };
   }
 }
 
@@ -43,16 +50,18 @@ export function useLocalWords() {
     const updated: StoredData = { 
       toLearn: [newEntry, ...data.toLearn],
       learnt: data.learnt,
+      starred: data.starred,
     };
     setData(updated);
     saveWords(updated);
   };
 
-  // Remove a word from both lists (by id)
+  // Remove a word from all lists (by id)
   const removeWord = (id: string) => {
     const updated: StoredData = {
       toLearn: data.toLearn.filter((e) => e.id !== id),
       learnt: data.learnt.filter((e) => e.id !== id),
+      starred: data.starred.filter((e) => e.id !== id),
     };
     setData(updated);
     saveWords(updated);
@@ -65,6 +74,7 @@ export function useLocalWords() {
     const updated: StoredData = {
       toLearn: data.toLearn.filter(e => e.id !== id),
       learnt: [found, ...data.learnt],
+      starred: data.starred,
     };
     setData(updated);
     saveWords(updated);
@@ -77,6 +87,34 @@ export function useLocalWords() {
     const updated: StoredData = {
       toLearn: [found, ...data.toLearn],
       learnt: data.learnt.filter(e => e.id !== id),
+      starred: data.starred,
+    };
+    setData(updated);
+    saveWords(updated);
+  };
+
+  // Star a word (from toLearn or learnt to starred)
+  const starWord = (id: string) => {
+    // check both lists
+    let found = data.toLearn.find(e => e.id === id) || data.learnt.find(e => e.id === id);
+    if (!found || data.starred.find(e => e.id === id)) return;
+    const updated: StoredData = {
+      toLearn: data.toLearn.filter(e => e.id !== id),
+      learnt: data.learnt.filter(e => e.id !== id),
+      starred: [found, ...data.starred],
+    };
+    setData(updated);
+    saveWords(updated);
+  };
+
+  // Move starred word back to toLearn
+  const unstarWord = (id: string) => {
+    const found = data.starred.find(e => e.id === id);
+    if (!found) return;
+    const updated: StoredData = {
+      toLearn: [found, ...data.toLearn],
+      learnt: data.learnt,
+      starred: data.starred.filter(e => e.id !== id),
     };
     setData(updated);
     saveWords(updated);
@@ -85,10 +123,12 @@ export function useLocalWords() {
   return { 
     words: data.toLearn, 
     learntWords: data.learnt,
+    starredWords: data.starred,
     addWord, 
     removeWord,
     markAsLearnt,
     moveBackToLearn,
+    starWord,
+    unstarWord,
   };
 }
-

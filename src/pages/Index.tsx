@@ -22,8 +22,8 @@ const Index = () => {
   const [tab, setTab] = useState<string>("to-learn");
   const [apiKey, setApiKey] = useOpenAIApiKey();
 
-  // Use local words instead of Supabase
-  const { words, learntWords, addWord, removeWord, markAsLearnt, moveBackToLearn } = useLocalWords();
+  // Use local words
+  const { words, learntWords, starredWords, addWord, removeWord, markAsLearnt, moveBackToLearn, starWord, unstarWord } = useLocalWords();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card">
@@ -64,13 +64,15 @@ const Index = () => {
             <TabsList className="mb-3 flex w-full justify-center">
               <TabsTrigger value="to-learn" className="w-40">To Learn</TabsTrigger>
               <TabsTrigger value="learnt" className="w-40">Learnt</TabsTrigger>
+              <TabsTrigger value="starred" className="w-40">⭐ Starred</TabsTrigger>
             </TabsList>
             <TabsContent value="to-learn">
               <WordTable 
                 words={words} 
                 onDelete={removeWord} 
                 onMarkAsLearnt={markAsLearnt}
-                showStar={false}
+                onStar={starWord}
+                showStar={true}
                 learntMode={false}
               />
             </TabsContent>
@@ -79,8 +81,19 @@ const Index = () => {
                 words={learntWords}
                 onDelete={removeWord}
                 onMoveBackToLearn={moveBackToLearn}
-                showStar={false}
+                onStar={starWord}
+                showStar={true}
                 learntMode={true}
+              />
+            </TabsContent>
+            <TabsContent value="starred">
+              <WordTable 
+                words={starredWords}
+                onDelete={removeWord}
+                onMoveBackToLearn={moveBackToLearn}
+                onUnstar={unstarWord}
+                showStar={true}
+                starredMode={true}
               />
             </TabsContent>
           </Tabs>
