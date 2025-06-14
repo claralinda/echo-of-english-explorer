@@ -93,6 +93,7 @@ export default function PracticeSection({
               onClick={handleNext}
               size="sm"
               variant="secondary"
+              className="w-full"
             >
               Next
             </Button>
