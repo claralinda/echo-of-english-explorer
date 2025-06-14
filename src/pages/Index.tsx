@@ -87,6 +87,15 @@ const Index = () => {
           value={apiKeyInput}
           autoFocus
         />
+        <div className="text-xs text-muted-foreground mt-1">
+          Your API key is securely stored in your account.<br />
+          <a
+            className="text-blue-600 underline text-xs"
+            href="https://platform.openai.com/account/api-keys"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Get your API key</a>
+        </div>
         <div className="flex gap-2 justify-center mt-2">
           <button
             className="px-4 py-2 bg-primary text-white rounded shadow"
@@ -95,15 +104,6 @@ const Index = () => {
           >
             Save
           </button>
-        </div>
-        <div className="text-xs text-muted-foreground">
-          Your API key is securely stored in your account.<br />
-          <a
-            className="text-blue-600 underline text-xs"
-            href="https://platform.openai.com/account/api-keys"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Get your API key</a>
         </div>
       </div>
     );
