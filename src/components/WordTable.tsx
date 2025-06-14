@@ -11,6 +11,8 @@ type Props = {
   learntMode?: boolean;
 };
 
+const ICON_SIZE = 18;
+
 const WordTable = ({ words, onDelete, onMarkAsLearnt, onMoveBackToLearn, learntMode = false }: Props) => {
   if (words.length === 0)
     return <div className="py-12 text-muted-foreground text-lg">{learntMode ? "No learnt words yet." : "No words or sayings saved yet."}</div>;
@@ -47,8 +49,9 @@ const WordTable = ({ words, onDelete, onMarkAsLearnt, onMoveBackToLearn, learntM
                       onClick={() => onDelete(w.id)}
                       aria-label="Delete"
                       title="Delete"
+                      className="flex items-center justify-center"
                     >
-                      <Delete />
+                      <Delete size={ICON_SIZE} className="align-middle" />
                     </Button>
                   )}
                   {onMarkAsLearnt && (
@@ -58,8 +61,9 @@ const WordTable = ({ words, onDelete, onMarkAsLearnt, onMoveBackToLearn, learntM
                       onClick={() => onMarkAsLearnt(w.id)}
                       aria-label="Mark as Learnt"
                       title="Mark as Learnt"
+                      className="flex items-center justify-center"
                     >
-                      <Check />
+                      <Check size={ICON_SIZE} className="align-middle" />
                     </Button>
                   )}
                   {onMoveBackToLearn && (
