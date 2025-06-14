@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -173,7 +172,6 @@ const Index = () => {
           </div> : <div className="block md:hidden w-full bg-white"> 
             {/* MOBILE: Only show "To Learn" in the bottom bar, rest via subtitle/header */}
             <div className="pt-2 px-2">
-              {/* Only one mobile tab, driven via state */}
               {tab === "to-learn" && (
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               )}
@@ -210,19 +208,17 @@ const Index = () => {
               </button>
               <button
                 className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`}
-                style={{ display: "none" }}
+                onClick={() => setTab("mastered")}
                 aria-label="Mastered"
               >
                 <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
-                <span className="block text-[0.87rem] font-medium leading-tight mt-1">Mastered</span>
               </button>
               <button
                 className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`}
-                style={{ display: "none" }}
+                onClick={() => setTab("starred")}
                 aria-label="Starred"
               >
                 <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
-                <span className="block text-[0.87rem] font-medium leading-tight mt-1">Starred</span>
               </button>
             </nav>
           </div>}
@@ -278,4 +274,3 @@ const Index = () => {
     </div>;
 };
 export default Index;
-
