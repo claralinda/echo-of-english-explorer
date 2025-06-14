@@ -78,7 +78,7 @@ export function useSupabaseWords(userId: string | null) {
   };
 
   // Add a new word to to_learn
-  const addWord = async (entry: { text: string; definition: string; examples: string[] }) => {
+  const addWord = async (entry: { text: string; definition: string; examples: string[] }): Promise<void> => {
     if (!userId) return;
     const { error } = await supabase.from("words").insert([
       {
@@ -89,8 +89,8 @@ export function useSupabaseWords(userId: string | null) {
         list: "to_learn",
       },
     ]);
+    // No boolean return, just fire and update UI
     await reload();
-    return !error;
   };
 
   // Remove a word
