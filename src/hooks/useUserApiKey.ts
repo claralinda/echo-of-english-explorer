@@ -45,7 +45,7 @@ export function useUserApiKey(userId: string | null) {
             openai_api_key: key,
           },
         ],
-        { onConflict: ["user_id"] }
+        { onConflict: "user_id" } // <-- FIX: must be string not array
       );
     setApiKey(key);
     setLoading(false);
