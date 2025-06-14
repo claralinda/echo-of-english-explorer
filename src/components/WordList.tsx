@@ -65,7 +65,7 @@ const WordList = ({
                 {lcFirst(w.definition)}
               </span>
               {w.examples.length > 0 && openId === w.id ? (
-                <ul className="mt-1 ml-0 px-0 text-[0.8em] text-gray-400 italic space-y-1">
+                <ul className="mt-1 ml-0 px-0 text-[0.75em] text-gray-400 italic space-y-1">
                   {w.examples.map((ex, i) => (
                     <li key={i} className="pb-0 leading-tight">
                       {ex}
