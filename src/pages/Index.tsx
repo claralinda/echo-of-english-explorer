@@ -1,7 +1,10 @@
+
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
+// NEW: Import both hooks
 import { useLocalWords } from "@/hooks/useLocalWords";
+import { useSupabaseWords } from "@/hooks/useSupabaseWords";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -27,7 +30,13 @@ const Index = () => {
   const [apiKey, setApiKey] = useOpenAIApiKey();
   const { user, signOut } = useSupabaseAuth();
 
-  // Use local words
+  // Decide backend: Supabase if logged in, local otherwise
+  const supabaseWords = useSupabaseWords(user?.id || null);
+  const localWords = useLocalWords();
+
+  // Pick backend
+  const wordsBackend = user ? supabaseWords : localWords;
+
   const {
     words,
     learntWords,
@@ -37,8 +46,8 @@ const Index = () => {
     markAsLearnt,
     moveBackToLearn,
     starWord,
-    unstarWord
-  } = useLocalWords();
+    unstarWord,
+  } = wordsBackend;
 
   // Sync input when dialog is opened/closed
   // Ensures when popup is opened, field shows whatever is already stored
