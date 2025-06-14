@@ -5,6 +5,7 @@ import { useLocalWords } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 
 // Key storage constant
 const API_KEY_STORAGE = "openai_apikey";
@@ -22,6 +23,7 @@ const Index = () => {
   const [apiKeyInput, setApiKeyInput] = useState(""); // for dialog input field
   const [tab, setTab] = useState<string>("to-learn");
   const [apiKey, setApiKey] = useOpenAIApiKey();
+  const { user, signOut } = useSupabaseAuth();
 
   // Use local words
   const {
@@ -49,7 +51,14 @@ const Index = () => {
   return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card">
       <header className="pt-10 pb-6 flex flex-col md:flex-row items-center justify-between gap-4 container">
         <h1 className="text-3xl md:text-4xl font-extrabold flex items-center gap-3">Everyday sayings</h1>
-        <Button size="lg" onClick={() => setModalOpen(true)}>+ Add saying</Button>
+        <div className="flex items-center gap-2">
+          <Button size="lg" onClick={() => setModalOpen(true)}>+ Add saying</Button>
+          {user && (
+            <Button size="sm" variant="outline" onClick={signOut} className="ml-2">
+              Log Out
+            </Button>
+          )}
+        </div>
       </header>
       <main className="container pb-12">
         {!apiKey ? <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-20 shadow flex flex-col gap-4 items-center">
