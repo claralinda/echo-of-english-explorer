@@ -120,14 +120,18 @@ const Index = () => {
   // Helper to render the subtitle (for both mobile and desktop now)
   const renderListSubtitle = () => {
     if (tab === "mastered") {
-      return <span className="block text-[1rem] text-muted-foreground font-semibold mt-0.5 ml-px">
+      return (
+        <span className="block text-[1rem] text-green-500 font-semibold mt-0.5 ml-px">
           Mastered
-        </span>;
+        </span>
+      );
     }
     if (tab === "starred") {
-      return <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">
+      return (
+        <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">
           Starred
-        </span>;
+        </span>
+      );
     }
     return null;
   };
