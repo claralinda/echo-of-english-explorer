@@ -33,7 +33,7 @@ const WordList = ({
   const [openId, setOpenId] = useState<string | null>(null);
   if (words.length === 0) {
     return <div className="py-12 text-muted-foreground text-lg text-center bg-white">
-        No words or sayings saved yet.
+        No sayings saved yet.
       </div>;
   }
   return <ul className="w-full bg-white min-h-screen px-[5px]">
