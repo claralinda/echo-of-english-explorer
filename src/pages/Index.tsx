@@ -4,7 +4,7 @@ import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
 import { useLocalWords } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
-import { BookIcon } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const API_KEY_STORAGE = "openai_apikey";
 
@@ -19,14 +19,14 @@ function useOpenAIApiKey(): [string, (key: string) => void] {
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { words, addWord, removeWord } = useLocalWords();
+  const { words, learntWords, addWord, removeWord, markAsLearnt, moveBackToLearn } = useLocalWords();
   const [apiKey, setApiKey] = useOpenAIApiKey();
+  const [tab, setTab] = useState<string>("to-learn");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 dark:from-background dark:to-card">
       <header className="pt-10 pb-6 flex flex-col md:flex-row items-center justify-between gap-4 container">
         <h1 className="text-3xl md:text-4xl font-extrabold flex items-center gap-3">
-          <BookIcon className="w-8 h-8 text-accent" />
           Words & Sayings Journal
         </h1>
         <Button size="lg" onClick={() => setModalOpen(true)}>
@@ -58,7 +58,28 @@ const Index = () => {
             </div>
           </div>
         ) : (
-          <WordTable words={words} onDelete={removeWord} />
+          <Tabs value={tab} onValueChange={setTab} className="w-full">
+            <TabsList className="mb-3 flex w-full justify-center">
+              <TabsTrigger value="to-learn" className="w-40">To Learn</TabsTrigger>
+              <TabsTrigger value="learnt" className="w-40">Learnt</TabsTrigger>
+            </TabsList>
+            <TabsContent value="to-learn">
+              <WordTable 
+                words={words} 
+                onDelete={removeWord} 
+                onMarkAsLearnt={markAsLearnt}
+                learntMode={false}
+              />
+            </TabsContent>
+            <TabsContent value="learnt">
+              <WordTable 
+                words={learntWords}
+                onDelete={removeWord}
+                onMoveBackToLearn={moveBackToLearn}
+                learntMode={true}
+              />
+            </TabsContent>
+          </Tabs>
         )}
 
         <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={addWord} apiKey={apiKey} />
