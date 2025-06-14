@@ -36,7 +36,7 @@ const WordList = ({
         No words or sayings saved yet.
       </div>;
   }
-  return <ul className="w-full bg-white min-h-screen px-[10px]">
+  return <ul className="w-full bg-white min-h-screen px-[5px]">
       {words.map((w, idx) => <li key={w.id} className={`border-b border-[#ededed] last:border-b-0 px-0 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors`}>
           <div className="flex items-start justify-between gap-3">
             <button type="button" className="flex flex-col items-start justify-center flex-1 text-left focus:outline-none" onClick={() => setOpenId(openId === w.id ? null : w.id)} aria-expanded={openId === w.id} data-testid="word-collapsible" tabIndex={0}>
