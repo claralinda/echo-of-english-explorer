@@ -99,7 +99,8 @@ const AddWordModal = ({
           <DialogTitle>Add saying</DialogTitle>
           <DialogDescription>
             Enter the saying, its definition, and examples.<br />
-            <span className="text-xs text-muted-foreground">If you leave definition or examples empty, we'll generate them using ChatGPT.</span>
+            <span className="text-xs text-muted-foreground">If you leave definition or examples empty, 
+we'll generate them using ChatGPT.</span>
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4 space-y-3">
