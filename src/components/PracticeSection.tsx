@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 // Picks a random quiz entry, supporting both legacy string and {sentence, answer} objects
 function pickRandomQuiz(words) {
@@ -70,7 +72,14 @@ export default function PracticeSection({
       }}>
           {getQuestionSentence()}
         </span>
-        <input className="w-full border rounded-lg px-3 py-2 text-base focus:outline-primary transition" type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
+        <Input
+          type="text"
+          placeholder="Your answer..."
+          autoFocus
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          disabled={state !== "idle"}
+        />
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
         {state === "incorrect" && (
           <div className="flex flex-col items-center w-full">
