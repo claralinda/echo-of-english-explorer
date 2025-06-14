@@ -64,7 +64,7 @@ const WordList = ({
                 {lcFirst(w.definition)}
               </span>
               {w.examples.length > 0 && openId === w.id ? (
-                <ul className="mt-1 ml-0 px-0 text-[0.70em] text-gray-400 italic space-y-1">
+                <ul className="mt-1 ml-0 px-0 text-[0.84em] text-gray-400 italic space-y-1">
                   {w.examples.map((ex, i) => (
                     <li key={i} className="pb-0 leading-tight">
                       {ex}
@@ -125,7 +125,7 @@ const WordList = ({
                   {!!onDelete && (
                     <button
                       onClick={e => { e.stopPropagation(); onDelete(w.id); }}
-                      className="p-3 text-gray-400 hover:text-red-500 rounded-full bg-transparent focus:outline-none"
+                      className="p-3 text-[#ef233c] hover:text-[#ff3d57] rounded-full bg-transparent focus:outline-none"
                       title="Delete"
                       aria-label="Delete"
                       type="button"

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Plus } from "lucide-react";
 import { useUserApiKey } from "@/hooks/useUserApiKey";
+import { Star, Check, ListCheck, LogOut } from "lucide-react";
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
@@ -110,14 +111,27 @@ const Index = () => {
         <h1 className="text-2xl font-extrabold flex-1 truncate">
           <span>Everyday sayings</span>
         </h1>
-        {/* Log out button only on mobile in header */}
+        {/* Log out icon on top right for all screen sizes */}
+        {user && (
+          <button
+            onClick={signOut}
+            className="p-2 rounded-full hover:bg-accent transition ml-2 flex items-center justify-center"
+            title="Log Out"
+            aria-label="Log Out"
+          >
+            <LogOut size={23} className="text-gray-400" />
+          </button>
+        )}
+        {/* Old logout button (hidden on mobile), but we'll keep the existing one for desktop in case */}
+        {/* 
         {user && <Button size="icon" variant="ghost" onClick={signOut} className="ml-1 text-muted-foreground rounded-full hidden md:inline-flex" title="Log Out" aria-label="Log Out">
             <svg width="18" height="18" viewBox="0 0 24 24" className="mx-auto" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
               <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
-          </Button>}
+          </Button>} 
+        */}
       </header>
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
@@ -216,5 +230,4 @@ const Index = () => {
       </footer>
     </div>;
 };
-import { Star, Check, ListCheck } from "lucide-react";
 export default Index;
