@@ -43,7 +43,7 @@ const WordList = ({
               <span className="font-medium text-[0.9rem] leading-tight text-gray-600 ">
                 {w.text}
               </span>
-              <span className="text-xs mt-0.5 text-gray-400 font-normal leading-snug">
+              <span className="text-xs mt-0.5 text-gray-400 font-normal leading-snug py-px">
                 {lcFirst(w.definition)}
               </span>
               {w.examples.length > 0 && openId === w.id ? <ul className="mt-1 ml-1 pl-2 border-l-2 border-gray-100 text-xs text-gray-400">
