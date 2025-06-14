@@ -46,7 +46,9 @@ const Index = () => {
   const handleApiKeySave = async () => {
     const trimmed = apiKeyInput.trim();
     if (trimmed) {
+      console.log("Saving API key to Supabase via setApiKey...");
       await setApiKey(trimmed);
+      console.log("API key saved to Supabase.");
       setApiKeyInput("");
     }
   };
@@ -77,7 +79,7 @@ const Index = () => {
   // If user has no API key, show prompt for it (first-time)
   if (apiKeyMissing) {
     return (
-      <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-4 items-center text-center">
+      <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-2 items-center text-center">
         <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new words:</p>
         <input
           className="w-full border rounded-lg px-3 py-2 text-base"
@@ -87,16 +89,16 @@ const Index = () => {
           value={apiKeyInput}
           autoFocus
         />
-        <div className="text-xs text-muted-foreground mt-0.5 mb-0.5">
+        <div className="text-xs text-muted-foreground mt-1 mb-0">
           Your API key is securely stored in your account.
         </div>
         <div className="flex gap-2 justify-center mt-2">
           <button
-            className="px-4 py-2 bg-primary text-white rounded shadow"
-            disabled={!apiKeyInput.trim()}
+            className="px-4 py-2 bg-black text-white rounded shadow"
+            disabled={!apiKeyInput.trim() || apiKeyLoading}
             onClick={handleApiKeySave}
           >
-            Save
+            {apiKeyLoading ? "Saving..." : "Save"}
           </button>
         </div>
         <div className="text-xs mt-2" style={{ color: "#000" }}>

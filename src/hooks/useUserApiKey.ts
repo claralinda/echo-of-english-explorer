@@ -21,7 +21,7 @@ export function useUserApiKey() {
       .from("user_api_keys")
       .select("openai_api_key")
       .eq("user_id", user.id)
-      .single()
+      .maybeSingle()
       .then(({ error, data }) => {
         if (data && data.openai_api_key) {
           setApiKeyState(data.openai_api_key);
@@ -38,13 +38,18 @@ export function useUserApiKey() {
     async (key: string) => {
       if (!user) return;
       setLoading(true);
-      await supabase.from("user_api_keys").upsert(
+      const { error } = await supabase.from("user_api_keys").upsert(
         {
           user_id: user.id,
           openai_api_key: key,
         },
         { onConflict: "user_id" }
       );
+      if (error) {
+        console.error("Error saving API key to Supabase:", error);
+      } else {
+        console.log("Upserted API key to Supabase for user", user.id);
+      }
       setApiKeyState(key);
       setLoading(false);
     },

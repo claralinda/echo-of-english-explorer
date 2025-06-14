@@ -74,23 +74,23 @@ const WordList = ({
               ) : null}
               {/* Actions as icons, displayed only when expanded */}
               {openId === w.id && (
-                <div className="flex flex-row flex-wrap gap-3 mt-2 items-center">
+                <div className="flex flex-row flex-wrap gap-4 mt-2 items-center">
                   {/* Learnt/Back actions */}
                   {!learntMode && !!onMarkAsLearnt && (
                     <button
                       onClick={e => { e.stopPropagation(); onMarkAsLearnt(w.id); }}
-                      className="p-2 text-green-700 hover:text-green-800 rounded-full bg-transparent focus:outline-none"
+                      className="p-3 text-green-700 hover:text-green-800 rounded-full bg-transparent focus:outline-none"
                       title="Mark as mastered"
                       aria-label="Mark as mastered"
                       type="button"
                     >
-                      <Check size={20} strokeWidth={2.2} />
+                      <Check size={22} strokeWidth={2.2} />
                     </button>
                   )}
                   {learntMode && !!onMoveBackToLearn && (
                     <button
                       onClick={e => { e.stopPropagation(); onMoveBackToLearn(w.id); }}
-                      className="text-xs text-blue-700 hover:underline px-2 py-1 rounded bg-transparent focus:outline-none"
+                      className="text-xs text-blue-700 hover:underline px-3 py-2 rounded bg-transparent focus:outline-none"
                       title="Move back to To Learn"
                       aria-label="Move back to To Learn"
                       type="button"
@@ -102,35 +102,35 @@ const WordList = ({
                   {showStar && !!onStar && !starredMode && (
                     <button
                       onClick={e => { e.stopPropagation(); onStar(w.id); }}
-                      className="p-2 text-yellow-400 hover:text-yellow-500 rounded-full bg-transparent focus:outline-none"
+                      className="p-3 text-yellow-400 hover:text-yellow-500 rounded-full bg-transparent focus:outline-none"
                       title="Star"
                       aria-label="Star"
                       type="button"
                     >
-                      <Star size={20} strokeWidth={2.2} />
+                      <Star size={22} strokeWidth={2.2} />
                     </button>
                   )}
                   {showStar && !!onUnstar && starredMode && (
                     <button
                       onClick={e => { e.stopPropagation(); onUnstar(w.id); }}
-                      className="p-2 text-yellow-500 hover:text-yellow-600 rounded-full bg-transparent focus:outline-none"
+                      className="p-3 text-yellow-500 hover:text-yellow-600 rounded-full bg-transparent focus:outline-none"
                       title="Unstar"
                       aria-label="Unstar"
                       type="button"
                     >
-                      <Star size={20} fill="currentColor" strokeWidth={2.1} />
+                      <Star size={22} fill="currentColor" strokeWidth={2.1} />
                     </button>
                   )}
                   {/* Delete as icon */}
                   {!!onDelete && (
                     <button
                       onClick={e => { e.stopPropagation(); onDelete(w.id); }}
-                      className="p-2 text-gray-400 hover:text-red-500 rounded-full bg-transparent focus:outline-none"
+                      className="p-3 text-gray-400 hover:text-red-500 rounded-full bg-transparent focus:outline-none"
                       title="Delete"
                       aria-label="Delete"
                       type="button"
                     >
-                      <X size={20} strokeWidth={2.2} />
+                      <X size={22} strokeWidth={2.2} />
                     </button>
                   )}
                 </div>
