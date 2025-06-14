@@ -208,7 +208,7 @@ const Index = () => {
                 </span>
               </button>
               <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-blue-600 font-bold" : "text-muted-foreground"}`}
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-blue-600" : "text-muted-foreground"}`}
                 onClick={() => setTab("practice")}
                 aria-label="Practice"
               >
