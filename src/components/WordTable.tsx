@@ -1,4 +1,3 @@
-
 import { WordEntry } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
 import { BookIcon } from "lucide-react";
@@ -26,8 +25,7 @@ const WordTable = ({ words, onDelete }: Props) => {
         <tbody>
           {words.map((w) => (
             <tr key={w.id} className="border-b hover:bg-muted/30 duration-100">
-              <td className="p-4 font-medium flex items-center gap-2">
-                <BookIcon className="w-4 h-4 text-accent" />
+              <td className="p-4 font-medium">
                 {w.text}
               </td>
               <td className="p-4 max-w-xs whitespace-pre-line">{w.definition}</td>
