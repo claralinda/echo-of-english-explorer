@@ -1,28 +1,36 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+
 function pickRandomQuiz(words) {
   if (!words || words.length === 0) return null;
-  const entries = words.flatMap(w => (w.examples || []).map(ex => ({
-    word: w.text,
-    ex,
-    id: w.id
-  })));
+  // Estrae solo il campo 'sentence' dagli oggetti example
+  const entries = words.flatMap(w =>
+    (w.examples || []).map(ex => ({
+      word: w.text,
+      ex: typeof ex === "string" ? ex : ex.sentence, // compatibilità retroattiva
+      id: w.id
+    }))
+  );
   if (entries.length === 0) return null;
   const idx = Math.floor(Math.random() * entries.length);
   return entries[idx];
 }
+
 export default function PracticeSection({
   words
 }) {
   const [quiz, setQuiz] = useState(() => pickRandomQuiz(words));
   const [input, setInput] = useState("");
   const [state, setState] = useState<"idle" | "correct" | "incorrect">("idle");
+
   if (!quiz) {
     return <div className="py-12 text-muted-foreground text-lg text-center bg-white">
         No examples available for practice yet.<br />Add sayings with examples to unlock practice!
       </div>;
   }
   function getQuestionSentence() {
+    // Sostituisce la parola con un underscore nella frase
     const re = new RegExp(quiz.word, "i");
     return quiz.ex.replace(re, "_____");
   }

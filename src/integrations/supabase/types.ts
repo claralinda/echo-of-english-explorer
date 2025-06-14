@@ -34,7 +34,7 @@ export type Database = {
         Row: {
           created_at: string
           definition: string | null
-          examples: string[] | null
+          examples: Json | null
           id: string
           list: Database["public"]["Enums"]["word_list_type"]
           text: string
@@ -43,7 +43,7 @@ export type Database = {
         Insert: {
           created_at?: string
           definition?: string | null
-          examples?: string[] | null
+          examples?: Json | null
           id?: string
           list?: Database["public"]["Enums"]["word_list_type"]
           text: string
@@ -52,7 +52,7 @@ export type Database = {
         Update: {
           created_at?: string
           definition?: string | null
-          examples?: string[] | null
+          examples?: Json | null
           id?: string
           list?: Database["public"]["Enums"]["word_list_type"]
           text?: string
