@@ -1,6 +1,7 @@
 
 import { WordEntry } from "@/hooks/useLocalWords";
 import { Button } from "@/components/ui/button";
+import { Check, Delete } from "lucide-react";
 
 type Props = {
   words: WordEntry[];
@@ -40,13 +41,25 @@ const WordTable = ({ words, onDelete, onMarkAsLearnt, onMoveBackToLearn, learntM
               {(onDelete || onMarkAsLearnt || onMoveBackToLearn) && (
                 <td className="p-4 space-x-2">
                   {onDelete && (
-                    <Button size="sm" variant="destructive" onClick={() => onDelete(w.id)}>
-                      Delete
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => onDelete(w.id)}
+                      aria-label="Delete"
+                      title="Delete"
+                    >
+                      <Delete />
                     </Button>
                   )}
                   {onMarkAsLearnt && (
-                    <Button size="sm" variant="secondary" onClick={() => onMarkAsLearnt(w.id)}>
-                      Mark as Learnt
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => onMarkAsLearnt(w.id)}
+                      aria-label="Mark as Learnt"
+                      title="Mark as Learnt"
+                    >
+                      <Check />
                     </Button>
                   )}
                   {onMoveBackToLearn && (
@@ -65,3 +78,4 @@ const WordTable = ({ words, onDelete, onMarkAsLearnt, onMoveBackToLearn, learntM
 };
 
 export default WordTable;
+
