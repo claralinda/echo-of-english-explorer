@@ -109,7 +109,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col relative">
       {/* Compact header for mobile, roomy for desktop */}
-      <header className="pt-6 pb-1 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
+      <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
         <h1 className="text-2xl font-extrabold flex-1 truncate">
           <span>Everyday sayings</span>
         </h1>

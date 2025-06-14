@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Star, X, Check } from "lucide-react";
 type Word = {
@@ -43,11 +42,11 @@ const WordList = ({
   }
 
   return (
-    <ul className="w-full bg-white min-h-screen px-0">
+    <ul className="w-full bg-white min-h-screen px-4">
       {words.map((w, idx) => (
         <li
           key={w.id}
-          className={`border-b border-[#ededed] last:border-b-0 px-4 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors`}
+          className={`border-b border-[#ededed] last:border-b-0 px-0 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors`}
         >
           <div className="flex items-start justify-between gap-3">
             <button
@@ -137,7 +136,7 @@ const WordList = ({
                 </div>
               )}
             </button>
-            {/* Right column (actions) is now empty, so omit */}
+            {/* Right column is empty, omit */}
           </div>
         </li>
       ))}
