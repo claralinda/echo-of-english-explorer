@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -170,16 +171,26 @@ const Index = () => {
               </a>
             </div>
           </div> : <div className="block md:hidden w-full bg-white"> 
-            {/* MOBILE: All tabs in the bottom bar, NO subtitles */}
+            {/* MOBILE: All tabs in the bottom bar, with subtitles restored */}
             <div className="pt-2 px-2">
               {tab === "to-learn" && (
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               )}
               {tab === "mastered" && (
-                <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
+                <>
+                  <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
+                    Mastered
+                  </span>
+                  <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
+                </>
               )}
               {tab === "starred" && (
-                <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
+                <>
+                  <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
+                    Starred
+                  </span>
+                  <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
+                </>
               )}
             </div>
             {/* Floating "Add" button */}
