@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
-// NEW: Import both hooks
+import WordList from "@/components/WordList";
 import { useLocalWords } from "@/hooks/useLocalWords";
 import { useSupabaseWords } from "@/hooks/useSupabaseWords";
 import { Button } from "@/components/ui/button";
@@ -163,7 +163,7 @@ const Index = () => {
             <div className="pt-2 px-2">
               <Tabs value={tab} onValueChange={setTab} className="w-full">
                 <TabsContent value="to-learn">
-                  <WordTable
+                  <WordList
                     words={words}
                     onDelete={removeWord}
                     onMarkAsLearnt={markAsLearnt}
@@ -173,7 +173,7 @@ const Index = () => {
                   />
                 </TabsContent>
                 <TabsContent value="mastered">
-                  <WordTable
+                  <WordList
                     words={learntWords}
                     onDelete={removeWord}
                     onMoveBackToLearn={moveBackToLearn}
@@ -183,7 +183,7 @@ const Index = () => {
                   />
                 </TabsContent>
                 <TabsContent value="starred">
-                  <WordTable
+                  <WordList
                     words={starredWords}
                     onDelete={removeWord}
                     onMoveBackToLearn={moveBackToLearn}
@@ -248,7 +248,7 @@ const Index = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="to-learn">
-                <WordTable
+                <WordList
                   words={words}
                   onDelete={removeWord}
                   onMarkAsLearnt={markAsLearnt}
@@ -258,7 +258,7 @@ const Index = () => {
                 />
               </TabsContent>
               <TabsContent value="mastered">
-                <WordTable
+                <WordList
                   words={learntWords}
                   onDelete={removeWord}
                   onMoveBackToLearn={moveBackToLearn}
@@ -268,7 +268,7 @@ const Index = () => {
                 />
               </TabsContent>
               <TabsContent value="starred">
-                <WordTable
+                <WordList
                   words={starredWords}
                   onDelete={removeWord}
                   onMoveBackToLearn={moveBackToLearn}
