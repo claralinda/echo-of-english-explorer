@@ -112,7 +112,7 @@ const Index = () => {
     setTab("to-learn");
   };
 
-  // Helper to render the subtitle
+  // Helper to render the subtitle (for desktop only now)
   const renderListSubtitle = () => {
     if (tab === "mastered") {
       return (
@@ -138,8 +138,8 @@ const Index = () => {
           <h1 className="text-2xl font-extrabold truncate mb-0">
             <span>Everyday sayings</span>
           </h1>
-          {/* Show subtitle only on mastered or starred */}
-          {renderListSubtitle()}
+          {/* Show subtitle only on mastered or starred, now only on desktop */}
+          <span className="hidden md:block">{renderListSubtitle()}</span>
         </div>
         {user && (
           <button
@@ -170,33 +170,23 @@ const Index = () => {
               </a>
             </div>
           </div> : <div className="block md:hidden w-full bg-white"> 
-            {/* MOBILE: Only show "To Learn" in the bottom bar, rest via subtitle/header */}
+            {/* MOBILE: All tabs in the bottom bar, NO subtitles */}
             <div className="pt-2 px-2">
               {tab === "to-learn" && (
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               )}
               {tab === "mastered" && (
-                <>
-                  <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
-                    Mastered
-                  </span>
-                  <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
-                </>
+                <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
               )}
               {tab === "starred" && (
-                <>
-                  <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
-                    Starred
-                  </span>
-                  <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
-                </>
+                <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
               )}
             </div>
             {/* Floating "Add" button */}
             <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
               <Plus className="w-7 h-7" />
             </button>
-            {/* Flat, no shadow, light gray bottom bar only for switching to 'to-learn', "Mastered" & "Starred" accessible via header/subtitle */}
+            {/* Flat, no shadow, light gray bottom bar for tab switching */}
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{ boxShadow: "none" }}>
               <button
                 className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`}
@@ -204,7 +194,6 @@ const Index = () => {
                 aria-label="To Learn"
               >
                 <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
-                {/* No label for "To Learn" */}
               </button>
               <button
                 className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`}
