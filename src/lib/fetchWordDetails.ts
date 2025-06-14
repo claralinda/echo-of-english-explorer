@@ -10,7 +10,11 @@ export async function fetchWordDetails({
 }): Promise<{ definition: string; examples: string[] }> {
   // OpenAI Chat API endpoint
   const endpoint = "https://api.openai.com/v1/chat/completions";
-  const prompt = `Provide a brief (max 50 words) English definition for the word or saying "${text}". Then give 2 example sentences using "${text}" in context. Format your reply as:\nDefinition: ...\nExamples:\n1. ...\n2. ...`;
+  const prompt = `Write a concise (max 40 words) English definition for "${text}", but do NOT start with phrases like "${text} means" or "The word ${text} means". Just provide the direct definition. Then give 2 example sentences using "${text}" in context. Format your reply as:
+Definition: ...
+Examples:
+1. ...
+2. ...`;
 
   const response = await fetch(endpoint, {
     method: "POST",
