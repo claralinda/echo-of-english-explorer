@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
@@ -113,7 +112,7 @@ const Index = () => {
     setTab("to-learn");
   };
 
-  // Helper to render the subtitle (for desktop only now)
+  // Helper to render the subtitle (for both mobile and desktop now)
   const renderListSubtitle = () => {
     if (tab === "mastered") {
       return (
@@ -139,8 +138,8 @@ const Index = () => {
           <h1 className="text-2xl font-extrabold truncate mb-0">
             <span>Everyday sayings</span>
           </h1>
-          {/* Show subtitle only on mastered or starred, now only on desktop */}
-          <span className="hidden md:block">{renderListSubtitle()}</span>
+          {/* Show subtitle on both mobile and desktop */}
+          <span>{renderListSubtitle()}</span>
         </div>
         {user && (
           <button
@@ -171,26 +170,16 @@ const Index = () => {
               </a>
             </div>
           </div> : <div className="block md:hidden w-full bg-white"> 
-            {/* MOBILE: All tabs in the bottom bar, with subtitles restored */}
+            {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
             <div className="pt-2 px-2">
               {tab === "to-learn" && (
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               )}
               {tab === "mastered" && (
-                <>
-                  <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
-                    Mastered
-                  </span>
-                  <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
-                </>
+                <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
               )}
               {tab === "starred" && (
-                <>
-                  <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
-                    Starred
-                  </span>
-                  <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
-                </>
+                <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
               )}
             </div>
             {/* Floating "Add" button */}
@@ -240,15 +229,9 @@ const Index = () => {
                 <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
               </TabsContent>
               <TabsContent value="mastered">
-                <span className="block text-[1rem] text-muted-foreground font-semibold mt-2 mb-2 ml-2">
-                  Mastered
-                </span>
                 <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
               </TabsContent>
               <TabsContent value="starred">
-                <span className="block text-[1rem] text-yellow-500 font-semibold mt-2 mb-2 ml-2">
-                  Starred
-                </span>
                 <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
               </TabsContent>
             </Tabs>
