@@ -44,8 +44,11 @@ const Index = () => {
 
   // Handle first-time entry of API key
   const handleApiKeySave = async () => {
-    await setApiKey(apiKeyInput.trim());
-    setApiKeyInput("");
+    const trimmed = apiKeyInput.trim();
+    if (trimmed) {
+      await setApiKey(trimmed);
+      setApiKeyInput("");
+    }
   };
 
   // If not logged in, show login prompt
@@ -71,7 +74,7 @@ const Index = () => {
     );
   }
 
-  // If user has no API key, show prompt for it
+  // If user has no API key, show prompt for it (first-time)
   if (apiKeyMissing) {
     return (
       <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-4 items-center text-center">
@@ -105,6 +108,15 @@ const Index = () => {
       </div>
     );
   }
+
+  // New: For the main (non-first-time) prompt, use a separate local state for input & Save button
+  const handleMainApiKeySave = async () => {
+    const trimmed = apiKeyInput.trim();
+    if (trimmed) {
+      await setApiKey(trimmed);
+      setApiKeyInput("");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative">
@@ -140,10 +152,19 @@ const Index = () => {
               className="w-full border rounded-lg px-3 py-2 text-base"
               type="password"
               placeholder="sk-..."
-              onChange={e => setApiKey(e.target.value)}
-              value={apiKey}
+              onChange={e => setApiKeyInput(e.target.value)}
+              value={apiKeyInput}
               autoFocus
             />
+            <div className="flex gap-2 justify-center mt-2">
+              <button
+                className="px-4 py-2 bg-primary text-white rounded shadow"
+                disabled={!apiKeyInput.trim()}
+                onClick={handleMainApiKeySave}
+              >
+                Save
+              </button>
+            </div>
             <div className="text-xs text-muted-foreground">
               Your API key is stored only in this browser.
               <br />
