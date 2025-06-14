@@ -109,7 +109,6 @@ we'll generate them using ChatGPT.</span>
           <Textarea placeholder="Examples (one per line)…" value={examples} rows={3} onChange={e => setExamples(e.target.value)} disabled={loading} />
         </div>
         <DialogFooter className="mt-4">
-          <Button variant="secondary" onClick={onClose} disabled={loading}>Cancel</Button>
           <Button onClick={handleAdd} disabled={loading}>
             {loading ? "Saving…" : "Add"}
           </Button>

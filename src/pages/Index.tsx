@@ -108,9 +108,16 @@ const Index = () => {
   return <div className="min-h-screen bg-white flex flex-col relative">
       {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
-        <h1 className="text-2xl font-extrabold flex-1 truncate mb-1">
-          <span>Everyday sayings</span>
-        </h1>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl font-extrabold truncate mb-0">
+            <span>Everyday sayings</span>
+          </h1>
+          {(tab === "mastered" || tab === "starred") && (
+            <span className="block text-[1rem] text-muted-foreground font-semibold mt-0.5 ml-px">
+              {tab === "mastered" ? "Mastered" : "Starred"}
+            </span>
+          )}
+        </div>
         {user && (
           <button
             onClick={signOut}
@@ -121,21 +128,11 @@ const Index = () => {
             <LogOut size={18} className="text-gray-400" />
           </button>
         )}
-        {/* Old logout button (hidden on mobile), but we'll keep the existing one for desktop in case */}
-        {/* 
-        {user && <Button size="icon" variant="ghost" onClick={signOut} className="ml-1 text-muted-foreground rounded-full hidden md:inline-flex" title="Log Out" aria-label="Log Out">
-            <svg width="18" height="18" viewBox="0 0 24 24" className="mx-auto" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-          </Button>} 
-        */}
       </header>
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
         {!apiKey ? <div className="bg-card rounded-lg p-6 max-w-md mx-auto mt-10 shadow flex flex-col gap-4 items-center text-center">
-            <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new words:</p>
+            <p className="font-semibold mb-2">Enter your OpenAI API Key to enable saving new sayings:</p>
             <input className="w-full border rounded-lg px-3 py-2 text-base" type="password" placeholder="sk-..." onChange={e => setApiKeyInput(e.target.value)} value={apiKeyInput} autoFocus />
             <div className="flex gap-2 justify-center mt-2">
               <button className="px-4 py-2 bg-primary text-white rounded shadow" disabled={!apiKeyInput.trim()} onClick={handleMainApiKeySave}>
@@ -169,15 +166,18 @@ const Index = () => {
               <Plus className="w-7 h-7" />
             </button>
             {/* Sticky footer tab bar */}
-            <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-white shadow-inner border-t flex justify-around items-center animate-fade-in">
+            <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] shadow-inner border-t flex justify-around items-center animate-fade-in">
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
                 <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
+                {/* No label for "To Learn" */}
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
                 <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
+                <span className="block text-[0.87rem] font-medium leading-tight mt-1">Mastered</span>
               </button>
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
                 <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
+                <span className="block text-[0.87rem] font-medium leading-tight mt-1">Starred</span>
               </button>
             </nav>
           </div>}
@@ -222,7 +222,7 @@ const Index = () => {
       }}>
           ChatGPT
         </span>{" "}
-        | Your words are saved in your browser.
+        | Your sayings are saved in your browser.
       </footer>
     </div>;
 };
