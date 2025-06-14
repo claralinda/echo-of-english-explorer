@@ -174,14 +174,32 @@ const Index = () => {
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{
           boxShadow: "none"
         }}>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
-                <span className="w-6 h-6 flex items-center justify-center"><ListCheck /></span>
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`}
+                onClick={() => setTab("to-learn")}
+                aria-label="To Learn"
+              >
+                <span className="w-6 h-6 flex items-center justify-center">
+                  <ListCheck />
+                </span>
               </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
-                <span className="w-6 h-6 flex items-center justify-center"><Check /></span>
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`}
+                onClick={() => setTab("mastered")}
+                aria-label="Mastered"
+              >
+                <span className={`w-6 h-6 flex items-center justify-center ${tab === "mastered" ? "text-green-700" : ""}`}>
+                  <Check />
+                </span>
               </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
-                <span className="w-6 h-6 flex items-center justify-center"><Star /></span>
+              <button
+                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`}
+                onClick={() => setTab("starred")}
+                aria-label="Starred"
+              >
+                <span className="w-6 h-6 flex items-center justify-center">
+                  <Star />
+                </span>
               </button>
             </nav>
           </div>}
