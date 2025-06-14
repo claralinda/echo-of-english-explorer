@@ -108,10 +108,9 @@ const Index = () => {
   return <div className="min-h-screen bg-white flex flex-col relative">
       {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full px-4 md:px-0 bg-white">
-        <h1 className="text-2xl font-extrabold flex-1 truncate">
+        <h1 className="text-2xl font-extrabold flex-1 truncate mb-1">
           <span>Everyday sayings</span>
         </h1>
-        {/* Log out icon on top right for all screen sizes */}
         {user && (
           <button
             onClick={signOut}
@@ -119,7 +118,7 @@ const Index = () => {
             title="Log Out"
             aria-label="Log Out"
           >
-            <LogOut size={23} className="text-gray-400" />
+            <LogOut size={18} className="text-gray-400" />
           </button>
         )}
         {/* Old logout button (hidden on mobile), but we'll keep the existing one for desktop in case */}
