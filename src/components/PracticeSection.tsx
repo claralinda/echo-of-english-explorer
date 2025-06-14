@@ -73,9 +73,14 @@ export default function PracticeSection({
         </span>
         <input className="w-full border rounded-lg px-3 py-2 text-base focus:outline-primary transition" type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
-        {state === "incorrect" && <div className="text-red-600 font-semibold">
-            Incorrect! The answer is: <span className="underline">{quiz.answer}</span>
-          </div>}
+        {state === "incorrect" && (
+          <div className="flex flex-col items-center w-full">
+            <span className="text-red-600 font-semibold w-full text-center mb-1">Incorrect!</span>
+            <span className="text-red-600 text-center">
+              The answer is: <span className="underline">{quiz.answer}</span>
+            </span>
+          </div>
+        )}
         <div className="flex gap-3 pt-2 w-full">
           {state === "idle" && (
             <Button
