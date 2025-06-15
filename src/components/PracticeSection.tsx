@@ -76,7 +76,7 @@ export default function PracticeSection({
     }
   }
   return (
-    <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px]">
+    <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
         <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
         <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
@@ -87,7 +87,6 @@ export default function PracticeSection({
           </span>
           <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
 
-          {/* Stati "Correct!" o "Incorrect!" */}
           {state === "correct" && (
             <div className="w-full flex flex-col items-center">
               <div className="text-green-700 !font-semibold mt-6 mb-2 text-base my-[10px]">
@@ -133,8 +132,15 @@ export default function PracticeSection({
           )}
         </form>
       </div>
-      {/* Nota informativa sempre fissa IN FONDO ALLA SECTION, NON con position absolute */}
-      <div className="w-full text-xs text-muted-foreground text-center mt-3">
+      {/* Nota informativa: sticky bottom sopra barra */}
+      <div
+        className="w-full text-xs text-muted-foreground text-center 
+        sticky bottom-0 bg-white pb-[22px] pt-3 z-20"
+        style={{
+          boxShadow: "0 -1px 0 0 #e2e8f0",
+          marginTop: "auto",
+        }}
+      >
         Practice is based on your sayings and their examples.
       </div>
     </div>
