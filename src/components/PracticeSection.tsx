@@ -65,21 +65,12 @@ export default function PracticeSection({
   return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
       <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span
-          className="text-md text-gray-800 mb-6 block text-center"
-          style={{ minHeight: 36 }}
-        >
+        <span className="text-md text-gray-800 mb-6 block text-center" style={{
+        minHeight: 36
+      }}>
           {getQuestionSentence()}
         </span>
-        <Input
-          type="text"
-          placeholder="Your answer..."
-          autoFocus
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          disabled={state !== "idle"}
-          className="mx-auto w-full max-w-xs text-center"
-        />
+        <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center" />
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
         {state === "incorrect" && <div className="flex flex-col items-center w-full">
             <span className="text-red-600 font-semibold w-full text-center">
@@ -98,8 +89,6 @@ export default function PracticeSection({
             </Button>}
         </div>
       </form>
-      <div className="mt-4 text-xs text-muted-foreground text-center">
-        Practice is based on your saved sayings and their example sentences.
-      </div>
+      <div className="mt-4 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
     </div>;
 }
