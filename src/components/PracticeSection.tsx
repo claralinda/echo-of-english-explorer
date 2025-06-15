@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -114,7 +113,7 @@ export default function PracticeSection({
                   onClick={handleMarkAsLearnt}
                   size="sm"
                   variant="ghost"
-                  className="w-full bg-green-50 text-green-700 hover:bg-green-100"
+                  className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold"
                 >
                   Mark as mastered
                 </Button>
