@@ -91,7 +91,7 @@ export default function PracticeSection({
             {!!onMarkAsLearnt && <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="ghost" className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1">
                 Mark as mastered
               </Button>}
-            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-2">
+            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
               Next
             </Button>
           </div>}
@@ -105,7 +105,7 @@ export default function PracticeSection({
                 <span className="underline">{quiz.answer}</span>
               </span>
             </div>
-            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-2">
+            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
               Next
             </Button>
           </div>}
