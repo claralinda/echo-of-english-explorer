@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,18 +76,20 @@ export default function PracticeSection({
       handleNext();
     }
   }
-  return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
-      <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
-      <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span className="text-md text-gray-800 mb-2 block text-center" style={{
-        minHeight: 36
-      }}>
-          {getQuestionSentence()}
-        </span>
-        <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
+  return (
+    <div className="relative min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px]">
+      <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
+        <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
+        <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
+          <span className="text-md text-gray-800 mb-2 block text-center" style={{
+            minHeight: 36
+          }}>
+            {getQuestionSentence()}
+          </span>
+          <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
 
-        {/* "Correct!" o "Incorrect!" state, uniform spacing */}
-        {state === "correct" && <div className="w-full flex flex-col items-center">
+          {/* "Correct!" o "Incorrect!" state, uniform spacing */}
+          {state === "correct" && <div className="w-full flex flex-col items-center">
             <div className="text-green-700 !font-semibold mt-6 mb-2 text-base my-[10px]">
               Correct! 🎉
             </div>
@@ -97,30 +100,36 @@ export default function PracticeSection({
               Next
             </Button>
           </div>}
-        {state === "incorrect" && <div className="w-full flex flex-col items-center">
+          {state === "incorrect" && <div className="w-full flex flex-col items-center">
             <div className="mt-6 mb-2 w-full flex flex-col items-center my-[21px]">
               <span className="text-red-600 font-semibold w-full text-center">
                 Incorrect!
               </span>
               <span className="text-red-600 text-center text-sm">
-                The answer is:{" "}
-                <span className="underline">{quiz.answer}</span>
+                The answer is: <span className="underline">{quiz.answer}</span>
               </span>
-              {!!quiz.definition && <span className="text-center text-xs mt-1 text-gray-500">
-                  <span className="font-medium">Meaning:</span> {quiz.definition}
-                </span>}
+              {!!quiz.definition && (
+                <span className="text-center text-xs mt-1 text-gray-500">
+                  {quiz.definition}
+                </span>
+              )}
             </div>
             <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
               Next
             </Button>
           </div>}
 
-        {state === "idle" && <div className="flex gap-3 pt-2 w-full">
+          {state === "idle" && <div className="flex gap-3 pt-2 w-full">
             <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
               Check answer
             </Button>
           </div>}
-      </form>
-      <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
-    </div>;
+        </form>
+      </div>
+      {/* Info sticky at bottom of practice screen, above bottom bar */}
+      <div className="w-full text-xs text-muted-foreground text-center absolute bottom-3 left-0 right-0 pointer-events-none select-none">
+        Practice is based on your sayings and their examples.
+      </div>
+    </div>
+  );
 }
