@@ -124,7 +124,7 @@ export default function PracticeSection({
       </div>
       {/* Nota informativa: sticky sopra la barra fissa in fondo */}
       <div
-        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[18px] z-30"
+        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] z-30"
         style={{
           bottom: 56, // o regola in base all'altezza effettiva della tua bottom bar rosa
         }}
