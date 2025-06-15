@@ -109,7 +109,13 @@ export default function PracticeSection({
           {state === "correct" && (
             <>
               {!!onMarkAsLearnt && (
-                <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="default" className="w-full">
+                <Button
+                  type="button"
+                  onClick={handleMarkAsLearnt}
+                  size="sm"
+                  variant="ghost"
+                  className="w-full bg-green-50 text-green-700 border border-green-100 hover:bg-green-100 hover:border-green-300"
+                >
                   Mark as mastered
                 </Button>
               )}
