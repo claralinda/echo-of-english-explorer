@@ -112,7 +112,10 @@ const Index = () => {
   const handleAddWord = async (entry: {
     text: string;
     definition: string;
-    examples: { answer: string; sentence: string }[]; // tipo corretto
+    examples: {
+      answer: string;
+      sentence: string;
+    }[]; // tipo corretto
   }) => {
     await addWord(entry);
     setTab("to-learn");
@@ -144,17 +147,11 @@ const Index = () => {
           {/* subtitle sotto il titolo, sia mobile che desktop */}
           {renderListSubtitle()}
         </div>
-        {user && (
-          <button
-            onClick={signOut}
-            className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center"
-            title="Log Out"
-            aria-label="Log Out"
-            style={{ marginTop: 0 }}
-          >
+        {user && <button onClick={signOut} title="Log Out" aria-label="Log Out" style={{
+        marginTop: 0
+      }} className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center py-[9px]">
             <LogOut size={18} className="text-gray-400" />
-          </button>
-        )}
+          </button>}
       </header>
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
@@ -173,8 +170,7 @@ const Index = () => {
                 Get your API key
               </a>
             </div>
-          </div> : 
-          <div className="block md:hidden w-full bg-white"> 
+          </div> : <div className="block md:hidden w-full bg-white"> 
             {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
             <div className="pt-2 px-2">
               {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
@@ -190,38 +186,22 @@ const Index = () => {
             <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{
           boxShadow: "none"
         }}>
-              <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`}
-                onClick={() => setTab("to-learn")}
-                aria-label="To Learn"
-              >
+              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
                 <span className="w-6 h-6 flex items-center justify-center pb-1">
                   <ListCheck />
                 </span>
               </button>
-              <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`}
-                onClick={() => setTab("mastered")}
-                aria-label="Mastered"
-              >
+              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
                 <span className={`w-6 h-6 flex items-center justify-center pb-1 ${tab === "mastered" ? "text-green-700" : ""}`}>
                   <Check />
                 </span>
               </button>
-              <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`}
-                onClick={() => setTab("starred")}
-                aria-label="Starred"
-              >
+              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
                 <span className="w-6 h-6 flex items-center justify-center pb-1">
                   <Star />
                 </span>
               </button>
-              <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-blue-600" : "text-muted-foreground"}`}
-                onClick={() => setTab("practice")}
-                aria-label="Practice"
-              >
+              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-blue-600" : "text-muted-foreground"}`} onClick={() => setTab("practice")} aria-label="Practice">
                 <span className="w-6 h-6 flex items-center justify-center text-2xl pb-1">
                   ?
                 </span>
