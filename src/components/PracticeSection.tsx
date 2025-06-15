@@ -91,10 +91,10 @@ export default function PracticeSection({
           onChange={e => setInput(e.target.value)}
           disabled={state !== "idle"}
           className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-          // le classi sono prese da shadcn Button/secondary + input custom
         />
+
+        {/* "Correct!" o "Incorrect!" state, uniform spacing */}
         {state === "correct" && (
-          // Maggiore distacco sotto il field, meno prima del bottone! 
           <div className="w-full flex flex-col items-center">
             <div className="text-green-700 !font-semibold mt-6 mb-2 text-base">
               Correct! 🎉
@@ -106,7 +106,6 @@ export default function PracticeSection({
                 size="sm"
                 variant="ghost"
                 className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1"
-                // Sfondo verde chiaro restaurato, spazio tra bottone e correct ridotto grazie a mb-1
               >
                 Mark as mastered
               </Button>
@@ -123,17 +122,28 @@ export default function PracticeSection({
           </div>
         )}
         {state === "incorrect" && (
-          <div className="flex flex-col items-center w-full">
-            <span className="text-red-600 font-semibold w-full text-center">
-              Incorrect!
-            </span>
-            <span className="text-red-600 text-center">
-              The answer is:{" "}
-              <span className="underline">{quiz.answer}</span>
-            </span>
+          <div className="w-full flex flex-col items-center">
+            <div className="mt-6 mb-2 w-full flex flex-col items-center">
+              <span className="text-red-600 font-semibold w-full text-center">
+                Incorrect!
+              </span>
+              <span className="text-red-600 text-center">
+                The answer is:{" "}
+                <span className="underline">{quiz.answer}</span>
+              </span>
+            </div>
+            <Button
+              type="button"
+              onClick={handleNext}
+              size="sm"
+              variant="secondary"
+              className="w-full"
+            >
+              Next
+            </Button>
           </div>
         )}
-        {/* idle & incorrect come prima */}
+
         {state === "idle" && (
           <div className="flex gap-3 pt-2 w-full">
             <Button
@@ -143,19 +153,6 @@ export default function PracticeSection({
               className="w-full"
             >
               Check answer
-            </Button>
-          </div>
-        )}
-        {state === "incorrect" && (
-          <div className="flex gap-3 pt-2 w-full">
-            <Button
-              type="button"
-              onClick={handleNext}
-              size="sm"
-              variant="secondary"
-              className="w-full"
-            >
-              Next
             </Button>
           </div>
         )}
