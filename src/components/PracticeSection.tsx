@@ -75,8 +75,7 @@ export default function PracticeSection({
       handleNext();
     }
   }
-  return (
-    <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
+  return <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
         <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
         <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
@@ -110,7 +109,7 @@ export default function PracticeSection({
                     {quiz.definition}
                   </span>}
               </div>
-              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
+              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1 bg-zinc-700 hover:bg-zinc-600 text-white">
                 Next
               </Button>
             </div>}
@@ -123,14 +122,10 @@ export default function PracticeSection({
         </form>
       </div>
       {/* Nota informativa: sticky sopra la barra fissa in fondo */}
-      <div
-        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] z-30"
-        style={{
-          bottom: 56, // o regola in base all'altezza effettiva della tua bottom bar rosa
-        }}
-      >
+      <div className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] z-30" style={{
+      bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
+    }}>
         Practice is based on your "to learn" sayings.
       </div>
-    </div>
-  );
+    </div>;
 }
