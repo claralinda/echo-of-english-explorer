@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,9 +29,15 @@ function pickRandomQuiz(words) {
   const idx = Math.floor(Math.random() * entries.length);
   return entries[idx];
 }
+type PracticeSectionProps = {
+  words: any[],
+  onMarkAsLearnt?: (id: string) => void
+};
+
 export default function PracticeSection({
-  words
-}) {
+  words,
+  onMarkAsLearnt
+}: PracticeSectionProps) {
   const [quiz, setQuiz] = useState(() => pickRandomQuiz(words));
   const [input, setInput] = useState("");
   const [state, setState] = useState<"idle" | "correct" | "incorrect">("idle");
@@ -62,6 +69,12 @@ export default function PracticeSection({
     setInput("");
     setState("idle");
   }
+  function handleMarkAsLearnt() {
+    if (onMarkAsLearnt && quiz?.id) {
+      onMarkAsLearnt(quiz.id);
+      handleNext();
+    }
+  }
   return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
       <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
@@ -87,8 +100,14 @@ export default function PracticeSection({
           {(state === "correct" || state === "incorrect") && <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
               Next
             </Button>}
+          {state === "correct" && !!onMarkAsLearnt && (
+            <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="default" className="w-full">
+              Mark as mastered
+            </Button>
+          )}
         </div>
       </form>
       <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
     </div>;
 }
+

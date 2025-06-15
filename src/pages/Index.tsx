@@ -170,7 +170,7 @@ const Index = () => {
               {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
               {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />}
               {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />}
-              {tab === "practice" && <PracticeSection words={[...words, ...learntWords, ...starredWords]} />}
+              {tab === "practice" && <PracticeSection words={[...words, ...learntWords, ...starredWords]} onMarkAsLearnt={markAsLearnt} />}
             </div>
             {/* Floating "Add" button */}
             <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
@@ -245,7 +245,7 @@ const Index = () => {
                 <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
               </TabsContent>
               <TabsContent value="practice">
-                <PracticeSection words={[...words, ...learntWords, ...starredWords]} />
+                <PracticeSection words={[...words, ...learntWords, ...starredWords]} onMarkAsLearnt={markAsLearnt} />
               </TabsContent>
             </Tabs>
             {/* Desktop normal FAB */}
