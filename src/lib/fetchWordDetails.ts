@@ -1,4 +1,3 @@
-
 export async function fetchWordDetails({
   apiKey,
   text,
@@ -81,8 +80,27 @@ Examples:
 
 // Try to extract the saying/conjugation used in the example.
 // For now, naively find the first substring matching the prompt word (case-insensitive).
-function extractExampleAnswer(sentence: string, word: string): string {
-  const re = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
-  const match = sentence.match(re);
-  return match ? match[0] : word;
+function extractExampleAnswer(sentence: string, phrase: string): string {
+  const targetWords = phrase.split(/\s+/).filter(Boolean);
+  if (targetWords.length < 2) {
+    // fallback: una singola parola, cerca match case-insensitive
+    const re = new RegExp(targetWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+    const match = sentence.match(re);
+    return match ? match[0] : phrase;
+  }
+  // Prova a trovare da più parole a meno (almeno 2 parole consecutive)
+  for (let len = targetWords.length; len >= 2; len--) {
+    for (let start = 0; start <= targetWords.length - len; start++) {
+      const candidate = targetWords.slice(start, start + len).join(" ");
+      const re = new RegExp(candidate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+      const match = sentence.match(re);
+      if (match) return match[0];
+    }
+  }
+  // Prova la frase intera
+  const phraseRe = new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+  const phraseMatch = sentence.match(phraseRe);
+  if (phraseMatch) return phraseMatch[0];
+  // fallback
+  return phrase;
 }
