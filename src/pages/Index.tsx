@@ -227,37 +227,47 @@ const Index = () => {
               }}
             >
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
-                <span className="w-6 h-6 flex items-center justify-center pb-1">
-                  <ListCheck />
-                </span>
-              </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
-                <span className={`w-6 h-6 flex items-center justify-center pb-1 ${tab === "mastered" ? "text-green-700" : ""}`}>
-                  <Check />
-                </span>
-              </button>
-              <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
-                <span className="w-6 h-6 flex items-center justify-center pb-1">
-                  <Star />
-                </span>
-              </button>
-              <button
-                className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${
-                  tab === "practice" ? "text-primary" : "text-muted-foreground"
-                }`}
-                onClick={() => setTab("practice")}
-                aria-label="Practice"
-              >
-                <span
-                  className={
-                    "w-6 h-6 flex items-center justify-center text-2xl pb-1"
-                  }
+-                 <span className="w-6 h-6 flex items-center justify-center pb-1">
++                 <span className="w-6 h-6 flex items-center justify-center pb-1 mb-2">
+                    <ListCheck />
+                  </span>
+                </button>
+                <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
+-                 <span className={`w-6 h-6 flex items-center justify-center pb-1 ${tab === "mastered" ? "text-green-700" : ""}`}>
++                 <span className={`w-6 h-6 flex items-center justify-center pb-1 mb-2 ${tab === "mastered" ? "text-green-700" : ""}`}>
+                    <Check />
+                  </span>
+                </button>
+                <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
+-                 <span className="w-6 h-6 flex items-center justify-center pb-1">
++                 <span className="w-6 h-6 flex items-center justify-center pb-1 mb-2">
+                    <Star />
+                  </span>
+                </button>
+                <button
+                  className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${
+                    tab === "practice" ? "text-primary" : "text-muted-foreground"
+                  }`}
+                  onClick={() => setTab("practice")}
+                  aria-label="Practice"
                 >
-                  ?
-                </span>
-              </button>
-            </nav>
-          </div>}
+-                 <span
+-                   className={
+-                     "w-6 h-6 flex items-center justify-center text-2xl pb-1"
+-                   }
+-                 >
+-                   ?
+-                 </span>
++                 <span
++                   className={
++                     "w-6 h-6 flex items-center justify-center text-2xl pb-1 mb-2"
++                   }
++                 >
++                   ?
++                 </span>
+                </button>
+              </nav>
+            </div>}
         {/* DESKTOP: mimic classic look, not bottom bar */}
         {apiKey && <div className="hidden md:block bg-white">
             <Tabs value={tab} onValueChange={setTab} className="w-full">
