@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -5,16 +6,44 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchWordDetails } from "@/lib/fetchWordDetails";
+
 type Props = {
   open: boolean;
   onClose: () => void;
   onAdd: (entry: {
     text: string;
     definition: string;
-    examples: string[];
+    examples: { answer: string; sentence: string }[];
   }) => void | Promise<void>;
   apiKey: string;
 };
+
+// Copiata da fetchWordDetails per coerenza nella detection:
+function extractExampleAnswer(sentence: string, phrase: string): string {
+  const targetWords = phrase.split(/\s+/).filter(Boolean);
+  if (targetWords.length < 2) {
+    // fallback: una singola parola, cerca match case-insensitive
+    const re = new RegExp(targetWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+    const match = sentence.match(re);
+    return match ? match[0] : phrase;
+  }
+  // Prova a trovare da più parole a meno (almeno 2 parole consecutive)
+  for (let len = targetWords.length; len >= 2; len--) {
+    for (let start = 0; start <= targetWords.length - len; start++) {
+      const candidate = targetWords.slice(start, start + len).join(" ");
+      const re = new RegExp(candidate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+      const match = sentence.match(re);
+      if (match) return match[0];
+    }
+  }
+  // Prova la frase intera
+  const phraseRe = new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i");
+  const phraseMatch = sentence.match(phraseRe);
+  if (phraseMatch) return phraseMatch[0];
+  // fallback
+  return phrase;
+}
+
 const AddWordModal = ({
   open,
   onClose,
@@ -25,9 +54,8 @@ const AddWordModal = ({
   const [definition, setDefinition] = useState("");
   const [examples, setExamples] = useState("");
   const [loading, setLoading] = useState(false);
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
   const handleAdd = async () => {
     if (!text.trim()) {
       toast({
@@ -46,10 +74,11 @@ const AddWordModal = ({
     }
     setLoading(true);
     let _definition = definition.trim();
-    let _examples = examples.split("\n").map(e => e.trim()).filter(e => e);
+    let _examples: { answer: string; sentence: string }[] = [];
+
     try {
-      // If missing, use OpenAI to fill
-      if ((!_definition || _examples.length === 0) && apiKey) {
+      // Se mancano, usa OpenAI per compilarli (che restituisce già la forma giusta)
+      if ((!_definition || !examples.trim()) && apiKey) {
         toast({
           title: "Fetching info…",
           description: "Getting definition & examples from OpenAI for you."
@@ -59,8 +88,37 @@ const AddWordModal = ({
           text: text.trim()
         });
         if (!_definition) _definition = wordDetails.definition || "";
-        if (_examples.length === 0) _examples = (wordDetails.examples || []).map(ex => (typeof ex === "string" ? ex : ex.sentence || ""));
+        if (!_examples.length) {
+          // Se la risposta OpenAI contiene oggetti già giusti li usiamo
+          if (
+            Array.isArray(wordDetails.examples) &&
+            wordDetails.examples.length &&
+            typeof wordDetails.examples[0] === "object" &&
+            typeof wordDetails.examples[0].sentence === "string"
+          ) {
+            _examples = wordDetails.examples;
+          } else if (Array.isArray(wordDetails.examples)) {
+            // fallback (dovrebbe mai accadere): estraiamo answer per ognuno
+            _examples = wordDetails.examples.map((ex: any) => ({
+              answer: extractExampleAnswer(typeof ex === "string" ? ex : ex.sentence ?? "", text.trim()),
+              sentence: typeof ex === "string" ? ex : ex.sentence ?? ""
+            }));
+          }
+        }
       }
+
+      // Se utente inserisce esempi a mano (riga per riga)
+      if (!_examples.length && examples.trim()) {
+        _examples = examples
+          .split("\n")
+          .map(str => str.trim())
+          .filter(str => str)
+          .map(sentence => ({
+            answer: extractExampleAnswer(sentence, text.trim()),
+            sentence
+          }));
+      }
+
       if (!_definition) {
         toast({
           title: "Missing info",
@@ -70,6 +128,17 @@ const AddWordModal = ({
         setLoading(false);
         return;
       }
+
+      if (!_examples.length) {
+        toast({
+          title: "Missing info",
+          description: "No example sentences provided or generated.",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+
       await onAdd({
         text: text.trim(),
         definition: _definition,
@@ -94,7 +163,9 @@ const AddWordModal = ({
       setLoading(false);
     }
   };
-  return <Dialog open={open} onOpenChange={open => !open && onClose()}>
+
+  return (
+    <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Enter the saying</DialogTitle>
@@ -114,6 +185,9 @@ const AddWordModal = ({
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 };
+
 export default AddWordModal;
+
