@@ -83,7 +83,11 @@ export default function PracticeSection({
           {getQuestionSentence()}
         </span>
         <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center" />
-        {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
+        {state === "correct" && (
+          <div className="text-green-700 font-semibold mb-8">
+            Correct! 🎉
+          </div>
+        )}
         {state === "incorrect" && <div className="flex flex-col items-center w-full">
             <span className="text-red-600 font-semibold w-full text-center">
               Incorrect!
@@ -94,7 +98,7 @@ export default function PracticeSection({
           </div>}
         <div className={
           state === "correct"
-            ? "flex flex-col gap-2 pt-2 w-full"
+            ? "flex flex-col gap-1 pt-0 w-full"
             : "flex gap-3 pt-2 w-full"
         }>
           {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
