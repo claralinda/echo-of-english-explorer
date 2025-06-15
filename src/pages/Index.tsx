@@ -134,7 +134,6 @@ const Index = () => {
     }
     return null;
   };
-
   return <div className="min-h-screen bg-white flex flex-col relative">
     <InstallPrompt />
     {/* Compact header for mobile, roomy for desktop */}
@@ -174,59 +173,20 @@ const Index = () => {
         </div> : <div className="block md:hidden w-full bg-white"> 
           {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
           <div className="pt-2 px-2">
-            {tab === "to-learn" && (
-              <WordList
-                words={words}
-                onDelete={removeWord}
-                onMarkAsLearnt={markAsLearnt}
-                onStar={starWord}
-                showStar={true}
-                learntMode={false}
-              />
-            )}
-            {tab === "mastered" && (
-              <WordList
-                words={learntWords}
-                onDelete={removeWord}
-                onMoveBackToLearn={moveBackToLearn}
-                onStar={starWord}
-                showStar={true}
-                learntMode={true}
-              />
-            )}
-            {tab === "starred" && (
-              <WordList
-                words={starredWords}
-                onDelete={removeWord}
-                onMoveBackToLearn={moveBackToLearn}
-                onUnstar={unstarWord}
-                showStar={true}
-                starredMode={true}
-              />
-            )}
-            {tab === "practice" && (
-              <PracticeSection
-                words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
-                onMarkAsLearnt={markAsLearnt}
-              />
-            )}
+            {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
+            {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />}
+            {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />}
+            {tab === "practice" && <PracticeSection words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
+          onMarkAsLearnt={markAsLearnt} />}
           </div>
           {/* Floating "Add" button */}
-          <button
-            type="button"
-            onClick={() => setModalOpen(true)}
-            className="fixed z-40 bottom-[88px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in"
-            aria-label="Add saying"
-          >
+          <button type="button" onClick={() => setModalOpen(true)} aria-label="Add saying" className="fixed z-40 bottom-[88px] right-5 text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in bg-zinc-700 hover:bg-zinc-600 px-[10px] py-[10px]">
             <Plus className="w-7 h-7" />
           </button>
           {/* Flat, no shadow, light gray bottom bar for tab switching */}
-          <nav
-            className="fixed z-30 bottom-0 left-0 right-0 h-[80px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in"
-            style={{
-              boxShadow: "none"
-            }}
-          >
+          <nav className="fixed z-30 bottom-0 left-0 right-0 h-[80px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{
+          boxShadow: "none"
+        }}>
             <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
               <span className="w-6 h-6 flex items-center justify-center pb-1">
                 <ListCheck />
@@ -242,18 +202,8 @@ const Index = () => {
                 <Star />
               </span>
             </button>
-            <button
-              className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${
-                tab === "practice" ? "text-primary" : "text-muted-foreground"
-              }`}
-              onClick={() => setTab("practice")}
-              aria-label="Practice"
-            >
-              <span
-                className={
-                  "w-6 h-6 flex items-center justify-center text-2xl pb-1"
-                }
-              >
+            <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-primary" : "text-muted-foreground"}`} onClick={() => setTab("practice")} aria-label="Practice">
+              <span className={"w-6 h-6 flex items-center justify-center text-2xl pb-1"}>
                 ?
               </span>
             </button>
@@ -277,40 +227,17 @@ const Index = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="to-learn">
-              <WordList
-                words={words}
-                onDelete={removeWord}
-                onMarkAsLearnt={markAsLearnt}
-                onStar={starWord}
-                showStar={true}
-                learntMode={false}
-              />
+              <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
             </TabsContent>
             <TabsContent value="mastered">
-              <WordList
-                words={learntWords}
-                onDelete={removeWord}
-                onMoveBackToLearn={moveBackToLearn}
-                onStar={starWord}
-                showStar={true}
-                learntMode={true}
-              />
+              <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
             </TabsContent>
             <TabsContent value="starred">
-              <WordList
-                words={starredWords}
-                onDelete={removeWord}
-                onMoveBackToLearn={moveBackToLearn}
-                onUnstar={unstarWord}
-                showStar={true}
-                starredMode={true}
-              />
+              <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
             </TabsContent>
             <TabsContent value="practice">
-              <PracticeSection
-                words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
-                onMarkAsLearnt={markAsLearnt}
-              />
+              <PracticeSection words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
+            onMarkAsLearnt={markAsLearnt} />
             </TabsContent>
           </Tabs>
           {/* Desktop normal FAB */}
@@ -326,8 +253,8 @@ const Index = () => {
     <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">
       Powered by{" "}
       <span className="text-blue-600 underline hover:text-blue-800" style={{
-      cursor: "pointer"
-    }}>
+        cursor: "pointer"
+      }}>
         ChatGPT
       </span>{" "}
       | Your sayings are saved in your browser.
