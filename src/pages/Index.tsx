@@ -130,7 +130,7 @@ const Index = () => {
       return <span className="block text-[1rem] text-yellow-500 font-semibold mt-0.5 ml-px">starred</span>;
     }
     if (tab === "practice") {
-      return <span className="block text-[1rem] text-blue-600 font-semibold mt-0.5 ml-px">practice</span>;
+      return <span className="block text-[1rem] font-semibold mt-0.5 ml-px text-zinc-500">practice</span>;
     }
     return null;
   };
