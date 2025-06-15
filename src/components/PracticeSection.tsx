@@ -75,35 +75,29 @@ export default function PracticeSection({
       handleNext();
     }
   }
-  return (
-    <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
+  return <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
         <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
         <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
           <span className="text-md text-gray-800 mb-2 block text-center" style={{
-            minHeight: 36
-          }}>
+          minHeight: 36
+        }}>
             {getQuestionSentence()}
           </span>
           <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
 
-          {state === "correct" && (
-            <div className="w-full flex flex-col items-center">
+          {state === "correct" && <div className="w-full flex flex-col items-center">
               <div className="text-green-700 !font-semibold mt-6 mb-2 text-base my-[10px]">
                 Correct! 🎉
               </div>
-              {!!onMarkAsLearnt && (
-                <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="ghost" className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1">
+              {!!onMarkAsLearnt && <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="ghost" className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1">
                   Mark as mastered
-                </Button>
-              )}
+                </Button>}
               <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
                 Next
               </Button>
-            </div>
-          )}
-          {state === "incorrect" && (
-            <div className="w-full flex flex-col items-center">
+            </div>}
+          {state === "incorrect" && <div className="w-full flex flex-col items-center">
               <div className="mt-6 mb-2 w-full flex flex-col items-center my-[21px]">
                 <span className="text-red-600 font-semibold w-full text-center">
                   Incorrect!
@@ -111,38 +105,27 @@ export default function PracticeSection({
                 <span className="text-red-600 text-center text-sm">
                   The answer is: <span className="underline">{quiz.answer}</span>
                 </span>
-                {!!quiz.definition && (
-                  <span className="text-center text-xs mt-1 text-gray-500">
+                {!!quiz.definition && <span className="text-center text-xs mt-1 text-gray-500">
                     {quiz.definition}
-                  </span>
-                )}
+                  </span>}
               </div>
               <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
                 Next
               </Button>
-            </div>
-          )}
+            </div>}
 
-          {state === "idle" && (
-            <div className="flex gap-3 pt-2 w-full">
+          {state === "idle" && <div className="flex gap-3 pt-2 w-full">
               <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
                 Check answer
               </Button>
-            </div>
-          )}
+            </div>}
         </form>
       </div>
       {/* Nota informativa: sticky bottom sopra barra */}
-      <div
-        className="w-full text-xs text-muted-foreground text-center 
-        sticky bottom-0 bg-white pb-[22px] pt-3 z-20"
-        style={{
-          boxShadow: "0 -1px 0 0 #e2e8f0",
-          marginTop: "auto",
-        }}
-      >
-        Practice is based on your sayings and their examples.
-      </div>
-    </div>
-  );
+      <div className="w-full text-xs text-muted-foreground text-center 
+        sticky bottom-0 bg-white pb-[22px] pt-3 z-20" style={{
+      boxShadow: "0 -1px 0 0 #e2e8f0",
+      marginTop: "auto"
+    }}>Practice is based on your "to learn" sayings.</div>
+    </div>;
 }
