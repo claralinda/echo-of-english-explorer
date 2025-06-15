@@ -1,3 +1,4 @@
+
 export async function fetchWordDetails({
   apiKey,
   text,
@@ -9,11 +10,22 @@ export async function fetchWordDetails({
 }): Promise<{ definition: string; examples: { answer: string, sentence: string }[] }> {
   // OpenAI Chat API endpoint
   const endpoint = "https://api.openai.com/v1/chat/completions";
-  const prompt = `Write a concise English definition for "${text}" in no more than 150 characters, but do NOT start with phrases like "${text} means" or "The word ${text} means". Just provide the direct definition. Then give 2 example sentences using "${text}" in context. Format your reply as:
-Definition: ...
-Examples:
-1. ...
-2. ...`;
+  const prompt = `
+Write a concise English definition for "${text}" in no more than 150 characters. Do NOT start with phrases like "${text} means" or "The word ${text} means". Just provide the direct definition.
+
+Then, provide 2 example sentences using "${text}" in context. For each example, identify and extract the exact substring from the sentence that shows the form, conjugation, or inflected version of "${text}" as it appears in the sentence (e.g. pronouns changed, tense changed, etc).
+
+Format your reply as valid JSON using this schema:
+{
+  "definition": "A direct short definition here.",
+  "examples": [
+    { "sentence": "Sentence with the saying here.", "answer": "exact substring of saying as used" },
+    { "sentence": "Another sentence here.", "answer": "exact substring of saying as used" }
+  ]
+}
+
+Only reply with valid JSON. Do not include any other commentary or formatting. Ensure answer is the exact substring as it appears in the sentence.
+`.trim();
 
   const response = await fetch(endpoint, {
     method: "POST",
@@ -28,7 +40,7 @@ Examples:
         { role: "user", content: prompt }
       ],
       temperature: 0.3,
-      max_tokens: 250,
+      max_tokens: 350,
     }),
     signal,
   });
@@ -40,7 +52,28 @@ Examples:
   const data = await response.json();
   const content: string = data.choices?.[0]?.message?.content || "";
 
-  // Parse reply for Definition and numbered examples
+  // Attempt to parse as JSON. If fails, fallback to previous logic.
+  let parsed: null | { definition: string, examples: { sentence: string; answer: string }[] } = null;
+  try {
+    // To tolerate weird code block markup: remove ```json blocks if present
+    const cleaned = content.replace(/```json|```/g, '').trim();
+    parsed = JSON.parse(cleaned);
+  } catch {}
+
+  if (parsed && typeof parsed.definition === "string" && Array.isArray(parsed.examples)) {
+    // Ensure answer is always present and valid
+    const examples = parsed.examples.map((ex) => ({
+      sentence: ex.sentence,
+      answer: ex.answer || "",
+    })).filter(ex => !!ex.sentence && !!ex.answer);
+
+    return {
+      definition: parsed.definition,
+      examples,
+    };
+  }
+  
+  // Fallback: legacy parsing logic
   let definition = "";
   const examples: string[] = [];
 
@@ -67,6 +100,7 @@ Examples:
   }
   
   // Transform to required format: { answer, sentence }
+  // fallback: automatic extraction if the new prompt fails
   const structuredExamples = examples.map(sentence => ({
     sentence,
     answer: extractExampleAnswer(sentence, text),
@@ -104,3 +138,4 @@ function extractExampleAnswer(sentence: string, phrase: string): string {
   // fallback
   return phrase;
 }
+
