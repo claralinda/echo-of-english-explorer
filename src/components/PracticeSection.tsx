@@ -121,11 +121,20 @@ export default function PracticeSection({
             </div>}
         </form>
       </div>
-      {/* Nota informativa: sticky sopra la barra fissa in fondo */}
-      <div className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30" style={{
-      bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
-    }}>
-        Practice is based on your "to learn" sayings.
+      
+      <div
+        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30"
+        style={{}}
+        // impostiamo bottom via Tailwind
+      >
+        <div className="absolute inset-x-0" 
+          style={{ bottom: 56 }} // fallback per mobile
+        >
+          <span className="block md:hidden">Practice is based on your "to learn" sayings.</span>
+        </div>
+        <div className="hidden md:block absolute inset-x-0 md:bottom-8 lg:bottom-10">
+          Practice is based on your "to learn" sayings.
+        </div>
       </div>
     </div>;
 }
