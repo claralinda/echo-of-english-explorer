@@ -211,13 +211,21 @@ const Index = () => {
               )}
             </div>
             {/* Floating "Add" button */}
-            <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              className="fixed z-40 bottom-[88px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in"
+              aria-label="Add saying"
+            >
               <Plus className="w-7 h-7" />
             </button>
             {/* Flat, no shadow, light gray bottom bar for tab switching */}
-            <nav className="fixed z-30 bottom-0 left-0 right-0 h-[64px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in" style={{
-          boxShadow: "none"
-        }}>
+            <nav
+              className="fixed z-30 bottom-0 left-0 right-0 h-[80px] bg-[#f7f7f8] border-t flex justify-around items-center animate-fade-in"
+              style={{
+                boxShadow: "none"
+              }}
+            >
               <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
                 <span className="w-6 h-6 flex items-center justify-center pb-1">
                   <ListCheck />
