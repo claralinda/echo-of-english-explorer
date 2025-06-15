@@ -145,12 +145,12 @@ const Index = () => {
         {user && (
           <button
             onClick={signOut}
-            className="p-2 rounded-full hover:bg-accent transition flex items-center justify-center"
+            className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center"
             title="Log Out"
             aria-label="Log Out"
             style={{ marginTop: 0 }}
           >
-            <LogOut size={22} className="text-gray-400" />
+            <LogOut size={18} className="text-gray-400" />
           </button>
         )}
       </header>
