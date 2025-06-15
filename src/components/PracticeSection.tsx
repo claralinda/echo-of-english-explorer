@@ -94,8 +94,32 @@ export default function PracticeSection({
           // le classi sono prese da shadcn Button/secondary + input custom
         />
         {state === "correct" && (
-          <div className="text-green-700 !font-semibold mb-3 text-base">
-            Correct! 🎉
+          // Maggiore distacco sotto il field, meno prima del bottone! 
+          <div className="w-full flex flex-col items-center">
+            <div className="text-green-700 !font-semibold mt-6 mb-2 text-base">
+              Correct! 🎉
+            </div>
+            {!!onMarkAsLearnt && (
+              <Button
+                type="button"
+                onClick={handleMarkAsLearnt}
+                size="sm"
+                variant="ghost"
+                className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1"
+                // Sfondo verde chiaro restaurato, spazio tra bottone e correct ridotto grazie a mb-1
+              >
+                Mark as mastered
+              </Button>
+            )}
+            <Button
+              type="button"
+              onClick={handleNext}
+              size="sm"
+              variant="secondary"
+              className="w-full"
+            >
+              Next
+            </Button>
           </div>
         )}
         {state === "incorrect" && (
@@ -109,14 +133,9 @@ export default function PracticeSection({
             </span>
           </div>
         )}
-        <div
-          className={
-            state === "correct"
-              ? "flex flex-col gap-1 pt-0 w-full"
-              : "flex gap-3 pt-2 w-full"
-          }
-        >
-          {state === "idle" && (
+        {/* idle & incorrect come prima */}
+        {state === "idle" && (
+          <div className="flex gap-3 pt-2 w-full">
             <Button
               type="submit"
               disabled={!input.trim()}
@@ -125,8 +144,10 @@ export default function PracticeSection({
             >
               Check answer
             </Button>
-          )}
-          {state === "incorrect" && (
+          </div>
+        )}
+        {state === "incorrect" && (
+          <div className="flex gap-3 pt-2 w-full">
             <Button
               type="button"
               onClick={handleNext}
@@ -136,33 +157,8 @@ export default function PracticeSection({
             >
               Next
             </Button>
-          )}
-          {state === "correct" && (
-            <>
-              {!!onMarkAsLearnt && (
-                <Button
-                  type="button"
-                  onClick={handleMarkAsLearnt}
-                  size="sm"
-                  variant="ghost"
-                  className="w-full !text-green-700 font-semibold bg-transparent hover:bg-green-50 active:bg-green-100 focus:bg-green-50 outline-none shadow-none border-0"
-                  // forzo colore verde e visibilità testo, rimuovo bordi/ombre
-                >
-                  Mark as mastered
-                </Button>
-              )}
-              <Button
-                type="button"
-                onClick={handleNext}
-                size="sm"
-                variant="secondary"
-                className="w-full"
-              >
-                Next
-              </Button>
-            </>
-          )}
-        </div>
+          </div>
+        )}
       </form>
       <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
     </div>;
