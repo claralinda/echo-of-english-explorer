@@ -14,7 +14,7 @@ function pickRandomQuiz(words) {
         sentence: ex.sentence,
         answer: ex.answer || w.text,
         id: w.id,
-        definition: w.definition || "",
+        definition: w.definition || ""
       };
     }
     // legacy fallback
@@ -23,7 +23,7 @@ function pickRandomQuiz(words) {
       sentence: typeof ex === "string" ? ex : String(ex),
       answer: w.text,
       id: w.id,
-      definition: w.definition || "",
+      definition: w.definition || ""
     };
   }));
   if (entries.length === 0) return null;
@@ -106,11 +106,9 @@ export default function PracticeSection({
                 The answer is:{" "}
                 <span className="underline">{quiz.answer}</span>
               </span>
-              {!!quiz.definition && (
-                <span className="text-gray-700 text-center text-xs mt-1">
+              {!!quiz.definition && <span className="text-center text-xs mt-1 text-gray-500">
                   <span className="font-medium">Meaning:</span> {quiz.definition}
-                </span>
-              )}
+                </span>}
             </div>
             <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1">
               Next
