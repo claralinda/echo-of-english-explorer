@@ -185,7 +185,7 @@ const Index = () => {
                 onClick={() => setTab("to-learn")}
                 aria-label="To Learn"
               >
-                <span className="w-6 h-6 flex items-center justify-center">
+                <span className="w-6 h-6 flex items-center justify-center pb-1">
                   <ListCheck />
                 </span>
               </button>
@@ -194,7 +194,7 @@ const Index = () => {
                 onClick={() => setTab("mastered")}
                 aria-label="Mastered"
               >
-                <span className={`w-6 h-6 flex items-center justify-center ${tab === "mastered" ? "text-green-700" : ""}`}>
+                <span className={`w-6 h-6 flex items-center justify-center pb-1 ${tab === "mastered" ? "text-green-700" : ""}`}>
                   <Check />
                 </span>
               </button>
@@ -203,7 +203,7 @@ const Index = () => {
                 onClick={() => setTab("starred")}
                 aria-label="Starred"
               >
-                <span className="w-6 h-6 flex items-center justify-center">
+                <span className="w-6 h-6 flex items-center justify-center pb-1">
                   <Star />
                 </span>
               </button>
@@ -212,7 +212,7 @@ const Index = () => {
                 onClick={() => setTab("practice")}
                 aria-label="Practice"
               >
-                <span className="w-6 h-6 flex items-center justify-center text-2xl">
+                <span className="w-6 h-6 flex items-center justify-center text-2xl pb-1">
                   ?
                 </span>
               </button>
