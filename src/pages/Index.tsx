@@ -188,22 +188,22 @@ const Index = () => {
           boxShadow: "none"
         }}>
             <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "to-learn" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("to-learn")} aria-label="To Learn">
-              <span className="w-6 h-6 flex items-center justify-center pb-1">
+              <span className="w-6 h-6 flex items-center justify-center pb-1 relative top-[-5px]">
                 <ListCheck />
               </span>
             </button>
             <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "mastered" ? "text-primary font-bold" : "text-muted-foreground"}`} onClick={() => setTab("mastered")} aria-label="Mastered">
-              <span className={`w-6 h-6 flex items-center justify-center pb-1 ${tab === "mastered" ? "text-green-700" : ""}`}>
+              <span className={`w-6 h-6 flex items-center justify-center pb-1 relative top-[-5px] ${tab === "mastered" ? "text-green-700" : ""}`}>
                 <Check />
               </span>
             </button>
             <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "starred" ? "text-yellow-500 font-bold" : "text-muted-foreground"}`} onClick={() => setTab("starred")} aria-label="Starred">
-              <span className="w-6 h-6 flex items-center justify-center pb-1">
+              <span className="w-6 h-6 flex items-center justify-center pb-1 relative top-[-5px]">
                 <Star />
               </span>
             </button>
             <button className={`flex flex-col items-center justify-center flex-1 px-1 py-1 transition-all ${tab === "practice" ? "text-primary" : "text-muted-foreground"}`} onClick={() => setTab("practice")} aria-label="Practice">
-              <span className={"w-6 h-6 flex items-center justify-center text-2xl pb-1"}>
+              <span className={"w-6 h-6 flex items-center justify-center text-2xl pb-1 relative top-[-5px]">
                 ?
               </span>
             </button>
