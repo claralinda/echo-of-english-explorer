@@ -77,35 +77,63 @@ export default function PracticeSection({
   return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
       <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span className="text-md text-gray-800 mb-6 block text-center" style={{
-        minHeight: 36
-      }}>
+        <span
+          className="text-md text-gray-800 mb-2 block text-center"
+          style={{ minHeight: 36 }}
+        >
           {getQuestionSentence()}
         </span>
-        <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center" />
+        <Input
+          type="text"
+          placeholder="Your answer..."
+          autoFocus
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          disabled={state !== "idle"}
+          className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          // le classi sono prese da shadcn Button/secondary + input custom
+        />
         {state === "correct" && (
-          <div className="text-green-700 font-semibold mb-8">
+          <div className="text-green-700 !font-semibold mb-3 text-base">
             Correct! 🎉
           </div>
         )}
-        {state === "incorrect" && <div className="flex flex-col items-center w-full">
+        {state === "incorrect" && (
+          <div className="flex flex-col items-center w-full">
             <span className="text-red-600 font-semibold w-full text-center">
               Incorrect!
             </span>
             <span className="text-red-600 text-center">
-              The answer is: <span className="underline">{quiz.answer}</span>
+              The answer is:{" "}
+              <span className="underline">{quiz.answer}</span>
             </span>
-          </div>}
-        <div className={
-          state === "correct"
-            ? "flex flex-col gap-1 pt-0 w-full"
-            : "flex gap-3 pt-2 w-full"
-        }>
-          {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
+          </div>
+        )}
+        <div
+          className={
+            state === "correct"
+              ? "flex flex-col gap-1 pt-0 w-full"
+              : "flex gap-3 pt-2 w-full"
+          }
+        >
+          {state === "idle" && (
+            <Button
+              type="submit"
+              disabled={!input.trim()}
+              size="sm"
+              className="w-full"
+            >
               Check answer
-            </Button>}
+            </Button>
+          )}
           {state === "incorrect" && (
-            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+            <Button
+              type="button"
+              onClick={handleNext}
+              size="sm"
+              variant="secondary"
+              className="w-full"
+            >
               Next
             </Button>
           )}
@@ -117,12 +145,19 @@ export default function PracticeSection({
                   onClick={handleMarkAsLearnt}
                   size="sm"
                   variant="ghost"
-                  className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold"
+                  className="w-full !text-green-700 font-semibold bg-transparent hover:bg-green-50 active:bg-green-100 focus:bg-green-50 outline-none shadow-none border-0"
+                  // forzo colore verde e visibilità testo, rimuovo bordi/ombre
                 >
                   Mark as mastered
                 </Button>
               )}
-              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+              <Button
+                type="button"
+                onClick={handleNext}
+                size="sm"
+                variant="secondary"
+                className="w-full"
+              >
                 Next
               </Button>
             </>
