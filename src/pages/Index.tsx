@@ -135,16 +135,24 @@ const Index = () => {
       <InstallPrompt />
       {/* Compact header for mobile, roomy for desktop */}
       <header className="pt-6 pb-0 flex items-center justify-between gap-4 container w-full max-w-full md:px-0 bg-white px-[13px]">
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex items-center">
           <h1 className="text-2xl font-extrabold truncate mb-0">
             <span>Everyday sayings</span>
           </h1>
-          {/* Show subtitle on both mobile and desktop */}
-          <span>{renderListSubtitle()}</span>
+          {/* Show subtitle accanto al titolo su desktop/lg */}
+          <span className="ml-2">{renderListSubtitle()}</span>
         </div>
-        {user && <button onClick={signOut} className="p-2 rounded-full hover:bg-accent transition ml-2 flex items-center justify-center" title="Log Out" aria-label="Log Out">
-            <LogOut size={18} className="text-gray-400" />
-          </button>}
+        {user && (
+          <button
+            onClick={signOut}
+            className="p-2 rounded-full hover:bg-accent transition flex items-center justify-center"
+            title="Log Out"
+            aria-label="Log Out"
+            style={{ marginTop: 0 }}
+          >
+            <LogOut size={22} className="text-gray-400" />
+          </button>
+        )}
       </header>
       {/* MAIN BODY */}
       <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
