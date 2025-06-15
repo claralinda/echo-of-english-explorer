@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
-
 const AuthPage = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -22,15 +21,18 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   // Get session using our hook -- this lets us detect a logged in session
-  const { session } = useSupabaseAuth();
+  const {
+    session
+  } = useSupabaseAuth();
 
   // Auto-redirect away from /auth if already signed in
   useEffect(() => {
     if (session) {
-      navigate("/", { replace: true });
+      navigate("/", {
+        replace: true
+      });
     }
   }, [session, navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -127,7 +129,7 @@ const AuthPage = () => {
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
           <Input autoFocus type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} disabled={loading} />
           <Input type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} disabled={loading} />
-          <Button type="submit" className="mt-2 w-full" disabled={loading}>
+          <Button type="submit" disabled={loading} className="mt-2 w-full bg-zinc-700 hover:bg-zinc-600">
             {loading ? "Loading..." : mode === "signin" ? "Sign In" : "Sign Up"}
           </Button>
         </form>
