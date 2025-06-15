@@ -44,6 +44,23 @@ function extractExampleAnswer(sentence: string, phrase: string): string {
   // fallback
   return phrase;
 }
+
+// Funzione che mette la prima lettera in minuscolo (ma non modifica "I" come pronome)
+function normalizeSaying(input: string): string {
+  if (!input) return input;
+  // Se la parola è "I" isolata, lasciala invariata
+  if (input.trim() === "I") return input;
+  // Se inizia con "I " e intende il pronome, lasciamo la "I" maiuscola
+  // Short-circuit per casi tipo "I am..." oppure "I don't..."
+  if (input.startsWith("I ")) return input;
+  // Se inizia con "I'" (I’m, I've, I'll, I'd)
+  if (/^I['’]/.test(input)) return input;
+  // Se inizia con virgolette poi "I" (es. “I will…”)
+  if (/^["'”“‘’]?I(\s|['’])/.test(input)) return input;
+  // Altrimenti minuscolizza solo la prima lettera
+  return input.charAt(0).toLowerCase() + input.slice(1);
+}
+
 const AddWordModal = ({
   open,
   onClose,
@@ -130,8 +147,10 @@ const AddWordModal = ({
         setLoading(false);
         return;
       }
+      // Normalizza la prima lettera del saying qui (eccetto caso "I")
+      const normalizedText = normalizeSaying(text.trim());
       await onAdd({
-        text: text.trim(),
+        text: normalizedText,
         definition: _definition,
         examples: _examples
       });
@@ -140,7 +159,7 @@ const AddWordModal = ({
       setExamples("");
       toast({
         title: "Added!",
-        description: `Saved "${text.trim()}" with definition.`,
+        description: `Saved "${normalizedText}" with definition.`,
         duration: 2000
       });
       onClose();
