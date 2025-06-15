@@ -89,6 +89,6 @@ export default function PracticeSection({
             </Button>}
         </div>
       </form>
-      <div className="mt-4 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
+      <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
     </div>;
 }
