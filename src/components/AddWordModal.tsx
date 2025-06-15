@@ -157,7 +157,7 @@ const AddWordModal = ({
   return <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent className="max-w-md py-[37px]">
         <DialogHeader>
-          <DialogTitle className="my-[8px]">Enter the saying</DialogTitle>
+          <DialogTitle className="my-[2px]">Enter the saying</DialogTitle>
           <DialogDescription>
             If you leave definition or examples empty,<br />
             we'll generate them using ChatGPT.
