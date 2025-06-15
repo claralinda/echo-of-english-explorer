@@ -71,7 +71,15 @@ export default function PracticeSection({
         >
           {getQuestionSentence()}
         </span>
-        <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
+        <Input
+          type="text"
+          placeholder="Your answer..."
+          autoFocus
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          disabled={state !== "idle"}
+          className="mx-auto w-full max-w-xs text-center"
+        />
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
         {state === "incorrect" && <div className="flex flex-col items-center w-full">
             <span className="text-red-600 font-semibold w-full text-center">
