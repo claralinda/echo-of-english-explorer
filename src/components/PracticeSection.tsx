@@ -127,7 +127,7 @@ export default function PracticeSection({
               <span className="text-red-600 font-semibold w-full text-center">
                 Incorrect!
               </span>
-              <span className="text-red-600 text-center">
+              <span className="text-red-600 text-center text-sm">
                 The answer is:{" "}
                 <span className="underline">{quiz.answer}</span>
               </span>
