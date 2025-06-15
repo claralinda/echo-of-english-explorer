@@ -65,9 +65,10 @@ export default function PracticeSection({
   return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
       <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span className="text-md text-gray-800 mb-2 block text-center" style={{
-        minHeight: 36
-      }}>
+        <span
+          className="text-md text-gray-800 mb-6 block text-center"
+          style={{ minHeight: 36 }}
+        >
           {getQuestionSentence()}
         </span>
         <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
