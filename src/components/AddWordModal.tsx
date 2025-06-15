@@ -168,7 +168,7 @@ const AddWordModal = ({
           <Input placeholder="Definition…" value={definition} onChange={e => setDefinition(e.target.value)} disabled={loading} />
           <Textarea placeholder="Examples (one per line)…" value={examples} rows={3} onChange={e => setExamples(e.target.value)} disabled={loading} />
         </div>
-        <DialogFooter className="mt-4">
+        <DialogFooter className="mt-2">
           <Button onClick={handleAdd} disabled={loading}>
             {loading ? "Saving…" : "Add"}
           </Button>
