@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Check } from "lucide-react"; // Import the tick icon
 
 // Picks a random quiz entry, supporting both legacy string and {sentence, answer} objects
 function pickRandomQuiz(words) {
@@ -74,85 +73,49 @@ export default function PracticeSection({
       handleNext();
     }
   }
-  return (
-    <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
+  return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
       <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-        <span className="text-md text-gray-800 mb-2 block text-center" style={{ minHeight: 36 }}>
+        <span className="text-md text-gray-800 mb-2 block text-center" style={{
+        minHeight: 36
+      }}>
           {getQuestionSentence()}
         </span>
-        <Input
-          type="text"
-          placeholder="Your answer..."
-          autoFocus
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          disabled={state !== "idle"}
-          className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-        />
+        <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
 
-        {state === "correct" && (
-          <div className="w-full flex flex-col items-center">
-            <div className="text-green-700 !font-semibold mt-8 mb-3 text-base">
+        {/* "Correct!" o "Incorrect!" state, uniform spacing */}
+        {state === "correct" && <div className="w-full flex flex-col items-center">
+            <div className="text-green-700 !font-semibold mt-6 mb-2 text-base my-[10px]">
               Correct! 🎉
             </div>
-            <div className="flex flex-col gap-2 w-full">
-              {!!onMarkAsLearnt && (
-                <Button
-                  type="button"
-                  onClick={handleMarkAsLearnt}
-                  size="sm"
-                  variant="ghost"
-                  className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold flex items-center justify-center mb-0"
-                >
-                  <Check className="mr-2 w-4 h-4" /> Mark as mastered
-                </Button>
-              )}
-              <Button
-                type="button"
-                onClick={handleNext}
-                size="sm"
-                variant="secondary"
-                className="w-full mt-0"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {state === "incorrect" && (
-          <div className="w-full flex flex-col items-center">
-            <div className="mt-8 mb-3 w-full flex flex-col items-center">
+            {!!onMarkAsLearnt && <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="ghost" className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1">
+                Mark as mastered
+              </Button>}
+            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+              Next
+            </Button>
+          </div>}
+        {state === "incorrect" && <div className="w-full flex flex-col items-center">
+            <div className="mt-6 mb-2 w-full flex flex-col items-center my-[21px]">
               <span className="text-red-600 font-semibold w-full text-center">
                 Incorrect!
               </span>
-              <span className="text-red-600 text-center text-xs">
+              <span className="text-red-600 text-center text-sm">
                 The answer is:{" "}
                 <span className="underline">{quiz.answer}</span>
               </span>
             </div>
-            <Button
-              type="button"
-              onClick={handleNext}
-              size="sm"
-              variant="secondary"
-              className="w-full"
-            >
+            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
               Next
             </Button>
-          </div>
-        )}
+          </div>}
 
-        {state === "idle" && (
-          <div className="flex gap-3 pt-2 w-full">
+        {state === "idle" && <div className="flex gap-3 pt-2 w-full">
             <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
               Check answer
             </Button>
-          </div>
-        )}
+          </div>}
       </form>
       <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
-    </div>
-  );
+    </div>;
 }
