@@ -140,8 +140,8 @@ const AddWordModal = ({
       setExamples("");
       toast({
         title: "Added!",
-        description: `Saved "${text.trim()}" with definition.`
-        // RIMOSSA duration, ora si comporta come gli altri toast
+        description: `Saved "${text.trim()}" with definition.`,
+        duration: 2000
       });
       onClose();
     } catch (e: any) {
