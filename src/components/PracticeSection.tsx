@@ -93,21 +93,33 @@ export default function PracticeSection({
               The answer is: <span className="underline">{quiz.answer}</span>
             </span>
           </div>}
-        <div className="flex gap-3 pt-2 w-full">
+        <div className={
+          state === "correct"
+            ? "flex flex-col gap-2 pt-2 w-full"
+            : "flex gap-3 pt-2 w-full"
+        }>
           {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
               Check answer
             </Button>}
-          {(state === "correct" || state === "incorrect") && <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+          {state === "incorrect" && (
+            <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
               Next
-            </Button>}
-          {state === "correct" && !!onMarkAsLearnt && (
-            <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="default" className="w-full">
-              Mark as mastered
             </Button>
+          )}
+          {state === "correct" && (
+            <>
+              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+                Next
+              </Button>
+              {!!onMarkAsLearnt && (
+                <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="default" className="w-full">
+                  Mark as mastered
+                </Button>
+              )}
+            </>
           )}
         </div>
       </form>
       <div className="mt-1 text-xs text-muted-foreground text-center">Practice is based on your sayings and their examples.</div>
     </div>;
 }
-
