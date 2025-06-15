@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,34 +62,24 @@ export default function PracticeSection({
     setInput("");
     setState("idle");
   }
-  return (
-    <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
-      <h2 className="font-bold text-lg mb-6 text-center text-white">Fill in the blank</h2>
+  return <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full max-w-lg mx-auto px-[20px]">
+      <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
       <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
         <span className="text-md text-gray-800 mb-2 block text-center" style={{
         minHeight: 36
       }}>
           {getQuestionSentence()}
         </span>
-        <Input
-          type="text"
-          placeholder="Your answer..."
-          autoFocus
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          disabled={state !== "idle"}
-        />
+        <Input type="text" placeholder="Your answer..." autoFocus value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} />
         {state === "correct" && <div className="text-green-700 font-semibold">Correct! 🎉</div>}
-        {state === "incorrect" && (
-          <div className="flex flex-col items-center w-full">
+        {state === "incorrect" && <div className="flex flex-col items-center w-full">
             <span className="text-red-600 font-semibold w-full text-center">
               Incorrect!
             </span>
             <span className="text-red-600 text-center">
               The answer is: <span className="underline">{quiz.answer}</span>
             </span>
-          </div>
-        )}
+          </div>}
         <div className="flex gap-3 pt-2 w-full">
           {state === "idle" && <Button type="submit" disabled={!input.trim()} size="sm" className="w-full">
               Check answer
@@ -103,6 +92,5 @@ export default function PracticeSection({
       <div className="mt-4 text-xs text-muted-foreground text-center">
         Practice is based on your saved sayings and their example sentences.
       </div>
-    </div>
-  );
+    </div>;
 }
