@@ -123,7 +123,7 @@ export default function PracticeSection({
       </div>
       
       <div
-        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30 md:px-[10px]"
+        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30 md:px-[10px] md:mx-[10px]"
         style={{
           bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
         }}
