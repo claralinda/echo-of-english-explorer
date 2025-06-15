@@ -137,7 +137,7 @@ const Index = () => {
   return <div className="min-h-screen bg-white flex flex-col relative">
     <InstallPrompt />
     {/* Compact header for mobile, roomy for desktop */}
-    <header className="pt-6 pb-0 flex flex-row items-start justify-between gap-4 container w-full max-w-full md:px-0 bg-white px-[13px]">
+    <header className="pt-6 pb-0 flex flex-row items-start justify-between gap-4 container w-full max-w-full md:px-0 bg-white px-[12px]">
       <div className="flex-1 min-w-0">
         <div className="flex items-center">
           <h1 className="text-2xl font-extrabold truncate mb-0">
