@@ -122,9 +122,12 @@ export default function PracticeSection({
         </form>
       </div>
       {/* Nota informativa: sticky sopra la barra fissa in fondo */}
-      <div className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] z-30" style={{
-      bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
-    }}>
+      <div
+        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] z-30 md:pl-7"
+        style={{
+          bottom: 56, // oppure regola secondo l'altezza effettiva della tua bottom bar
+        }}
+      >
         Practice is based on your "to learn" sayings.
       </div>
     </div>;

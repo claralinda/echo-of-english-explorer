@@ -105,36 +105,16 @@ const AuthPage = () => {
       <div className="bg-card p-6 rounded-xl w-full max-w-md shadow space-y-4 flex flex-col items-center">
         <h1 className="font-extrabold text-2xl">Everyday Sayings</h1>
         <div className="flex gap-4 w-full mb-2 justify-center">
-          <Button
-            variant={mode === "signin" ? "default" : "outline"}
-            onClick={() => {
-              setMode("signin");
-              setError(null);
-            }}
-            className={
-              "w-1/2 " +
-              (mode === "signin"
-                ? "bg-zinc-700 hover:bg-zinc-800 text-white"
-                : "")
-            }
-            disabled={loading}
-          >
+          <Button variant={mode === "signin" ? "default" : "outline"} onClick={() => {
+          setMode("signin");
+          setError(null);
+        }} className="w-1/2" disabled={loading}>
             Sign In
           </Button>
-          <Button
-            variant={mode === "signup" ? "default" : "outline"}
-            onClick={() => {
-              setMode("signup");
-              setError(null);
-            }}
-            className={
-              "w-1/2 " +
-              (mode === "signup"
-                ? "bg-zinc-700 hover:bg-zinc-800 text-white"
-                : "")
-            }
-            disabled={loading}
-          >
+          <Button variant={mode === "signup" ? "default" : "outline"} onClick={() => {
+          setMode("signup");
+          setError(null);
+        }} className="w-1/2" disabled={loading}>
             Sign Up
           </Button>
         </div>
