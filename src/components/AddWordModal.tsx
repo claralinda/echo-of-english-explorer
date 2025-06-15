@@ -149,8 +149,8 @@ const AddWordModal = ({
       setExamples("");
       toast({
         title: "Added!",
-        description: `Saved "${text.trim()}" with definition.`,
-        duration: 3000 // Popup will close after 3 seconds
+        description: `Saved "${text.trim()}" with definition.`
+        // RIMOSSA duration, ora si comporta come gli altri toast
       });
       onClose();
     } catch (e: any) {

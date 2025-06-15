@@ -112,7 +112,7 @@ const Index = () => {
   const handleAddWord = async (entry: {
     text: string;
     definition: string;
-    examples: string[];
+    examples: { answer: string; sentence: string }[]; // tipo corretto
   }) => {
     await addWord(entry);
     setTab("to-learn");
