@@ -110,7 +110,7 @@ const AuthPage = () => {
           <Button variant={mode === "signin" ? "default" : "outline"} onClick={() => {
           setMode("signin");
           setError(null);
-        }} className="w-1/2" disabled={loading}>
+        }} disabled={loading} className="w-1/2 bg-zinc-700 hover:bg-zinc-600">
             Sign In
           </Button>
           <Button variant={mode === "signup" ? "default" : "outline"} onClick={() => {
