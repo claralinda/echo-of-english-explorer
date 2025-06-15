@@ -173,10 +173,42 @@ const Index = () => {
           </div> : <div className="block md:hidden w-full bg-white"> 
             {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
             <div className="pt-2 px-2">
-              {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
-              {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />}
-              {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />}
-              {tab === "practice" && <PracticeSection words={[...words, ...learntWords, ...starredWords]} onMarkAsLearnt={markAsLearnt} />}
+              {tab === "to-learn" && (
+                <WordList
+                  words={words}
+                  onDelete={removeWord}
+                  onMarkAsLearnt={markAsLearnt}
+                  onStar={starWord}
+                  showStar={true}
+                  learntMode={false}
+                />
+              )}
+              {tab === "mastered" && (
+                <WordList
+                  words={learntWords}
+                  onDelete={removeWord}
+                  onMoveBackToLearn={moveBackToLearn}
+                  onStar={starWord}
+                  showStar={true}
+                  learntMode={true}
+                />
+              )}
+              {tab === "starred" && (
+                <WordList
+                  words={starredWords}
+                  onDelete={removeWord}
+                  onMoveBackToLearn={moveBackToLearn}
+                  onUnstar={unstarWord}
+                  showStar={true}
+                  starredMode={true}
+                />
+              )}
+              {tab === "practice" && (
+                <PracticeSection
+                  words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
+                  onMarkAsLearnt={markAsLearnt}
+                />
+              )}
             </div>
             {/* Floating "Add" button */}
             <button type="button" onClick={() => setModalOpen(true)} className="fixed z-40 bottom-[72px] right-5 bg-primary text-white rounded-full p-4 flex items-center justify-center active:scale-95 transition-all hover:scale-105 animate-fade-in" aria-label="Add saying">
@@ -236,16 +268,40 @@ const Index = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="to-learn">
-                <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
+                <WordList
+                  words={words}
+                  onDelete={removeWord}
+                  onMarkAsLearnt={markAsLearnt}
+                  onStar={starWord}
+                  showStar={true}
+                  learntMode={false}
+                />
               </TabsContent>
               <TabsContent value="mastered">
-                <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
+                <WordList
+                  words={learntWords}
+                  onDelete={removeWord}
+                  onMoveBackToLearn={moveBackToLearn}
+                  onStar={starWord}
+                  showStar={true}
+                  learntMode={true}
+                />
               </TabsContent>
               <TabsContent value="starred">
-                <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
+                <WordList
+                  words={starredWords}
+                  onDelete={removeWord}
+                  onMoveBackToLearn={moveBackToLearn}
+                  onUnstar={unstarWord}
+                  showStar={true}
+                  starredMode={true}
+                />
               </TabsContent>
               <TabsContent value="practice">
-                <PracticeSection words={[...words, ...learntWords, ...starredWords]} onMarkAsLearnt={markAsLearnt} />
+                <PracticeSection
+                  words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
+                  onMarkAsLearnt={markAsLearnt}
+                />
               </TabsContent>
             </Tabs>
             {/* Desktop normal FAB */}
