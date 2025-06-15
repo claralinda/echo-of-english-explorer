@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,14 +5,16 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchWordDetails } from "@/lib/fetchWordDetails";
-
 type Props = {
   open: boolean;
   onClose: () => void;
   onAdd: (entry: {
     text: string;
     definition: string;
-    examples: { answer: string; sentence: string }[];
+    examples: {
+      answer: string;
+      sentence: string;
+    }[];
   }) => void | Promise<void>;
   apiKey: string;
 };
@@ -43,7 +44,6 @@ function extractExampleAnswer(sentence: string, phrase: string): string {
   // fallback
   return phrase;
 }
-
 const AddWordModal = ({
   open,
   onClose,
@@ -54,8 +54,9 @@ const AddWordModal = ({
   const [definition, setDefinition] = useState("");
   const [examples, setExamples] = useState("");
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleAdd = async () => {
     if (!text.trim()) {
       toast({
@@ -74,8 +75,10 @@ const AddWordModal = ({
     }
     setLoading(true);
     let _definition = definition.trim();
-    let _examples: { answer: string; sentence: string }[] = [];
-
+    let _examples: {
+      answer: string;
+      sentence: string;
+    }[] = [];
     try {
       // Se mancano, usa OpenAI per compilarli (che restituisce già la forma giusta)
       if ((!_definition || !examples.trim()) && apiKey) {
@@ -90,12 +93,7 @@ const AddWordModal = ({
         if (!_definition) _definition = wordDetails.definition || "";
         if (!_examples.length) {
           // Se la risposta OpenAI contiene oggetti già giusti li usiamo
-          if (
-            Array.isArray(wordDetails.examples) &&
-            wordDetails.examples.length &&
-            typeof wordDetails.examples[0] === "object" &&
-            typeof wordDetails.examples[0].sentence === "string"
-          ) {
+          if (Array.isArray(wordDetails.examples) && wordDetails.examples.length && typeof wordDetails.examples[0] === "object" && typeof wordDetails.examples[0].sentence === "string") {
             _examples = wordDetails.examples;
           } else if (Array.isArray(wordDetails.examples)) {
             // fallback (dovrebbe mai accadere): estraiamo answer per ognuno
@@ -109,16 +107,11 @@ const AddWordModal = ({
 
       // Se utente inserisce esempi a mano (riga per riga)
       if (!_examples.length && examples.trim()) {
-        _examples = examples
-          .split("\n")
-          .map(str => str.trim())
-          .filter(str => str)
-          .map(sentence => ({
-            answer: extractExampleAnswer(sentence, text.trim()),
-            sentence
-          }));
+        _examples = examples.split("\n").map(str => str.trim()).filter(str => str).map(sentence => ({
+          answer: extractExampleAnswer(sentence, text.trim()),
+          sentence
+        }));
       }
-
       if (!_definition) {
         toast({
           title: "Missing info",
@@ -128,7 +121,6 @@ const AddWordModal = ({
         setLoading(false);
         return;
       }
-
       if (!_examples.length) {
         toast({
           title: "Missing info",
@@ -138,7 +130,6 @@ const AddWordModal = ({
         setLoading(false);
         return;
       }
-
       await onAdd({
         text: text.trim(),
         definition: _definition,
@@ -163,12 +154,10 @@ const AddWordModal = ({
       setLoading(false);
     }
   };
-
-  return (
-    <Dialog open={open} onOpenChange={open => !open && onClose()}>
+  return <Dialog open={open} onOpenChange={open => !open && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Enter the saying</DialogTitle>
+          <DialogTitle className="my-[8px]">Enter the saying</DialogTitle>
           <DialogDescription>
             If you leave definition or examples empty,<br />
             we'll generate them using ChatGPT.
@@ -185,9 +174,6 @@ const AddWordModal = ({
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 };
-
 export default AddWordModal;
-
