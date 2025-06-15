@@ -169,7 +169,7 @@ const AddWordModal = ({
           <Textarea placeholder="Examples (one per line)…" value={examples} rows={3} onChange={e => setExamples(e.target.value)} disabled={loading} />
         </div>
         <DialogFooter>
-          <Button onClick={handleAdd} disabled={loading}>
+          <Button onClick={handleAdd} disabled={loading} className="bg-zinc-700 hover:bg-zinc-600">
             {loading ? "Saving…" : "Add"}
           </Button>
         </DialogFooter>
