@@ -75,7 +75,8 @@ export default function PracticeSection({
       handleNext();
     }
   }
-  return <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
+  return (
+    <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
         <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
         <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
@@ -122,10 +123,14 @@ export default function PracticeSection({
         </form>
       </div>
       {/* Nota informativa: sticky bottom sopra barra */}
-      <div className="w-full text-xs text-muted-foreground text-center 
-        sticky bottom-0 bg-white pb-[22px] pt-3 z-20" style={{
-      boxShadow: "0 -1px 0 0 #e2e8f0",
-      marginTop: "auto"
-    }}>Practice is based on your "to learn" sayings.</div>
-    </div>;
+      <div
+        className="fixed left-0 bottom-0 w-full text-xs text-muted-foreground text-center bg-white pb-[22px] pt-3 z-30"
+        style={{
+          // rimosso borderTop/boxShadow
+        }}
+      >
+        Practice is based on your "to learn" sayings.
+      </div>
+    </div>
+  );
 }
