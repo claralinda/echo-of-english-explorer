@@ -85,7 +85,7 @@ export default function PracticeSection({
 
         {/* "Correct!" o "Incorrect!" state, uniform spacing */}
         {state === "correct" && <div className="w-full flex flex-col items-center">
-            <div className="text-green-700 !font-semibold mt-6 mb-2 text-base">
+            <div className="text-green-700 !font-semibold mt-6 mb-2 text-base my-[10px]">
               Correct! 🎉
             </div>
             {!!onMarkAsLearnt && <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="ghost" className="w-full bg-green-50 hover:bg-green-100 !text-green-700 font-semibold mb-1">
