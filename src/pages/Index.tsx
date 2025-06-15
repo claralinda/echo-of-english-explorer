@@ -211,7 +211,7 @@ const Index = () => {
         </div>}
       {/* DESKTOP: mimic classic look, not bottom bar */}
       {apiKey && <div className="hidden md:block bg-white">
-          <Tabs value={tab} onValueChange={setTab} className="w-full">
+          <Tabs value={tab} onValueChange={setTab} className="w-full px-[8px]">
             <TabsList className="mb-3 flex w-full justify-center bg-white">
               <TabsTrigger value="to-learn" className="w-40">
                 To Learn
