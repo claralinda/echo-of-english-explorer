@@ -108,14 +108,14 @@ export default function PracticeSection({
           )}
           {state === "correct" && (
             <>
-              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
-                Next
-              </Button>
               {!!onMarkAsLearnt && (
                 <Button type="button" onClick={handleMarkAsLearnt} size="sm" variant="default" className="w-full">
                   Mark as mastered
                 </Button>
               )}
+              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full">
+                Next
+              </Button>
             </>
           )}
         </div>
