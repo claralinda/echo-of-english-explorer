@@ -79,7 +79,7 @@ export default function PracticeSection({
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
         <h2 className="font-bold text-lg mb-6 text-center text-white py-[30px]">Fill in the blank</h2>
         <form onSubmit={handleCheckAnswer} className="flex flex-col gap-4 items-center w-full">
-          <span className="text-md text-gray-800 mb-2 block text-center" style={{
+          <span className="text-md text-gray-800 mb-1 block text-center" style={{
           minHeight: 36
         }}>
             {getQuestionSentence()}
