@@ -4,8 +4,6 @@ import { Star, X, Check } from "lucide-react";
 type Word = {
   id: string;
   text: string;
-  definition: string;
-  examples: any[]; // Can be { sentence, answer } or string
   createdAt: string;
 };
 type Props = {
@@ -61,29 +59,7 @@ const WordList = ({
                 {w.text}
               </span>
               {/* Increased font size below from text-xs to text-sm */}
-              <span className="text-sm mt-0.5 text-gray-400 font-normal leading-snug py-px">
-                {lcFirst(w.definition)}
-              </span>
-              {w.examples.length > 0 && openId === w.id ? (
-                <ul className="mt-1 ml-0 px-0 text-[0.75em] text-gray-400 italic space-y-1">
-                  {w.examples.map((ex, i) => {
-                    // If it's an object with sentence, answer: bold the answer in the sentence
-                    if (ex && typeof ex === "object" && "sentence" in ex) {
-                      return (
-                        <li key={i} className="pb-0 leading-tight">
-                          {highlightAnswer(ex.sentence, ex.answer)}
-                        </li>
-                      );
-                    }
-                    // Fallback: just show as string if not an object
-                    return (
-                      <li key={i} className="pb-0 leading-tight">
-                        {ex}
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : null}
+              {/* Removed definition and examples display */}
               {/* Actions as icons, displayed only when expanded */}
               {openId === w.id && <div className="flex flex-row flex-wrap gap-4 mt-2 items-center">
                   {/* Learnt/Back actions */}

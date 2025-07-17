@@ -4,8 +4,6 @@ import { useState } from "react";
 export type WordEntry = {
   id: string;
   text: string;
-  definition: string;
-  examples: string[];
   createdAt: string;
 };
 
