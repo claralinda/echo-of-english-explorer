@@ -84,7 +84,7 @@ export default function PracticeSection({
         }}>
             {getQuestionSentence()}
           </span>
-          {!!quiz.definition && <span className="text-center text-sm mb-2 text-gray-500">
+          {!!quiz.definition && <span className="text-center mb-2 text-gray-500 text-xs">
               {quiz.definition}
             </span>}
           <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
@@ -125,12 +125,9 @@ export default function PracticeSection({
         </form>
       </div>
       
-      <div
-        className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30 md:px-[10px] md:mx-[10px]"
-        style={{
-          bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
-        }}
-      >
+      <div className="fixed left-0 w-full text-xs text-muted-foreground text-center bg-white pt-3 pb-[32px] md:pb-0 z-30 md:px-[10px] md:mx-[10px]" style={{
+      bottom: 56 // o regola in base all'altezza effettiva della tua bottom bar rosa
+    }}>
         Practice is based on your "to learn" sayings.
       </div>
     </div>;
