@@ -84,7 +84,7 @@ export default function PracticeSection({
         }}>
             {getQuestionSentence()}
           </span>
-          {!!quiz.definition && <span className="text-center mb-2 text-gray-500 text-xs">
+          {!!quiz.definition && <span className="text-center mb-1 text-gray-500 text-xs">
               {quiz.definition}
             </span>}
           <Input type="text" placeholder="Your answer..." value={input} onChange={e => setInput(e.target.value)} disabled={state !== "idle"} className="mx-auto w-full max-w-xs text-center h-9 rounded-md px-3 py-2 text-base font-medium border border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
