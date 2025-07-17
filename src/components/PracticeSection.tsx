@@ -114,7 +114,7 @@ export default function PracticeSection({
               </Button>
             </div>}
 
-          {state === "idle" && <div className="flex gap-3 pt-2 w-full">
+          {state === "idle" && <div className="flex flex-col gap-2 pt-2 w-full">
               <Button type="submit" disabled={!input.trim()} size="sm" className="w-full bg-zinc-700 hover:bg-zinc-600">
                 Check answer
               </Button>
