@@ -111,6 +111,11 @@ const Index = () => {
   // On AddWordModal "Add", set tab to "to-learn"
   const handleAddWord = async (entry: {
     text: string;
+    definition: string;
+    examples: {
+      answer: string;
+      sentence: string;
+    }[]; // tipo corretto
   }) => {
     await addWord(entry);
     setTab("to-learn");

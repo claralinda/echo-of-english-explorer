@@ -8,6 +8,8 @@ const DEMO_USER_ID = "00000000-0000-0000-0000-000000000000";
 export type SupabaseWordEntry = {
   id: string;
   text: string;
+  definition: string;
+  examples: any[]; // Accept array of strings or objects
   list: "to_learn" | "learnt" | "starred";
   createdAt: string;
 };
@@ -89,10 +91,12 @@ export function useSupabaseWords(userIdInput: string | null) {
   };
 
   // Add a new word to to_learn
-  const addWord = async (entry: { text: string }): Promise<void> => {
+  const addWord = async (entry: { text: string; definition: string; examples: any[] }): Promise<void> => {
     await supabase.from("words").insert([
       {
         text: entry.text,
+        definition: entry.definition,
+        examples: entry.examples,
         user_id: userId,
         list: "to_learn",
       },
