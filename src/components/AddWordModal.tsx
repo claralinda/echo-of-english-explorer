@@ -82,10 +82,10 @@ const AddWordModal = ({
       });
       return;
     }
-    if ((!definition.trim() || !examples.trim()) && !apiKey) {
+    if (!apiKey) {
       toast({
         title: "OpenAI API Key needed",
-        description: "Please set your OpenAI API Key in the footer first for auto-filling.",
+        description: "Please set your OpenAI API Key in the footer first.",
         variant: "destructive"
       });
       return;
@@ -178,14 +178,12 @@ const AddWordModal = ({
         <DialogHeader>
           <DialogTitle className="my-[2px]">Enter the saying</DialogTitle>
           <DialogDescription>
-            If you leave definition or examples empty,<br />
-            we'll generate them using ChatGPT.
+            We'll automatically generate the definition<br />
+            and examples using ChatGPT.
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-4 space-y-3">
+        <div className="mt-4">
           <Input placeholder="Enter saying…" value={text} onChange={e => setText(e.target.value)} autoFocus disabled={loading} />
-          <Input placeholder="Definition…" value={definition} onChange={e => setDefinition(e.target.value)} disabled={loading} />
-          <Textarea placeholder="Examples (one per line)…" value={examples} rows={3} onChange={e => setExamples(e.target.value)} disabled={loading} />
         </div>
         <DialogFooter>
           <Button onClick={handleAdd} disabled={loading} className="bg-zinc-700 hover:bg-zinc-600">
