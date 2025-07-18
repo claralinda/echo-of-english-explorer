@@ -178,8 +178,7 @@ const AddWordModal = ({
         <DialogHeader>
           <DialogTitle className="my-[2px]">Enter the saying</DialogTitle>
           <DialogDescription>
-            We'll automatically generate the definition<br />
-            and examples using ChatGPT.
+            Save a saying and let ChatGPT do the rest.
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
