@@ -40,7 +40,7 @@ export default function PracticeSection({
 }: PracticeSectionProps) {
   const [quiz, setQuiz] = useState(() => pickRandomQuiz(words));
   const [input, setInput] = useState("");
-  const [state, setState] = useState<"idle" | "correct" | "incorrect">("idle");
+  const [state, setState] = useState<"idle" | "correct" | "incorrect" | "dont-know">("idle");
   if (!quiz) {
     return <div className="min-h-[400px] flex items-center justify-center py-12 text-muted-foreground text-lg text-center bg-white">
         No examples available for practice yet.<br />Add sayings with examples to unlock practice!
@@ -74,6 +74,9 @@ export default function PracticeSection({
       onMarkAsLearnt(quiz.id);
       handleNext();
     }
+  }
+  function handleDontKnow() {
+    setState("dont-know");
   }
   return <div className="min-h-[500px] flex flex-col items-center justify-center w-full max-w-lg mx-auto px-[20px] pb-[35px] relative">
       <div className="min-h-[400px] flex flex-col items-center justify-center py-8 w-full">
@@ -113,12 +116,22 @@ export default function PracticeSection({
                 Next
               </Button>
             </div>}
+          {state === "dont-know" && <div className="w-full flex flex-col items-center">
+              <div className="mt-6 mb-2 w-full flex flex-col items-center my-[21px]">
+                 <span className="text-gray-600 text-center text-sm">
+                   The answer is: <span className="underline">{quiz.answer}</span>
+                 </span>
+              </div>
+              <Button type="button" onClick={handleNext} size="sm" variant="secondary" className="w-full mt-1 bg-zinc-700 hover:bg-zinc-600 text-white">
+                Next
+              </Button>
+            </div>}
 
           {state === "idle" && <div className="flex flex-col gap-2 pt-2 w-full">
               <Button type="submit" disabled={!input.trim()} size="sm" className="w-full bg-zinc-700 hover:bg-zinc-600">
                 Check answer
               </Button>
-              <Button type="button" onClick={handleNext} size="sm" variant="ghost" className="w-full">
+              <Button type="button" onClick={handleDontKnow} size="sm" variant="ghost" className="w-full">
                 I don't know
               </Button>
             </div>}
