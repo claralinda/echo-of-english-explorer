@@ -163,6 +163,7 @@ const AddWordModal = ({
           description: `"${normalizedText}" is already in your collection.`,
           variant: "destructive"
         });
+        setText(""); // Cancella il campo di input
         setLoading(false);
         return;
       }
