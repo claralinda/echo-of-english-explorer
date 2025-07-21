@@ -17,6 +17,7 @@ type Props = {
     }[];
   }) => void | Promise<void>;
   apiKey: string;
+  allWords: { text: string }[]; // Lista di tutte le parole esistenti
 };
 
 // Copiata da fetchWordDetails per coerenza nella detection:
@@ -65,7 +66,8 @@ const AddWordModal = ({
   open,
   onClose,
   onAdd,
-  apiKey
+  apiKey,
+  allWords
 }: Props) => {
   const [text, setText] = useState("");
   const [definition, setDefinition] = useState("");
@@ -149,6 +151,22 @@ const AddWordModal = ({
       }
       // Normalizza la prima lettera del saying qui (eccetto caso "I")
       const normalizedText = normalizeSaying(text.trim());
+      
+      // Controlla se il saying esiste già
+      const existingSaying = allWords.find(word => 
+        word.text.toLowerCase() === normalizedText.toLowerCase()
+      );
+      
+      if (existingSaying) {
+        toast({
+          title: "Saying already exists",
+          description: `"${normalizedText}" is already in your collection.`,
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+      
       await onAdd({
         text: normalizedText,
         definition: _definition,

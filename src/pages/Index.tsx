@@ -34,7 +34,8 @@ const Index = () => {
     markAsLearnt,
     moveBackToLearn,
     starWord,
-    unstarWord
+    unstarWord,
+    allWords
   } = wordsBackend;
 
   // Use new API key hook
@@ -247,7 +248,7 @@ const Index = () => {
         </div>}
 
       {/* Add Saying Modal */}
-      <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={handleAddWord} apiKey={apiKey} />
+      <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={handleAddWord} apiKey={apiKey} allWords={allWords} />
     </main>
     {/* Footer with settings link */}
     <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">
