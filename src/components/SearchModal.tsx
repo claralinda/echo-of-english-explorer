@@ -56,10 +56,10 @@ const SearchModal = ({ open, onClose, allWords }: SearchModalProps) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1 px-3 py-2 bg-black text-white rounded-md border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="flex-1 px-3 py-2 bg-white text-black rounded-md border border-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
             />
-            <Button onClick={handleSearch} size="sm" className="px-3">
+            <Button onClick={handleSearch} className="px-3 py-2 bg-zinc-700 hover:bg-zinc-600">
               <Search size={16} />
             </Button>
           </div>
