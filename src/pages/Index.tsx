@@ -124,6 +124,17 @@ const Index = () => {
     setTab("to-learn");
   };
 
+  const handleSelectWordFromSearch = (wordId: string, list: "to_learn" | "learnt" | "starred") => {
+    // Map the list to the correct tab name
+    const tabMap = {
+      "to_learn": "to-learn",
+      "learnt": "mastered", 
+      "starred": "starred"
+    };
+    
+    setTab(tabMap[list]);
+  };
+
   // Helper to render the subtitle (for both mobile and desktop now)
   const renderListSubtitle = () => {
     if (tab === "mastered") {
@@ -268,7 +279,12 @@ const Index = () => {
       <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={handleAddWord} apiKey={apiKey} allWords={allWords} />
       
       {/* Search Modal */}
-      <SearchModal open={searchModalOpen} onClose={() => setSearchModalOpen(false)} allWords={allWords} />
+      <SearchModal 
+        open={searchModalOpen} 
+        onClose={() => setSearchModalOpen(false)} 
+        allWords={allWords} 
+        onSelectWord={handleSelectWordFromSearch}
+      />
     </main>
     {/* Footer with settings link */}
     <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">

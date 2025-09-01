@@ -8,15 +8,18 @@ interface SearchModalProps {
   open: boolean;
   onClose: () => void;
   allWords: SupabaseWordEntry[];
+  onSelectWord: (wordId: string, list: "to_learn" | "learnt" | "starred") => void;
 }
 
-const SearchModal = ({ open, onClose, allWords }: SearchModalProps) => {
+const SearchModal = ({ open, onClose, allWords, onSelectWord }: SearchModalProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SupabaseWordEntry[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
+      setHasSearched(false);
       return;
     }
 
@@ -33,12 +36,19 @@ const SearchModal = ({ open, onClose, allWords }: SearchModalProps) => {
     );
     
     setSearchResults(results);
+    setHasSearched(true);
   };
 
   const handleClose = () => {
     setSearchQuery("");
     setSearchResults([]);
+    setHasSearched(false);
     onClose();
+  };
+
+  const handleSelectWord = (word: SupabaseWordEntry) => {
+    onSelectWord(word.id, word.list);
+    handleClose();
   };
 
   return (
@@ -67,7 +77,11 @@ const SearchModal = ({ open, onClose, allWords }: SearchModalProps) => {
           {searchResults.length > 0 && (
             <div className="max-h-60 overflow-y-auto space-y-2">
               {searchResults.map((word) => (
-                <div key={word.id} className="p-3 bg-gray-50 rounded-md">
+                <div 
+                  key={word.id} 
+                  className="p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors"
+                  onClick={() => handleSelectWord(word)}
+                >
                   <div className="font-medium text-sm mb-1">{word.text}</div>
                   <div className="text-xs text-gray-600 mb-2">{word.definition}</div>
                   {word.examples.length > 0 && (
@@ -84,7 +98,7 @@ const SearchModal = ({ open, onClose, allWords }: SearchModalProps) => {
             </div>
           )}
 
-          {searchQuery && searchResults.length === 0 && (
+          {hasSearched && searchQuery && searchResults.length === 0 && (
             <div className="text-center text-gray-500 py-4">
               No sayings found matching "{searchQuery}"
             </div>
