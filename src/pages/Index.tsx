@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddWordModal from "@/components/AddWordModal";
 import WordTable from "@/components/WordTable";
 import WordList from "@/components/WordList";
@@ -19,6 +19,8 @@ const Index = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [tab, setTab] = useState<string>("to-learn");
+  const [highlightedWordId, setHighlightedWordId] = useState<string | null>(null);
+  const [scrollToWordId, setScrollToWordId] = useState<string | null>(null);
   const {
     user,
     signOut
@@ -133,7 +135,32 @@ const Index = () => {
     };
     
     setTab(tabMap[list]);
+    setHighlightedWordId(wordId);
+    setScrollToWordId(wordId);
+    
+    // Clear highlight after 3 seconds
+    setTimeout(() => {
+      setHighlightedWordId(null);
+    }, 3000);
   };
+
+  // Effect to handle scrolling to word
+  useEffect(() => {
+    if (scrollToWordId) {
+      const timer = setTimeout(() => {
+        const element = document.querySelector(`[data-word-id="${scrollToWordId}"]`);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }
+        setScrollToWordId(null);
+      }, 100); // Small delay to ensure tab content is rendered
+      
+      return () => clearTimeout(timer);
+    }
+  }, [scrollToWordId, tab]);
 
   // Helper to render the subtitle (for both mobile and desktop now)
   const renderListSubtitle = () => {
@@ -202,9 +229,9 @@ const Index = () => {
         </div> : <div className="block md:hidden w-full bg-white"> 
           {/* MOBILE: All tabs in the bottom bar, subtitles now in header */}
           <div className="pt-2 px-2">
-            {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />}
-            {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />}
-            {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />}
+            {tab === "to-learn" && <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} highlightedWordId={highlightedWordId} />}
+            {tab === "mastered" && <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} highlightedWordId={highlightedWordId} />}
+            {tab === "starred" && <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} highlightedWordId={highlightedWordId} />}
             {tab === "practice" && <PracticeSection words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered
           onMarkAsLearnt={markAsLearnt} />}
           </div>
@@ -256,13 +283,13 @@ const Index = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="to-learn">
-              <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} />
+              <WordList words={words} onDelete={removeWord} onMarkAsLearnt={markAsLearnt} onStar={starWord} showStar={true} learntMode={false} highlightedWordId={highlightedWordId} />
             </TabsContent>
             <TabsContent value="mastered">
-              <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} />
+              <WordList words={learntWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onStar={starWord} showStar={true} learntMode={true} highlightedWordId={highlightedWordId} />
             </TabsContent>
             <TabsContent value="starred">
-              <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} />
+              <WordList words={starredWords} onDelete={removeWord} onMoveBackToLearn={moveBackToLearn} onUnstar={unstarWord} showStar={true} starredMode={true} highlightedWordId={highlightedWordId} />
             </TabsContent>
             <TabsContent value="practice">
               <PracticeSection words={[...words, ...starredWords]} // EXCLUDE learntWords/mastered

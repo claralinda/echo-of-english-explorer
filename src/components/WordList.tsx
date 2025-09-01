@@ -18,6 +18,7 @@ type Props = {
   showStar?: boolean;
   learntMode?: boolean;
   starredMode?: boolean;
+  highlightedWordId?: string | null;
 };
 const lcFirst = (str: string) => str ? str.charAt(0).toLowerCase() + str.slice(1) : str;
 
@@ -45,7 +46,8 @@ const WordList = ({
   onUnstar,
   showStar,
   learntMode = false,
-  starredMode = false
+  starredMode = false,
+  highlightedWordId
 }: Props) => {
   const [openId, setOpenId] = useState<string | null>(null);
   if (words.length === 0) {
@@ -54,7 +56,14 @@ const WordList = ({
       </div>;
   }
   return <ul className="w-full bg-white min-h-screen px-[5px]">
-      {words.map((w, idx) => <li key={w.id} className={`border-b border-[#ededed] last:border-b-0 px-0 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors`}>
+      {words.map((w, idx) => {
+        const isHighlighted = highlightedWordId === w.id;
+        return (
+          <li 
+            key={w.id} 
+            data-word-id={w.id}
+            className={`border-b border-[#ededed] last:border-b-0 px-0 ${idx === 0 ? "pt-4" : "pt-2"} pb-2 group transition-colors ${isHighlighted ? 'bg-gray-100' : ''}`}
+          >
           <div className="flex items-start justify-between gap-3">
             <button type="button" className="flex flex-col items-start justify-center flex-1 text-left focus:outline-none" onClick={() => setOpenId(openId === w.id ? null : w.id)} aria-expanded={openId === w.id} data-testid="word-collapsible" tabIndex={0}>
               <span className="font-medium text-[0.95rem] leading-tight text-gray-600">
@@ -119,12 +128,14 @@ const WordList = ({
             }} className="p-3 text-[#ef233c] hover:text-[#ff3d57] rounded-full bg-transparent focus:outline-none" title="Delete" aria-label="Delete" type="button">
                       <X size={22} strokeWidth={2.2} />
                     </button>}
-                </div>}
-            </button>
-            {/* Right column is empty, omit */}
-          </div>
-        </li>)}
-    </ul>;
+                 </div>}
+             </button>
+             {/* Right column is empty, omit */}
+           </div>
+         </li>
+        );
+      })}
+     </ul>;
 };
 export default WordList;
 
