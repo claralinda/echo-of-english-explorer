@@ -10,11 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Plus } from "lucide-react";
 import { useUserApiKey } from "@/hooks/useUserApiKey";
-import { Star, Check, ListCheck, LogOut } from "lucide-react";
+import { Star, Check, ListCheck, LogOut, Search } from "lucide-react";
 import InstallPrompt from "@/components/InstallPrompt";
+import SearchModal from "@/components/SearchModal";
 import PracticeSection from "@/components/PracticeSection";
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [tab, setTab] = useState<string>("to-learn");
   const {
@@ -148,11 +150,26 @@ const Index = () => {
         {/* subtitle sotto il titolo, sia mobile che desktop */}
         {renderListSubtitle()}
       </div>
-      {user && <button onClick={signOut} title="Log Out" aria-label="Log Out" style={{
-        marginTop: 0
-      }} className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center py-[9px]">
-          <LogOut size={18} className="text-gray-400" />
-        </button>}
+      {user && (
+        <div className="flex gap-2">
+          <button 
+            onClick={() => setSearchModalOpen(true)} 
+            title="Search" 
+            aria-label="Search" 
+            className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center py-[9px]"
+          >
+            <Search size={18} className="text-gray-400" />
+          </button>
+          <button 
+            onClick={signOut} 
+            title="Log Out" 
+            aria-label="Log Out" 
+            className="p-1.5 rounded-full hover:bg-accent transition flex items-center justify-center py-[9px]"
+          >
+            <LogOut size={18} className="text-gray-400" />
+          </button>
+        </div>
+      )}
     </header>
     {/* MAIN BODY */}
     <main className="flex-1 pb-[80px] pt-2 w-full max-w-full container px-0 md:px-0 bg-white">
@@ -249,6 +266,9 @@ const Index = () => {
 
       {/* Add Saying Modal */}
       <AddWordModal open={modalOpen} onClose={() => setModalOpen(false)} onAdd={handleAddWord} apiKey={apiKey} allWords={allWords} />
+      
+      {/* Search Modal */}
+      <SearchModal open={searchModalOpen} onClose={() => setSearchModalOpen(false)} allWords={allWords} />
     </main>
     {/* Footer with settings link */}
     <footer className="text-xs text-muted-foreground pb-2 pt-2 text-center opacity-80 w-full bg-white">
