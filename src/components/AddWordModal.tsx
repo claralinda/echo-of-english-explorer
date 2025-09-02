@@ -193,7 +193,7 @@ const AddWordModal = ({
     }
   };
   return <Dialog open={open} onOpenChange={open => !open && onClose()}>
-      <DialogContent className="max-w-md py-[37px]">
+      <DialogContent className="max-w-md py-[37px] translate-y-[-20vh]">
         <DialogHeader>
           <DialogTitle className="my-[2px]">Enter the saying</DialogTitle>
           <DialogDescription>
