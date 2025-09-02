@@ -20,7 +20,6 @@ const Index = () => {
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [tab, setTab] = useState<string>("to-learn");
   const [highlightedWordId, setHighlightedWordId] = useState<string | null>(null);
-  const [scrollToWordId, setScrollToWordId] = useState<string | null>(null);
   const {
     user,
     signOut
@@ -134,33 +133,31 @@ const Index = () => {
       "starred": "starred"
     };
     
-    setTab(tabMap[list]);
-    setHighlightedWordId(wordId);
-    setScrollToWordId(wordId);
+    // Batch state updates to prevent render issues
+    const newTab = tabMap[list];
+    setTab(newTab);
     
-    // Clear highlight after 3 seconds
+    // Use a different approach for scrolling that doesn't cause dependency issues
     setTimeout(() => {
-      setHighlightedWordId(null);
-    }, 3000);
-  };
-
-  // Effect to handle scrolling to word
-  useEffect(() => {
-    if (scrollToWordId) {
-      const timer = setTimeout(() => {
-        const element = document.querySelector(`[data-word-id="${scrollToWordId}"]`);
+      setHighlightedWordId(wordId);
+      
+      // Scroll to element after a delay to ensure content is rendered
+      setTimeout(() => {
+        const element = document.querySelector(`[data-word-id="${wordId}"]`);
         if (element) {
           element.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'center' 
           });
         }
-        setScrollToWordId(null);
-      }, 100); // Small delay to ensure tab content is rendered
+      }, 150);
       
-      return () => clearTimeout(timer);
-    }
-  }, [scrollToWordId, tab]);
+      // Clear highlight after 3 seconds
+      setTimeout(() => {
+        setHighlightedWordId(null);
+      }, 3000);
+    }, 50);
+  };
 
   // Helper to render the subtitle (for both mobile and desktop now)
   const renderListSubtitle = () => {
